@@ -1,0 +1,21 @@
+<resources>
+    <string name="app_name">kanom</string>
+
+    <string name="title_section1">หน้าหลัก</string>
+    <string name="title_section2">รายการโปรด</string>
+    <string name="title_section3">ประเภท</string>
+    <string name="title_section4">ภาษา/language</string>
+    <string name="title_section5">เกี่ยวกับ</string>
+    <string name="title_section6">การซื้อแอปพลิเคชัน</string>
+
+    <string name="intent_popup_title">เลือกช่องทางในการค้นหา</string>
+    <string name="intent1">กล้อง</string>
+    <string name="intent2">แกลอรี่</string>
+    <string name="intent_into">เข้าถึงโดยใช้ </string>
+    <string name="cancel">ยกเลิก</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_search">ค้นหา</string>
+</resources>

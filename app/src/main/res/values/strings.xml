@@ -1,0 +1,22 @@
+<resources>
+    <string name="app_name">kanom</string>
+
+    <string name="title_section1">Main</string>
+    <string name="title_section2">Favorites</string>
+    <string name="title_section3">Category</string>
+    <string name="title_section4">Language</string>
+    <string name="title_section5">About</string>
+    <string name="title_section6">Activate</string>
+
+    <string name="intent_popup_title">pop up</string>
+    <string name="intent1">Camera</string>
+    <string name="intent2">gallery</string>
+    <string name="intent_into">into </string>
+    <string name="cancel">cancel</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_search">Search</string>
+    <string name="action_setting">Search</string>
+</resources>
