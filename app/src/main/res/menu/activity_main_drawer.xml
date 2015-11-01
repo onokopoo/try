@@ -2,22 +2,22 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <group android:checkableBehavior="single">
-        <item android:id="@+id/nav_camara" android:icon="@android:drawable/ic_menu_camera"
-            android:title="Import" />
-        <item android:id="@+id/nav_gallery" android:icon="@android:drawable/ic_menu_gallery"
-            android:title="Gallery" />
-        <item android:id="@+id/nav_slideshow" android:icon="@android:drawable/ic_menu_slideshow"
-            android:title="Slideshow" />
-        <item android:id="@+id/nav_manage" android:icon="@android:drawable/ic_menu_manage"
-            android:title="Tools" />
+        <item android:id="@+id/nav_main" android:icon="@drawable/ic_main"
+            android:title="@string/title_section1"/>
+        <item android:id="@+id/nav_heart" android:icon="@drawable/ic_heart"
+            android:title="@string/title_section2"/>
+        <item android:id="@+id/nav_stack" android:icon="@drawable/ic_stack"
+            android:title="@string/title_section3"/>
     </group>
 
-    <item android:title="Communicate">
+    <item android:title="Setting">
         <menu>
-            <item android:id="@+id/nav_share" android:icon="@android:drawable/ic_menu_share"
-                android:title="Share" />
-            <item android:id="@+id/nav_send" android:icon="@android:drawable/ic_menu_send"
-                android:title="Send" />
+            <item android:id="@+id/nav_language" android:icon="@drawable/ic_language"
+                android:title="@string/title_section4"/>
+            <item android:id="@+id/nav_about" android:icon="@drawable/ic_about"
+                android:title="@string/title_section5"/>
+            <item android:id="@+id/nav_buy" android:icon="@drawable/ic_buy"
+                android:title="@string/title_section6"/>
         </menu>
     </item>
 
