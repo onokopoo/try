@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
@@ -17,7 +18,6 @@ import java.util.Date;
 
 public class IntentActivity extends Activity {
     public static final int REQUEST_CAMERA = 2;
-    static final int REQUEST_IMAGE_CAPTURE = 1;
     ImageView imageView;
     Uri uri;
 
@@ -28,8 +28,7 @@ public class IntentActivity extends Activity {
         imageView = (ImageView)findViewById(R.id.imageView);
 
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        String timeStamp =
-                new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         String imageFileName = "IMG_" + timeStamp + ".jpg";
         File f = new File(Environment.getExternalStorageDirectory()
                 , "DCIM/Camera/kanom/" + imageFileName);
@@ -46,7 +45,7 @@ public class IntentActivity extends Activity {
             ContentResolver cr = getContentResolver();
             try {
                 imageView.setImageBitmap(decodeSampledBitmapFromFile(uri.getPath(), 300, 300));
-                //Toast.makeText(getApplicationContext(), uri.getPath(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), uri.getPath(), Toast.LENGTH_SHORT).show();
             } catch (Exception e) {
                 e.printStackTrace();
             }

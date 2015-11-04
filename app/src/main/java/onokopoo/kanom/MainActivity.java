@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity
                             Intent i = new Intent(getApplicationContext(), IntentActivity.class);
                             startActivity(i);
                         } else {
-                            Intent i = new Intent(getApplicationContext(), IntentActivity.class);
+                            Intent i = new Intent(getApplicationContext(), IntentGalleryActivity.class);
                             startActivity(i);
                         }
                     }
