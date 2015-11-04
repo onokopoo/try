@@ -2,9 +2,9 @@ package onokopoo.kanom;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -39,9 +39,12 @@ public class MainActivity extends AppCompatActivity
                         String selected = intents[which];
                         Toast.makeText(getApplicationContext(), getString(R.string.intent_into) +
                                 selected, Toast.LENGTH_SHORT).show();
-                        if (which == 1) {
-                            Snackbar.make(camera_popup, "Replace with your own action", Snackbar.LENGTH_LONG)
-                                    .setAction("Action", null).show();
+                        if (which == 0) {
+                            Intent i = new Intent(getApplicationContext(), IntentActivity.class);
+                            startActivity(i);
+                        } else {
+                            Intent i = new Intent(getApplicationContext(), IntentActivity.class);
+                            startActivity(i);
                         }
                     }
                 }).setNegativeButton(getString(R.string.cancel), null);
@@ -121,7 +124,7 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_stack) {
 
         } else if (id == R.id.nav_language) {
-            
+
         } else if (id == R.id.nav_about) {
 
         } else if (id == R.id.nav_buy) {
