@@ -2,6 +2,7 @@ package onokopoo.kanom;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -34,17 +35,23 @@ public class IntentGalleryActivity extends Activity {
 
         //Intent i = new Intent(Intent.ACTION_PICK,android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         //startActivityForResult(i, RESULT_LOAD_IMAGE);
-        Intent intent = new Intent(Intent.ACTION_PICK,android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         intent.setType("image/*");
         startActivityForResult(intent, REQUEST_GALLERY);
     }
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_GALLERY && resultCode == RESULT_OK) {
             uri = data.getData();
+            String[] filePathColumn = {android.provider.MediaStore.Images.Media.DATA};
+            Cursor cursor = getContentResolver().query(uri,filePathColumn,null,null,null);
+            cursor.moveToFirst();
+            int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+            String filePath = cursor.getString(columnIndex);
+            cursor.close();
             try {
-                Toast.makeText(getApplicationContext(), uri.getPath(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), filePath, Toast.LENGTH_SHORT).show();
                 bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), uri);
-                imageView.setImageBitmap(decodeSampledBitmapFromFile(uri.getPath(), 300, 300));
+                imageView.setImageBitmap(decodeSampledBitmapFromFile(filePath, 300, 300));
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             } catch (IOException e) {

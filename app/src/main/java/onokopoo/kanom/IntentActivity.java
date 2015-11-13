@@ -26,8 +26,6 @@ public class IntentActivity extends Activity {
         setContentView(R.layout.intent_second);
 
         imageView = (ImageView)findViewById(R.id.imageView);
-
-        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         String imageFileName = "IMG_" + timeStamp + ".jpg";
         File f = new File(Environment.getExternalStorageDirectory()
