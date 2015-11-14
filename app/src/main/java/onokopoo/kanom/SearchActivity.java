@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.util.Log;
@@ -62,14 +63,13 @@ public class SearchActivity extends Activity {
 
         // btnSearch
         final Button btnSearch = (Button) findViewById(R.id.btnSearch);
-        //btnSearch.setBackgroundColor(Color.TRANSPARENT);
+        btnSearch.setBackgroundColor(Color.TRANSPARENT);
         // Perform action on click
         btnSearch.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 ShowData();
             }
         });
-
     }
 
     public void ShowData()
@@ -85,7 +85,7 @@ public class SearchActivity extends Activity {
                 Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(strKeySearch.getWindowToken(), 0);
 
-        String url = "http://192.168.1.12/pi.php";
+        String url = "http://192.168.1.12/pop.php";
 
         // Paste Parameters
         List<NameValuePair> params = new ArrayList<NameValuePair>();
@@ -101,14 +101,13 @@ public class SearchActivity extends Activity {
                 JSONObject c = data.getJSONObject(i);
 
                 map = new HashMap<String, String>();
-                map.put("MemberID", c.getString("MemberID"));
-                map.put("Username", c.getString("Username"));
-                map.put("Password", c.getString("Password"));
-                map.put("Name", c.getString("Name"));
-                map.put("Email", c.getString("Email"));
-                map.put("Tel", c.getString("Tel"));
+                map.put("image", c.getString("image"));
+                map.put("kanom_id", c.getString("kanom_id"));
+                map.put("name_th", c.getString("name_th"));
+                map.put("name_en", c.getString("name_en"));
+                map.put("type", c.getString("type"));
+                map.put("voice", c.getString("voice"));
                 MyArrList.add(map);
-
             }
 
             lisView1.setAdapter(new ImageAdapter(this));
@@ -118,15 +117,15 @@ public class SearchActivity extends Activity {
                 public void onItemClick(AdapterView<?> myAdapter, View myView,
                                         int position, long mylng) {
 
-                    String sMemberID = MyArrList.get(position).get("MemberID")
-                            .toString();
-                    String sName = MyArrList.get(position).get("Name")
-                            .toString();
-                    String sTel = MyArrList.get(position).get("Tel")
-                            .toString();
+                    String sImage = MyArrList.get(position).get("image").toString();
+                    String sKanom_id = MyArrList.get(position).get("kanom_id").toString();
+                    String sNameTH = MyArrList.get(position).get("name_th").toString();
+                    String sNameEN = MyArrList.get(position).get("name_en").toString();
+                    String sType = MyArrList.get(position).get("type").toString();
+                    String sVoice = MyArrList.get(position).get("name_en").toString();
 
                     Intent newActivity = new Intent(SearchActivity.this,DetailActivity.class);
-                    newActivity.putExtra("MemberID", sMemberID);
+                    newActivity.putExtra("", sKanom_id);
                     startActivity(newActivity);
 
                 }
@@ -173,20 +172,20 @@ public class SearchActivity extends Activity {
                 convertView = inflater.inflate(R.layout.activity_column, null);
             }
 
-            // ColMemberID
-            TextView txtMemberID = (TextView) convertView.findViewById(R.id.ColMemberID);
+            // name th
+            TextView txtMemberID = (TextView) convertView.findViewById(R.id.name_th);
             txtMemberID.setPadding(10, 0, 0, 0);
-            txtMemberID.setText(MyArrList.get(position).get("MemberID") +".");
+            txtMemberID.setText(MyArrList.get(position).get("name_th"));
 
-            // R.id.ColName
-            TextView txtName = (TextView) convertView.findViewById(R.id.ColName);
+            // name en
+            TextView txtName = (TextView) convertView.findViewById(R.id.name_en);
             txtName.setPadding(5, 0, 0, 0);
-            txtName.setText(MyArrList.get(position).get("Name"));
+            txtName.setText(MyArrList.get(position).get("name_en"));
 
-            // R.id.ColTel
-            TextView txtTel = (TextView) convertView.findViewById(R.id.ColTel);
+            // image
+            TextView txtTel = (TextView) convertView.findViewById(R.id.image);
             txtTel.setPadding(5, 0, 0, 0);
-            txtTel.setText(MyArrList.get(position).get("Tel"));
+            txtTel.setText(MyArrList.get(position).get("image"));
 
 
             return convertView;

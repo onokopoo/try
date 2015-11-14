@@ -79,7 +79,7 @@ public class DetailActivity extends Activity {
         final String MemberID = intent.getStringExtra("kanom_id");
 
         List<NameValuePair> params = new ArrayList<NameValuePair>();
-        params.add(new BasicNameValuePair("sMemberID", MemberID));
+        params.add(new BasicNameValuePair("sKanom_id", MemberID));
 
         /** Get result from Server (Return the JSON Code)
          *
@@ -101,7 +101,7 @@ public class DetailActivity extends Activity {
             strMemberID = c.getString("kanom_id");
             strUsername = c.getString("name_th");
             strPassword = c.getString("name_en");
-            strName = c.getString("type_id");
+            strName = c.getString("type");
             strEmail = c.getString("voice");
             strTel = c.getString("image");
 
