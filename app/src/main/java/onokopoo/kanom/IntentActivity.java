@@ -9,6 +9,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -36,6 +38,14 @@ public class IntentActivity extends Activity {
         startActivityForResult(Intent.createChooser(intent
                 , "Take a picture with"), REQUEST_CAMERA);
 
+        final Button btnBack = (Button) findViewById(R.id.btnBack);
+        // Perform action on click
+        btnBack.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent newActivity = new Intent(IntentActivity.this, MainActivity.class);
+                startActivity(newActivity);
+            }
+        });
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
