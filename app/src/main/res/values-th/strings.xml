@@ -11,7 +11,6 @@
     <string name="intent_popup_title">เลือกช่องทางในการค้นหา</string>
     <string name="intent1">กล้อง</string>
     <string name="intent2">แกลอรี่</string>
-    <string name="intent_into">เข้าถึงโดยใช้ </string>
     <string name="cancel">ยกเลิก</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>

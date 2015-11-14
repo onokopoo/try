@@ -13,7 +13,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -36,9 +35,6 @@ public class MainActivity extends AppCompatActivity
                 builder.setItems(intents, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        String selected = intents[which];
-                        Toast.makeText(getApplicationContext(), getString(R.string.intent_into) +
-                                selected, Toast.LENGTH_SHORT).show();
                         if (which == 0) {
                             Intent i = new Intent(getApplicationContext(), IntentActivity.class);
                             startActivity(i);
