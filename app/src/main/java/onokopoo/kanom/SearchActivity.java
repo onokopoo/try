@@ -79,13 +79,13 @@ public class SearchActivity extends Activity {
 
         // keySearch
         EditText strKeySearch = (EditText)findViewById(R.id.txtKeySearch);
-
+        System.out.println(strKeySearch.getText()+"-------------------------");
         // Disbled Keyboard auto focus
         InputMethodManager imm = (InputMethodManager)getSystemService(
                 Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(strKeySearch.getWindowToken(), 0);
 
-        String url = "http://192.168.1.12/pop.php";
+        String url = "http://10.35.23.50/pop.php";
 
         // Paste Parameters
         List<NameValuePair> params = new ArrayList<NameValuePair>();
@@ -125,7 +125,8 @@ public class SearchActivity extends Activity {
                     String sVoice = MyArrList.get(position).get("name_en").toString();
 
                     Intent newActivity = new Intent(SearchActivity.this,DetailActivity.class);
-                    newActivity.putExtra("", sKanom_id);
+                    System.out.print(sKanom_id);
+                    newActivity.putExtra("kanom_id", sKanom_id);
                     startActivity(newActivity);
 
                 }

@@ -24,6 +24,7 @@ import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -34,6 +35,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
+@SuppressWarnings("deprecation")
 public class DetailActivity extends Activity {
 
 
@@ -73,20 +75,22 @@ public class DetailActivity extends Activity {
         final TextView tEmail = (TextView)findViewById(R.id.txtEmail);
         final TextView tTel = (TextView)findViewById(R.id.txtTel);
 
-        String url = "http://localhost/pop.php";
+        String url = "http://10.35.23.50/selectKanom.php";
 
         Intent intent= getIntent();
-        final String MemberID = intent.getStringExtra("kanom_id");
+        final String sKanom_id = intent.getStringExtra("kanom_id");
 
-        List<NameValuePair> params = new ArrayList<NameValuePair>();
-        params.add(new BasicNameValuePair("sKanom_id", MemberID));
+        ArrayList<NameValuePair> params = new ArrayList<NameValuePair>();
+        params.add(new BasicNameValuePair("kanom_id", sKanom_id));
+
+        System.out.println("----"+sKanom_id+"----------deteal-----------");
 
         /** Get result from Server (Return the JSON Code)
          *
          * {"MemberID":"2","Username":"adisorn","Password":"adisorn@2","Name":"Adisorn Bunsong","Tel":"021978032","Email":"adisorn@thaicreate.com"}
          */
 
-        String resultServer  = getHttpPost(url,params);
+
 
         String strMemberID = "";
         String strUsername = "";
@@ -95,15 +99,17 @@ public class DetailActivity extends Activity {
         String strEmail = "";
         String strTel = "";
 
-        JSONObject c;
+        //JSONObject c;
         try {
-            c = new JSONObject(resultServer);
+            JSONArray data = new JSONArray(getJSONUrl(url,params));
+            JSONObject c = data.getJSONObject(0);
             strMemberID = c.getString("kanom_id");
             strUsername = c.getString("name_th");
             strPassword = c.getString("name_en");
             strName = c.getString("type");
             strEmail = c.getString("voice");
             strTel = c.getString("image");
+            System.out.println("++++++++" + strName + "++++++++++");
 
             if(!strMemberID.equals(""))
             {
@@ -166,4 +172,33 @@ public class DetailActivity extends Activity {
         return true;
     }
 
+    public String getJSONUrl(String url,List<NameValuePair> params) {
+        System.out.print("-------------------------------------------------------------------------------------------------------------");
+        StringBuilder str = new StringBuilder();
+        HttpClient client = new DefaultHttpClient();
+        HttpPost httpPost = new HttpPost(url);
+
+        try {
+            httpPost.setEntity(new UrlEncodedFormEntity(params));
+            HttpResponse response = client.execute(httpPost);
+            StatusLine statusLine = response.getStatusLine();
+            int statusCode = statusLine.getStatusCode();
+            if (statusCode == 200) { // Download OK
+                HttpEntity entity = response.getEntity();
+                InputStream content = entity.getContent();
+                BufferedReader reader = new BufferedReader(new InputStreamReader(content));
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    str.append(line);
+                }
+            } else {
+                Log.e("Log", "Failed to download result.............");
+            }
+        } catch (ClientProtocolException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return str.toString();
+    }
 }
