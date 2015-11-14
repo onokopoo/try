@@ -101,6 +101,8 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.action_search) {
+            Intent i = new Intent(getApplicationContext(), SearchActivity.class);
+            startActivity(i);
             return true;
         }
 
