@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.apache.http.HttpEntity;
@@ -38,7 +39,6 @@ import java.util.List;
 @SuppressWarnings("deprecation")
 public class DetailActivity extends Activity {
 
-
     @SuppressLint("NewApi")
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -62,20 +62,20 @@ public class DetailActivity extends Activity {
                 startActivity(newActivity);
             }
         });
-
     }
 
     public void showInfo()
     {
-        // txtMemberID,txtMemberID,txtUsername,txtPassword,txtName,txtEmail,txtTel
-        final TextView tMemberID = (TextView)findViewById(R.id.txtMemberID);
-        final TextView tUsername = (TextView)findViewById(R.id.txtUsername);
-        final TextView tPassword = (TextView)findViewById(R.id.txtPassword);
-        final TextView tName = (TextView)findViewById(R.id.txtName);
-        final TextView tEmail = (TextView)findViewById(R.id.txtEmail);
-        final TextView tTel = (TextView)findViewById(R.id.txtTel);
+        final ImageView image   = (ImageView)findViewById(R.id.image);
+        final TextView tNameTh  = (TextView)findViewById(R.id.name_th);
+        final TextView tNameEn  = (TextView)findViewById(R.id.name_en);
+        //final TextView tNameOther = (TextView)findViewById(R.id.name_other);
+        final TextView tType    = (TextView)findViewById(R.id.type);
+        //final TextView tIngredient = (TextView)findViewById(R.id.txtEmail);
+        //final TextView tRecipe = (TextView)findViewById(R.id.txtTel);
 
-        String url = "http://10.35.23.50/selectKanom.php";
+        //String url = "http://10.35.23.50/selectKanom.php";
+        String url = "http://192.168.1.12/selectKanom.php";
 
         Intent intent= getIntent();
         final String sKanom_id = intent.getStringExtra("kanom_id");
@@ -83,51 +83,43 @@ public class DetailActivity extends Activity {
         ArrayList<NameValuePair> params = new ArrayList<NameValuePair>();
         params.add(new BasicNameValuePair("kanom_id", sKanom_id));
 
-        System.out.println("----"+sKanom_id+"----------deteal-----------");
-
-        /** Get result from Server (Return the JSON Code)
-         *
-         * {"MemberID":"2","Username":"adisorn","Password":"adisorn@2","Name":"Adisorn Bunsong","Tel":"021978032","Email":"adisorn@thaicreate.com"}
-         */
-
-
-
-        String strMemberID = "";
-        String strUsername = "";
-        String strPassword = "";
-        String strName = "";
-        String strEmail = "";
-        String strTel = "";
+        String strKanomId = "";
+        String strNameTh = "";
+        String strNameEn = "";
+        String strNameOther = "";
+        String strType = "";
+        String strimage = "";
+        String strIngredient = "";
+        String strRecipe = "";
 
         //JSONObject c;
         try {
             JSONArray data = new JSONArray(getJSONUrl(url,params));
             JSONObject c = data.getJSONObject(0);
-            strMemberID = c.getString("kanom_id");
-            strUsername = c.getString("name_th");
-            strPassword = c.getString("name_en");
-            strName = c.getString("type");
-            strEmail = c.getString("voice");
-            strTel = c.getString("image");
-            System.out.println("++++++++" + strName + "++++++++++");
+            strNameTh       = c.getString("name_th");
+            strNameEn       = c.getString("name_en");
+            //strNameOther    = c.getString("name_other");
+            strType         = c.getString("type");
+            //strIngredient   = c.getString("voice");
+            //strRecipe       = c.getString("image");
 
-            if(!strMemberID.equals(""))
+            if(!strNameTh.equals(""))
             {
-                tMemberID.setText(strMemberID);
-                tUsername.setText(strUsername);
-                tPassword.setText(strPassword);
-                tName.setText(strName);
-                tEmail.setText(strEmail);
-                tTel.setText(strTel);
+                tNameTh.setText(strNameTh);
+                tNameEn.setText(strNameEn);
+                //tNameOther.setText(strNameOther);
+                tType.setText(strType);
+                //tIngredient.setText(strIngredient);
+                //tRecipe.setText(strRecipe);
             }
             else
             {
-                tMemberID.setText("-");
-                tUsername.setText("-");
-                tPassword.setText("-");
-                tName.setText("-");
-                tEmail.setText("-");
-                tTel.setText("-");
+                tNameTh.setText("-");
+                tNameEn.setText("-");
+                //tNameOther.setText("-");
+                tType.setText("-");
+                //tIngredient.setText("-");
+                //tRecipe.setText("-");
             }
 
         } catch (JSONException e) {

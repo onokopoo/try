@@ -4,6 +4,8 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.StrictMode;
@@ -17,6 +19,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -34,10 +37,16 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
+import java.io.Closeable;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -79,13 +88,13 @@ public class SearchActivity extends Activity {
 
         // keySearch
         EditText strKeySearch = (EditText)findViewById(R.id.txtKeySearch);
-        System.out.println(strKeySearch.getText()+"-------------------------");
         // Disbled Keyboard auto focus
         InputMethodManager imm = (InputMethodManager)getSystemService(
                 Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(strKeySearch.getWindowToken(), 0);
 
-        String url = "http://10.35.23.50/pop.php";
+        //String url = "http://10.35.23.50/pop.php";
+        String url = "http://192.168.1.12/pop.php";
 
         // Paste Parameters
         List<NameValuePair> params = new ArrayList<NameValuePair>();
@@ -110,7 +119,7 @@ public class SearchActivity extends Activity {
                 MyArrList.add(map);
             }
 
-            lisView1.setAdapter(new ImageAdapter(this));
+            lisView1.setAdapter(new ImageAdapter(this,MyArrList));
 
             // OnClick Item
             lisView1.setOnItemClickListener(new OnItemClickListener() {
@@ -125,7 +134,6 @@ public class SearchActivity extends Activity {
                     String sVoice = MyArrList.get(position).get("name_en").toString();
 
                     Intent newActivity = new Intent(SearchActivity.this,DetailActivity.class);
-                    System.out.print(sKanom_id);
                     newActivity.putExtra("kanom_id", sKanom_id);
                     startActivity(newActivity);
 
@@ -138,20 +146,21 @@ public class SearchActivity extends Activity {
         }
     }
 
-
     public class ImageAdapter extends BaseAdapter
     {
         private Context context;
+        private ArrayList<HashMap<String, String>> MyArr = new ArrayList<HashMap<String, String>>();
 
-        public ImageAdapter(Context c)
+        public ImageAdapter(Context c, ArrayList<HashMap<String, String>> list)
         {
             // TODO Auto-generated method stub
             context = c;
+            MyArr = list;
         }
 
         public int getCount() {
             // TODO Auto-generated method stub
-            return MyArrList.size();
+            return MyArr.size();
         }
 
         public Object getItem(int position) {
@@ -163,7 +172,7 @@ public class SearchActivity extends Activity {
             // TODO Auto-generated method stub
             return position;
         }
-        public View getView(final int position, View convertView, ViewGroup parent) {
+        public View getView(int position, View convertView, ViewGroup parent) {
             // TODO Auto-generated method stub
 
             LayoutInflater inflater = (LayoutInflater) context
@@ -173,31 +182,41 @@ public class SearchActivity extends Activity {
                 convertView = inflater.inflate(R.layout.activity_column, null);
             }
 
+            // image
+            ImageView imageView = (ImageView) convertView.findViewById(R.id.image);
+            imageView.getLayoutParams().height = 250;
+            imageView.getLayoutParams().width = 800;
+            imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+            try
+            {
+                imageView.setImageBitmap(loadBitmap("http://192.168.1.12"+MyArr.get(position).get("image")));
+            } catch (Exception e) {
+                // When Error
+                imageView.setImageResource(android.R.drawable.ic_menu_report_image);
+
+            }
+
             // name th
-            TextView txtMemberID = (TextView) convertView.findViewById(R.id.name_th);
-            txtMemberID.setPadding(10, 0, 0, 0);
-            txtMemberID.setText(MyArrList.get(position).get("name_th"));
+            TextView txtNameTh = (TextView) convertView.findViewById(R.id.name_th);
+            txtNameTh.setPadding(10, 0, 0, 0);
+            txtNameTh.setText(MyArrList.get(position).get("name_th"));
 
             // name en
-            TextView txtName = (TextView) convertView.findViewById(R.id.name_en);
-            txtName.setPadding(5, 0, 0, 0);
-            txtName.setText(MyArrList.get(position).get("name_en"));
+            TextView txtNameEn = (TextView) convertView.findViewById(R.id.name_en);
+            txtNameEn.setPadding(5, 0, 0, 0);
+            txtNameEn.setText(MyArrList.get(position).get("name_en"));
 
-            // image
-            TextView txtTel = (TextView) convertView.findViewById(R.id.image);
-            txtTel.setPadding(5, 0, 0, 0);
-            txtTel.setText(MyArrList.get(position).get("image"));
-
+            // type
+            TextView txtType = (TextView) convertView.findViewById(R.id.type);
+            txtType.setPadding(5, 0, 0, 0);
+            txtType.setText(MyArrList.get(position).get("type"));
 
             return convertView;
 
         }
-
     }
 
-
     public String getJSONUrl(String url,List<NameValuePair> params) {
-        System.out.print("-------------------------------------------------------------------------------------------------------------");
         StringBuilder str = new StringBuilder();
         HttpClient client = new DefaultHttpClient();
         HttpPost httpPost = new HttpPost(url);
@@ -226,4 +245,51 @@ public class SearchActivity extends Activity {
         return str.toString();
     }
 
+    private static final String TAG = "ERROR";
+    private static final int IO_BUFFER_SIZE = 4 * 1024;
+    public static Bitmap loadBitmap(String url) {
+        Bitmap bitmap = null;
+        InputStream in = null;
+        BufferedOutputStream out = null;
+
+        try {
+            in = new BufferedInputStream(new URL(url).openStream(), IO_BUFFER_SIZE);
+
+            final ByteArrayOutputStream dataStream = new ByteArrayOutputStream();
+            out = new BufferedOutputStream(dataStream, IO_BUFFER_SIZE);
+            copy(in, out);
+            out.flush();
+
+            final byte[] data = dataStream.toByteArray();
+            BitmapFactory.Options options = new BitmapFactory.Options();
+            //options.inSampleSize = 1;
+
+            bitmap = BitmapFactory.decodeByteArray(data, 0, data.length,options);
+        } catch (IOException e) {
+            Log.e(TAG, "Could not load Bitmap from: " + url);
+        } finally {
+            closeStream(in);
+            closeStream(out);
+        }
+
+        return bitmap;
+    }
+
+    private static void closeStream(Closeable stream) {
+        if (stream != null) {
+            try {
+                stream.close();
+            } catch (IOException e) {
+                android.util.Log.e(TAG, "Could not close stream", e);
+            }
+        }
+    }
+
+    private static void copy(InputStream in, OutputStream out) throws IOException {
+        byte[] b = new byte[IO_BUFFER_SIZE];
+        int read;
+        while ((read = in.read(b)) != -1) {
+            out.write(b, 0, read);
+        }
+    }
 }

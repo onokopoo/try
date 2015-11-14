@@ -13,7 +13,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="Show Member : "
+            android:text=" Search name : "
             android:layout_span="1"
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
@@ -21,7 +21,7 @@
             android:id="@+id/txtKeySearch"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:ems="4" >
+            android:ems="9" >
         </EditText>
 
         <Button
