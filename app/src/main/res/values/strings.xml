@@ -10,7 +10,7 @@
     <string name="title_section5">About</string>
     <string name="title_section6">Activate</string>
 
-    <string name="intent_popup_title">pop up</string>
+    <string name="intent_popup_title">Select search options</string>
     <string name="intent1">Camera</string>
     <string name="intent2">gallery</string>
     <string name="cancel">cancel</string>
