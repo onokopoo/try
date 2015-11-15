@@ -74,8 +74,8 @@ public class DetailActivity extends Activity {
         //final TextView tIngredient = (TextView)findViewById(R.id.txtEmail);
         //final TextView tRecipe = (TextView)findViewById(R.id.txtTel);
 
+        String url = getString(R.string.url)+"/selectKanom.php";
         //String url = "http://10.35.23.50/selectKanom.php";
-        String url = "http://192.168.1.12/selectKanom.php";
 
         Intent intent= getIntent();
         final String sKanom_id = intent.getStringExtra("kanom_id");

@@ -94,7 +94,7 @@ public class SearchActivity extends Activity {
         imm.hideSoftInputFromWindow(strKeySearch.getWindowToken(), 0);
 
         //String url = "http://10.35.23.50/pop.php";
-        String url = "http://192.168.1.12/pop.php";
+        String url = getString(R.string.url)+"/pop.php";
 
         // Paste Parameters
         List<NameValuePair> params = new ArrayList<NameValuePair>();
@@ -189,7 +189,7 @@ public class SearchActivity extends Activity {
             imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
             try
             {
-                imageView.setImageBitmap(loadBitmap("http://192.168.1.12"+MyArr.get(position).get("image")));
+                imageView.setImageBitmap(loadBitmap(getString(R.string.url)+MyArr.get(position).get("image")));
             } catch (Exception e) {
                 // When Error
                 imageView.setImageResource(android.R.drawable.ic_menu_report_image);
