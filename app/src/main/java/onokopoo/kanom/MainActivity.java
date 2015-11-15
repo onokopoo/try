@@ -1,12 +1,14 @@
 package onokopoo.kanom;
-
 import android.app.AlertDialog;
+import android.app.SearchManager;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -14,6 +16,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.support.v7.widget.SearchView;
 
 import java.util.Locale;
 
@@ -97,6 +100,12 @@ public class MainActivity extends AppCompatActivity
             //MenuInflater inflater = getMenuInflater();
             //inflater.inflate(R.menu.main, menu);
             //return super.onCreateOptionsMenu(menu);
+        MenuItem menuItem = menu.findItem(R.id.action_search);
+        SearchView searchView = (SearchView) MenuItemCompat.getActionView(menuItem);
+            SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+
+            searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+
 
         return super.onCreateOptionsMenu(menu);
     }
@@ -108,11 +117,6 @@ public class MainActivity extends AppCompatActivity
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        if (id == R.id.action_search) {
-            Intent i = new Intent(getApplicationContext(), SearchActivity.class);
-            startActivity(i);
-            return true;
-        }
 
         return super.onOptionsItemSelected(item);
     }
