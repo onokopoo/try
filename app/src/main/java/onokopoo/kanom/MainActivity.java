@@ -1,4 +1,5 @@
 package onokopoo.kanom;
+
 import android.app.AlertDialog;
 import android.app.SearchManager;
 import android.content.Context;
@@ -12,11 +13,12 @@ import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.support.v7.widget.SearchView;
+import android.widget.Button;
 
 import java.util.Locale;
 
@@ -77,6 +79,15 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setItemIconTintList(null);
         navigationView.setNavigationItemSelectedListener(this);
+
+        Button button = (Button) findViewById(R.id.button);
+        button.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                // Do something in response to button click
+                Intent i = new Intent(getApplicationContext(), SearchActivity.class);
+                startActivity(i);
+            }
+        });
     }
 
     @Override

@@ -14,14 +14,7 @@
         android:layout_gravity="start" app:itemIconTint="@android:color/black"
         app:headerLayout="@layout/nav_header_main" app:menu="@menu/activity_main_drawer" />
 
-    <ImageButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/camera"
-        android:layout_gravity="bottom|center"
-        android:src="@drawable/ic_camera"
-        android:background="@null"
-        android:paddingBottom="10dp"/>
+
 
 
 </android.support.v4.widget.DrawerLayout>
