@@ -8,7 +8,6 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.support.design.widget.NavigationView;
@@ -25,11 +24,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -43,7 +39,6 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -130,14 +125,14 @@ public class MainActivity extends AppCompatActivity
         }
         ShowData();
 
-        final Button btnSearch = (android.widget.Button) findViewById(R.id.btnSearch);
+        /*final Button btnSearch = (android.widget.Button) findViewById(R.id.btnSearch);
         btnSearch.setBackgroundColor(Color.TRANSPARENT);
         // Perform action on click
         btnSearch.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 ShowData();
             }
-        });
+        });*/
     }
 
     @Override
@@ -161,8 +156,8 @@ public class MainActivity extends AppCompatActivity
             //MenuInflater inflater = getMenuInflater();
             //inflater.inflate(R.menu.main, menu);
             //return super.onCreateOptionsMenu(menu);
-        MenuItem menuItem = menu.findItem(R.id.action_search);
-        SearchView searchView = (SearchView) MenuItemCompat.getActionView(menuItem);
+            MenuItem menuItem = menu.findItem(R.id.action_search);
+            SearchView searchView = (SearchView) MenuItemCompat.getActionView(menuItem);
             SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
 
             searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
@@ -213,18 +208,17 @@ public class MainActivity extends AppCompatActivity
         final ListView lisView1 = (ListView)findViewById(R.id.listView1);
 
         // keySearch
-        EditText strKeySearch = (EditText)findViewById(R.id.txtKeySearch);
+        //EditText strKeySearch = (EditText)findViewById(R.id.txtKeySearch);
         // Disbled Keyboard auto focus
-        InputMethodManager imm = (InputMethodManager)getSystemService(
-                Context.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(strKeySearch.getWindowToken(), 0);
+        //InputMethodManager imm = (InputMethodManager)getSystemService(
+         //       Context.INPUT_METHOD_SERVICE);
+        //imm.hideSoftInputFromWindow(strKeySearch.getWindowToken(), 0);
 
-        //String url = "http://10.35.23.50/pop.php";
         String url = getString(R.string.url)+"/pop.php";
 
         // Paste Parameters
         List<NameValuePair> params = new ArrayList<NameValuePair>();
-        params.add(new BasicNameValuePair("txtKeyword", strKeySearch.getText().toString()));
+       // params.add(new BasicNameValuePair("txtKeyword", strKeySearch.getText().toString()));
 
         try {
             JSONArray data = new JSONArray(getJSONUrl(url,params));

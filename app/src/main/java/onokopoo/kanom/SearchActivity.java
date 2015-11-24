@@ -6,19 +6,15 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -32,7 +28,6 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -60,7 +55,7 @@ public class SearchActivity extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_search);
+        setContentView(R.layout.activity_search_results);
 
         // Permission StrictMode
         if (android.os.Build.VERSION.SDK_INT > 9) {
@@ -71,14 +66,14 @@ public class SearchActivity extends Activity {
         ShowData();
 
         // btnSearch
-        final Button btnSearch = (Button) findViewById(R.id.btnSearch);
-        btnSearch.setBackgroundColor(Color.TRANSPARENT);
+        //final Button btnSearch = (Button) findViewById(R.id.btnSearch);
+        //btnSearch.setBackgroundColor(Color.TRANSPARENT);
         // Perform action on click
-        btnSearch.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                ShowData();
-            }
-        });
+        //btnSearch.setOnClickListener(new View.OnClickListener() {
+        //    public void onClick(View v) {
+        //        ShowData();
+        //    }
+        //});
     }
 
     public void ShowData()
@@ -87,18 +82,18 @@ public class SearchActivity extends Activity {
         final ListView lisView1 = (ListView)findViewById(R.id.listView1);
 
         // keySearch
-        EditText strKeySearch = (EditText)findViewById(R.id.txtKeySearch);
+        //EditText strKeySearch = (EditText)findViewById(R.id.txtKeySearch);
         // Disbled Keyboard auto focus
-        InputMethodManager imm = (InputMethodManager)getSystemService(
-                Context.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(strKeySearch.getWindowToken(), 0);
+        //InputMethodManager imm = (InputMethodManager)getSystemService(
+         //       Context.INPUT_METHOD_SERVICE);
+        //imm.hideSoftInputFromWindow(strKeySearch.getWindowToken(), 0);
 
         //String url = "http://10.35.23.50/pop.php";
         String url = getString(R.string.url)+"/pop.php";
 
         // Paste Parameters
         List<NameValuePair> params = new ArrayList<NameValuePair>();
-        params.add(new BasicNameValuePair("txtKeyword", strKeySearch.getText().toString()));
+        //params.add(new BasicNameValuePair("txtKeyword", strKeySearch.getText().toString()));
 
         try {
             JSONArray data = new JSONArray(getJSONUrl(url,params));

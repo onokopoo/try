@@ -6,6 +6,7 @@ import android.app.SearchManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class SearchResultsActivity extends Activity {
     private TextView txtQuery;
@@ -22,7 +23,8 @@ public class SearchResultsActivity extends Activity {
         //actionBar.setDisplayHomeAsUpEnabled(true);
 
         txtQuery = (TextView) findViewById(R.id.txtQuery);
-
+        Toast.makeText(getApplicationContext(), "this is my Toast message!!! =) ",
+                Toast.LENGTH_LONG).show();
         handleIntent(getIntent());
     }
 
@@ -38,6 +40,7 @@ public class SearchResultsActivity extends Activity {
     private void handleIntent(Intent intent) {
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
             String query = intent.getStringExtra(SearchManager.QUERY);
+
 
             /**
              * Use this query to display search results like
