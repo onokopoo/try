@@ -57,7 +57,7 @@ public class SearchResultsActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_search);
+        setContentView(R.layout.activity_search_results);
 
         // get the action bar
         ActionBar actionBar = getActionBar();

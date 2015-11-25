@@ -29,6 +29,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -177,11 +178,11 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_main) {
-            // Handle the camera action
+
         } else if (id == R.id.nav_heart) {
-
+            Toast.makeText(getApplicationContext(), "รออีกนิด ระบบกำลังพัฒนาค่ะ =) ", Toast.LENGTH_LONG).show();
         } else if (id == R.id.nav_stack) {
-
+            Toast.makeText(getApplicationContext(), "รออีกนิด ระบบกำลังพัฒนาค่ะ =) ", Toast.LENGTH_LONG).show();
         } else if (id == R.id.nav_language) {
             if( getString(R.string.locale_config).equals("en")) {
                 config.locale = new Locale("th");
@@ -191,11 +192,10 @@ public class MainActivity extends AppCompatActivity
             getResources().updateConfiguration(config, null);
             restartActivity();
         } else if (id == R.id.nav_about) {
-
+            Toast.makeText(getApplicationContext(), "รออีกนิด ระบบกำลังพัฒนาค่ะ =) ", Toast.LENGTH_LONG).show();
         } else if (id == R.id.nav_buy) {
-
+            Toast.makeText(getApplicationContext(), "รออีกนิด ระบบกำลังพัฒนาค่ะ =) ", Toast.LENGTH_LONG).show();
         }
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
