@@ -62,14 +62,10 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     ArrayList<HashMap<String, String>> MyArrList;
-
+    Configuration config = new Configuration();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        Configuration config = new Configuration();
-        config.locale = Locale.ENGLISH;
-        getResources().updateConfiguration(config, null);
 
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -144,24 +140,21 @@ public class MainActivity extends AppCompatActivity
             super.onBackPressed();
         }
     }
-
+    private void restartActivity() {
+        Intent intent = getIntent();
+        finish();
+        startActivity(intent);
+    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 
-            // Only show items in the action bar relevant to this screen
-            // if the drawer is not showing. Otherwise, let the drawer
-            // decide what to show in the action bar.
             getMenuInflater().inflate(R.menu.main, menu);
 
-            //MenuInflater inflater = getMenuInflater();
-            //inflater.inflate(R.menu.main, menu);
-            //return super.onCreateOptionsMenu(menu);
             MenuItem menuItem = menu.findItem(R.id.action_search);
             SearchView searchView = (SearchView) MenuItemCompat.getActionView(menuItem);
             SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
 
             searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
-
 
         return super.onCreateOptionsMenu(menu);
     }
@@ -180,7 +173,7 @@ public class MainActivity extends AppCompatActivity
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
+
         int id = item.getItemId();
 
         if (id == R.id.nav_main) {
@@ -190,7 +183,13 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_stack) {
 
         } else if (id == R.id.nav_language) {
-
+            if( getString(R.string.locale_config).equals("en")) {
+                config.locale = new Locale("th");
+            } else {
+                config.locale = Locale.ENGLISH;
+            }
+            getResources().updateConfiguration(config, null);
+            restartActivity();
         } else if (id == R.id.nav_about) {
 
         } else if (id == R.id.nav_buy) {
@@ -304,7 +303,7 @@ public class MainActivity extends AppCompatActivity
 
             // image
             ImageView imageView = (ImageView) convertView.findViewById(R.id.image);
-            imageView.getLayoutParams().height = 250;
+            imageView.getLayoutParams().height = 330;
             imageView.getLayoutParams().width = 800;
             imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
             try

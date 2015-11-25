@@ -1,56 +1,70 @@
-<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/tableLayout1"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent">
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_column="0"
+    android:paddingBottom="10dp" >
 
-    <TableRow
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content">
-
-        <ImageView
-            android:id="@+id/image"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="5dp"/>
-
-    </TableRow>
-
-    <TableRow
+    <TableLayout
+        android:id="@+id/tableLayout1"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:layout_marginLeft="5dp">
+        android:background="@drawable/border"
+        android:paddingBottom="5dp" >
 
-        <TextView
-            android:id="@+id/name_en"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Name"
-            android:layout_gravity="left"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:padding="10dp"/>
+        <TableRow
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" >
 
-        <TextView
-            android:id="@+id/type"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="type"
-            android:layout_gravity="right"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:padding="1dp"/>
+            <ImageView
+                android:id="@+id/image"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
 
-    </TableRow>
+        </TableRow>
 
-    <TableRow
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content">
-        <TextView
-            android:id="@+id/name_th"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1.0"
-            android:text="type"
-            android:textAppearance="?android:attr/textAppearanceSmall" />
+        <TableRow
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent" >
 
-    </TableRow>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="right" >
 
-</TableLayout>
+                <TextView
+                    android:id="@+id/name_en"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Name"
+                    android:layout_alignParentRight="true"
+                    android:textAppearance="?android:attr/textAppearanceSmall" />
+
+                <TextView
+                    android:id="@+id/type"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="type"
+                    android:gravity="right"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:layout_marginRight="65dp" />
+            </RelativeLayout>
+        </TableRow>
+
+        <TableRow
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" >
+            <TextView
+                android:id="@+id/name_th"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.0"
+                android:text="Name thai"
+                android:textAppearance="?android:attr/textAppearanceSmall" />
+
+        </TableRow>
+
+    </TableLayout>
+
+</LinearLayout>

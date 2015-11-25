@@ -42,13 +42,15 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_weight="0.1"
-        android:paddingTop="50dp">
+        android:paddingTop="55dp">
 
         <ListView
             android:id="@+id/listView1"
             android:layout_width="match_parent"
-            android:layout_height="410dp"
-            android:padding="10dp">
+            android:layout_height="465dp"
+            android:paddingRight="10dp"
+            android:paddingLeft="10dp"
+            android:paddingTop="10dp" >
         </ListView>
 
     </LinearLayout>
@@ -61,10 +63,17 @@
         android:id="@+id/LinearLayout1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="5dp"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:background="@android:color/transparent" >
 
-        <include layout="@layout/content_main"/>
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/camera"
+            android:layout_gravity="center"
+            android:gravity="bottom"
+            android:src="@drawable/ic_camera"
+            android:background="@null" />
 
     </LinearLayout>
 
