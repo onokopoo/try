@@ -125,8 +125,6 @@ public class SearchResultsActivity extends Activity {
             JSONArray data = new JSONArray(getJSONUrl(url,params));
 
 
-
-
             MyArrList = new ArrayList<HashMap<String, String>>();
             HashMap<String, String> map;
 

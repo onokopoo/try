@@ -336,6 +336,7 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
+    @SuppressWarnings("deprecation")
     public String getJSONUrl(String url,List<NameValuePair> params) {
         StringBuilder str = new StringBuilder();
         HttpClient client = new DefaultHttpClient();

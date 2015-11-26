@@ -3,9 +3,12 @@ package onokopoo.kanom;
 /**
  * Created by onokopoo on 11/14/2015.
  */
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.util.Log;
@@ -29,10 +32,16 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
+import java.io.Closeable;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,6 +53,9 @@ public class DetailActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
+
+        //6ActionBar actionBar = getActionBar();
+        //actionBar.setHomeButtonEnabled(true);
 
         // Permission StrictMode
         if (android.os.Build.VERSION.SDK_INT > 9) {
@@ -66,11 +78,12 @@ public class DetailActivity extends Activity {
 
     public void showInfo()
     {
-        final ImageView image   = (ImageView)findViewById(R.id.image);
+        final ImageView iImage   = (ImageView)findViewById(R.id.image);
         final TextView tNameTh  = (TextView)findViewById(R.id.name_th);
         final TextView tNameEn  = (TextView)findViewById(R.id.name_en);
         //final TextView tNameOther = (TextView)findViewById(R.id.name_other);
         final TextView tType    = (TextView)findViewById(R.id.type);
+        final TextView tHistory = (TextView)findViewById(R.id.history);
         final TextView tIngredient = (TextView)findViewById(R.id.ingredient);
         final TextView tRecipe = (TextView)findViewById(R.id.recipe);
 
@@ -89,9 +102,10 @@ public class DetailActivity extends Activity {
         String strNameEn = "";
         String strNameOther = "";
         String strType = "";
-        String strimage = "";
+        String strImage = "";
         String strIngredient = "";
         String strRecipe = "";
+        String strHistory = "";
 
         //JSONObject c;
         try {
@@ -108,7 +122,8 @@ public class DetailActivity extends Activity {
             strNameOther    = c.getString("name_other");
             strType         = c.getString("type");
             //strIngredient   = c.getString("voice");
-            //strRecipe       = c.getString("image");
+            strImage       = c.getString("image");
+            strHistory     = c.getString("history");
 
             if(!strNameTh.equals(""))
             {
@@ -116,8 +131,20 @@ public class DetailActivity extends Activity {
                 tNameEn.setText(strNameEn);
                 //tNameOther.setText(strNameOther);
                 tType.setText(strType);
+                tHistory.setText(strHistory);
                 //tIngredient.setText(strIngredient);
                 //tRecipe.setText(strRecipe);
+                iImage.getLayoutParams().height = 330;
+                iImage.getLayoutParams().width = 800;
+                iImage.setScaleType(ImageView.ScaleType.CENTER_CROP);
+                try
+                {
+                    iImage.setImageBitmap(loadBitmap(getString(R.string.url)+strImage));
+                } catch (Exception e) {
+                    // When Error
+                    iImage.setImageResource(android.R.drawable.ic_menu_report_image);
+                }
+
             }
             else
             {
@@ -217,4 +244,54 @@ public class DetailActivity extends Activity {
         }
         return str.toString();
     }
+    private static final String TAG = "ERROR";
+    private static final int IO_BUFFER_SIZE = 4 * 1024;
+
+    public static Bitmap loadBitmap(String url) {
+        Bitmap bitmap = null;
+        InputStream in = null;
+        BufferedOutputStream out = null;
+
+        try {
+            in = new BufferedInputStream(new URL(url).openStream(), IO_BUFFER_SIZE);
+
+            final ByteArrayOutputStream dataStream = new ByteArrayOutputStream();
+            out = new BufferedOutputStream(dataStream, IO_BUFFER_SIZE);
+            copy(in, out);
+            out.flush();
+
+            final byte[] data = dataStream.toByteArray();
+            BitmapFactory.Options options = new BitmapFactory.Options();
+            //options.inSampleSize = 1;
+
+            bitmap = BitmapFactory.decodeByteArray(data, 0, data.length,options);
+        } catch (IOException e) {
+            Log.e(TAG, "Could not load Bitmap from: " + url);
+        } finally {
+            closeStream(in);
+            closeStream(out);
+        }
+
+        return bitmap;
+    }
+
+    private static void closeStream(Closeable stream) {
+        if (stream != null) {
+            try {
+                stream.close();
+            } catch (IOException e) {
+                android.util.Log.e(TAG, "Could not close stream", e);
+            }
+        }
+    }
+
+    private static void copy(InputStream in, OutputStream out) throws IOException {
+        byte[] b = new byte[IO_BUFFER_SIZE];
+        int read;
+        while ((read = in.read(b)) != -1) {
+            out.write(b, 0, read);
+        }
+    }
+
+
 }
