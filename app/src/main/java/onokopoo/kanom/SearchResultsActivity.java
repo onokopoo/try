@@ -121,9 +121,7 @@ public class SearchResultsActivity extends Activity {
         Toast.makeText(getApplicationContext(), "=) " + params,
                 Toast.LENGTH_LONG).show();
         try {
-
             JSONArray data = new JSONArray(getJSONUrl(url,params));
-
 
             MyArrList = new ArrayList<HashMap<String, String>>();
             HashMap<String, String> map;
