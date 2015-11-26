@@ -1,80 +1,41 @@
-<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/tableLayout1"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content" >
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:showIn="@layout/app_bar_main" android:layout_width="match_parent"
+    android:layout_height="match_parent" tools:context=".MainActivity">
 
-    <!--<TableRow
-       android:id="@+id/tableRow1"
-       android:layout_width="wrap_content"
-       android:layout_height="wrap_content" >
-
-      <TextView
-           android:id="@+id/textView1"
-           android:layout_width="wrap_content"
-           android:layout_height="wrap_content"
-           android:gravity="center"
-           android:text=" Search name : "
-           android:layout_span="1"
-           android:textAppearance="?android:attr/textAppearanceMedium" />
-
-       <EditText
-           android:id="@+id/txtKeySearch"
-           android:layout_width="wrap_content"
-           android:layout_height="wrap_content"
-           android:ems="8" >
-       </EditText>
-
-        <Button
-            android:id="@+id/btnSearch"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Search"
-            android:layout_column="8" />
-
-    </TableRow>-->
-
-    <View
-        android:layout_height="1dip"
-        android:background="#CCCCCC" />
-
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="0.1"
-        android:paddingTop="55dp">
-
-        <ListView
-            android:id="@+id/listView1"
-            android:layout_width="match_parent"
-            android:layout_height="465dp"
-            android:paddingRight="10dp"
-            android:paddingLeft="10dp"
-            android:paddingTop="10dp" >
-        </ListView>
-
-    </LinearLayout>
-
-    <View
-        android:layout_height="1dip"
-        android:background="#CCCCCC" />
-
-    <LinearLayout
-        android:id="@+id/LinearLayout1"
+    <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/tableLayout1"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:background="@android:color/transparent" >
+        android:layout_height="wrap_content" >
 
-        <ImageButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/camera"
-            android:layout_gravity="center"
-            android:gravity="bottom"
-            android:src="@drawable/ic_camera"
-            android:background="@null" />
+        <View
+            android:layout_height="1dip"
+            android:background="#CCCCCC" />
 
-    </LinearLayout>
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="match_parent" >
 
-</TableLayout>
+            <ListView
+                android:id="@+id/listView1"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:minHeight="5000dp"
+                android:paddingRight="10dp"
+                android:paddingLeft="10dp"
+                android:paddingTop="10dp" >
+            </ListView>
+
+        </LinearLayout>
+
+        <View
+            android:layout_height="1dip"
+            android:background="#CCCCCC" />
+
+    </TableLayout>
+</android.support.v4.widget.NestedScrollView>

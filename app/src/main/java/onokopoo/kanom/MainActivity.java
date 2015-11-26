@@ -10,6 +10,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.StrictMode;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.MenuItemCompat;
@@ -27,6 +28,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -75,7 +77,7 @@ public class MainActivity extends AppCompatActivity
 
         final String[] intents = {getString(R.string.intent1),getString(R.string.intent2)};
 
-        final View camera_popup = findViewById(R.id.camera);
+        /*final View camera_popup = findViewById(R.id.camera);
         camera_popup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -96,16 +98,27 @@ public class MainActivity extends AppCompatActivity
                 builder.create();
                 builder.show();
             }
+        });*/
+        FloatingActionButton myFab = (FloatingActionButton) findViewById(R.id.camera);
+        myFab.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                builder.setTitle(getString(R.string.intent_popup_title));
+                builder.setItems(intents, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        if (which == 0) {
+                            Intent i = new Intent(getApplicationContext(), IntentActivity.class);
+                            startActivity(i);
+                        } else {
+                            Intent i = new Intent(getApplicationContext(), IntentGalleryActivity.class);
+                            startActivity(i);
+                        }
+                    }
+                }).setNegativeButton(getString(R.string.cancel), null);
+                builder.create();
+                builder.show();            }
         });
-        /*
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
-        */
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -240,6 +253,9 @@ public class MainActivity extends AppCompatActivity
             }
 
             lisView1.setAdapter(new ImageAdapter(this,MyArrList));
+            LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) lisView1.getLayoutParams();
+            lp.height = 450*data.length();
+            lisView1.setLayoutParams(lp);
 
             // OnClick Item
             lisView1.setOnItemClickListener(new AdapterView.OnItemClickListener() {
