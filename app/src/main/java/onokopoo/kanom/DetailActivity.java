@@ -71,8 +71,8 @@ public class DetailActivity extends Activity {
         final TextView tNameEn  = (TextView)findViewById(R.id.name_en);
         //final TextView tNameOther = (TextView)findViewById(R.id.name_other);
         final TextView tType    = (TextView)findViewById(R.id.type);
-        //final TextView tIngredient = (TextView)findViewById(R.id.txtEmail);
-        //final TextView tRecipe = (TextView)findViewById(R.id.txtTel);
+        final TextView tIngredient = (TextView)findViewById(R.id.ingredient);
+        final TextView tRecipe = (TextView)findViewById(R.id.recipe);
 
         String url = getString(R.string.url)+"/selectKanom.php";
         //String url = "http://10.35.23.50/selectKanom.php";
@@ -82,6 +82,7 @@ public class DetailActivity extends Activity {
 
         ArrayList<NameValuePair> params = new ArrayList<NameValuePair>();
         params.add(new BasicNameValuePair("kanom_id", sKanom_id));
+        params.add(new BasicNameValuePair("locale", getString(R.string.locale_config)));
 
         String strKanomId = "";
         String strNameTh = "";
@@ -94,11 +95,17 @@ public class DetailActivity extends Activity {
 
         //JSONObject c;
         try {
-            JSONArray data = new JSONArray(getJSONUrl(url,params));
-            JSONObject c = data.getJSONObject(0);
+            System.out.println("---------------------------------");
+            System.out.println(getJSONUrl(url, params));
+            System.out.println("---------------------------------");
+            JSONObject data = new JSONObject(getJSONUrl(url,params));
+
+            //JSONArray data = new JSONArray(getJSONUrl(url,params));
+            JSONArray info = data.getJSONArray("info");
+            JSONObject c = info.getJSONObject(0);
             strNameTh       = c.getString("name_th");
             strNameEn       = c.getString("name_en");
-            //strNameOther    = c.getString("name_other");
+            strNameOther    = c.getString("name_other");
             strType         = c.getString("type");
             //strIngredient   = c.getString("voice");
             //strRecipe       = c.getString("image");
@@ -121,6 +128,23 @@ public class DetailActivity extends Activity {
                 //tIngredient.setText("-");
                 //tRecipe.setText("-");
             }
+            JSONArray ingredient = data.getJSONArray("ingredient");
+            String textIngredient = "Ingredient : \n";
+            for( int i = 0; i < ingredient.length(); i++ ){
+                String id = ingredient.getJSONObject(i).getString("ingredient_id");
+                String ingred = ingredient.getJSONObject(i).getString("ingredient");
+                textIngredient += "\t" + id + ". "+ ingred + "\n";
+            }
+            tIngredient.setText(textIngredient);
+
+            JSONArray recipe = data.getJSONArray("recipe");
+            String textRecipe = "Recipe : \n";
+            for( int i = 0; i < recipe.length(); i++ ){
+                String id = recipe.getJSONObject(i).getString("recipe_id");
+                String recip = recipe.getJSONObject(i).getString("recipe");
+                textRecipe += "\t" + id + ". "+ recip + "\n";
+            }
+            tRecipe.setText(textRecipe);
 
         } catch (JSONException e) {
             // TODO Auto-generated catch block

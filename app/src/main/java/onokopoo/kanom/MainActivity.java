@@ -40,6 +40,7 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -217,7 +218,7 @@ public class MainActivity extends AppCompatActivity
 
         // Paste Parameters
         List<NameValuePair> params = new ArrayList<NameValuePair>();
-       // params.add(new BasicNameValuePair("txtKeyword", strKeySearch.getText().toString()));
+        params.add(new BasicNameValuePair("locale", getString(R.string.locale_config)));
 
         try {
             JSONArray data = new JSONArray(getJSONUrl(url,params));

@@ -112,7 +112,7 @@ public class SearchResultsActivity extends Activity {
         //       Context.INPUT_METHOD_SERVICE);
         //imm.hideSoftInputFromWindow(strKeySearch.getWindowToken(), 0);
 
-        String url = getString(R.string.url)+"/pop.php?";
+        String url = getString(R.string.url)+"/pop.php";
 
         // Paste Parameters
         List<NameValuePair> params = new ArrayList<NameValuePair>();
