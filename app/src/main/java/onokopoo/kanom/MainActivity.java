@@ -70,13 +70,11 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         final String[] intents = {getString(R.string.intent1),getString(R.string.intent2)};
-
         /*final View camera_popup = findViewById(R.id.camera);
         camera_popup.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -129,21 +127,11 @@ public class MainActivity extends AppCompatActivity
         navigationView.setItemIconTintList(null);
         navigationView.setNavigationItemSelectedListener(this);
 
-        //
         if (android.os.Build.VERSION.SDK_INT > 9) {
             StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
             StrictMode.setThreadPolicy(policy);
         }
         ShowData();
-
-        /*final Button btnSearch = (android.widget.Button) findViewById(R.id.btnSearch);
-        btnSearch.setBackgroundColor(Color.TRANSPARENT);
-        // Perform action on click
-        btnSearch.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                ShowData();
-            }
-        });*/
     }
 
     @Override
