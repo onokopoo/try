@@ -2,8 +2,7 @@
     <string name="app_name">kanom</string>
     <string name="locale_config">th</string>
 
-
-    <string name="url">http://192.168.1.13</string>
+    <string name="url">http://10.35.23.35</string>
 
     <string name="title_section1">หน้าหลัก</string>
     <string name="title_section2">รายการโปรด</string>
