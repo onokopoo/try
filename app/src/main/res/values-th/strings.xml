@@ -2,7 +2,7 @@
     <string name="app_name">kanom</string>
     <string name="locale_config">th</string>
 
-    <string name="url">http://10.35.23.35</string>
+    <string name="url">http://192.168.1.35</string>
 
     <string name="title_section1">หน้าหลัก</string>
     <string name="title_section2">รายการโปรด</string>
@@ -16,8 +16,26 @@
     <string name="intent2">แกลอรี่</string>
     <string name="cancel">ยกเลิก</string>
 
+    <string name="btnBack">ยกเลิก</string>
+
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="action_search">ค้นหา</string>
+    <string name="action_setting">การตั้งค่า</string>
+    <string name="title_activity_category">ประเภท</string>
+    <string name="title_activity_login">เข้าสู่ระบบ</string>
+
+    <!-- Strings related to login -->
+    <string name="prompt_email">E-mail</string>
+    <string name="prompt_password">Password (จำเป็นต้องกรอก)</string>
+    <string name="action_sign_in">เข้าสู่ระบบ</string>
+    <string name="action_sign_in_short">เข้าสู่ระบบ</string>
+    <string name="error_invalid_email">E-mail address ไม่ถูกต้อง</string>
+    <string name="error_invalid_password">Password มีความยาวน้อยเกินไป</string>
+    <string name="error_incorrect_password">Password ไม่ถูกต้อง</string>
+    <string name="error_field_required">จำเป็นต้องกรอก</string>
+    <string name="permission_rationale">"Contacts permissions are needed for providing email
+        completions."
+    </string>
 </resources>
