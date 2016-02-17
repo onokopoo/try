@@ -136,10 +136,10 @@
 
             </TableRow>
             <Button
-                android:id="@+id/btnBack"
+                android:id="@+id/sound"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="lp" />
+                android:text="sound" />
 
         </TableLayout>
 

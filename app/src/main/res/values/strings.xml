@@ -2,7 +2,7 @@
     <string name="app_name">kanom</string>
     <string name="locale_config">en</string>
 
-    <string name="url">http://192.168.1.35</string>
+    <string name="url">http://10.35.23.78</string>
 
     <string name="title_section1">Main</string>
     <string name="title_section2">Favorites</string>
@@ -17,6 +17,12 @@
     <string name="cancel">cancel</string>
 
     <string name="btnBack">cancel</string>
+
+    <string name="c1">Type of steam</string>
+    <string name="c2">Type of stir</string>
+    <string name="c3">Type of sugar syrup</string>
+    <string name="c4">Type of boiled</string>
+    <string name="c5">Type of fried</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -38,4 +44,5 @@
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
+    <string name="title_activity_upload">Upload</string>
 </resources>

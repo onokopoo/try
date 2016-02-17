@@ -2,7 +2,7 @@
     <string name="app_name">kanom</string>
     <string name="locale_config">th</string>
 
-    <string name="url">http://192.168.1.35</string>
+    <string name="url">http://10.35.23.78</string>
 
     <string name="title_section1">หน้าหลัก</string>
     <string name="title_section2">รายการโปรด</string>
@@ -17,6 +17,12 @@
     <string name="cancel">ยกเลิก</string>
 
     <string name="btnBack">ยกเลิก</string>
+
+    <string name="c1">ขนมไทยประเภทนึ่ง</string>
+    <string name="c2">ขนมไทยประเภทกวน</string>
+    <string name="c3">ขนมไทยประเภทเชื่อม</string>
+    <string name="c4">ขนมไทยประเภทต้ม</string>
+    <string name="c5">ขนมไทยประเภททอด/ปิ้ง/ย่าง</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>

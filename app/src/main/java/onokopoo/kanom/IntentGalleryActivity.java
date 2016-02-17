@@ -53,6 +53,9 @@ public class IntentGalleryActivity extends Activity {
                 Toast.makeText(getApplicationContext(), filePath, Toast.LENGTH_SHORT).show();
                 bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), uri);
                 imageView.setImageBitmap(decodeSampledBitmapFromFile(filePath, 300, 300));
+                Intent intent = new Intent(getApplicationContext(), Upload.class);
+                intent.putExtra("url", filePath);
+                startActivity(intent);
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             } catch (IOException e) {

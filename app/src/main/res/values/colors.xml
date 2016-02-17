@@ -2,7 +2,7 @@
 <resources>
     <color name="colorPrimary">#F3A460</color>
     <color name="colorPrimaryDark">#F3A460</color>
-    <color name="colorAccent">#F3A460</color>
+    <color name="colorAccent">#e69170</color>
 
     <color name="primary">#c2834c</color>
     <color name="primary_dark">#E12929</color>
@@ -18,4 +18,10 @@
     <color name="base">#AAAAAA</color>
     <color name="iron">#CCCCCC</color>
     <color name="white">#FFFFFF</color>
+
+    <color name="t5">#88a0ba</color>
+    <color name="t4">#96ceb4</color>
+    <color name="t3">#ffeead</color>
+    <color name="t2">#ff6f69</color>
+    <color name="t1">#ffcc5c</color>
 </resources>

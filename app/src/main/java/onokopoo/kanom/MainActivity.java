@@ -75,28 +75,7 @@ public class MainActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
 
         final String[] intents = {getString(R.string.intent1),getString(R.string.intent2)};
-        /*final View camera_popup = findViewById(R.id.camera);
-        camera_popup.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-                builder.setTitle(getString(R.string.intent_popup_title));
-                builder.setItems(intents, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        if (which == 0) {
-                            Intent i = new Intent(getApplicationContext(), IntentActivity.class);
-                            startActivity(i);
-                        } else {
-                            Intent i = new Intent(getApplicationContext(), IntentGalleryActivity.class);
-                            startActivity(i);
-                        }
-                    }
-                }).setNegativeButton(getString(R.string.cancel), null);
-                builder.create();
-                builder.show();
-            }
-        });*/
+
         FloatingActionButton myFab = (FloatingActionButton) findViewById(R.id.camera);
         myFab.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -184,7 +163,8 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_heart) {
             Toast.makeText(getApplicationContext(), "รออีกนิด ระบบกำลังพัฒนาค่ะ =) ", Toast.LENGTH_LONG).show();
         } else if (id == R.id.nav_stack) {
-            Toast.makeText(getApplicationContext(), "รออีกนิด ระบบกำลังพัฒนาค่ะ =) ", Toast.LENGTH_LONG).show();
+            Intent i = new Intent(getApplicationContext(), CategoryActivity.class);
+            startActivity(i);
         } else if (id == R.id.nav_language) {
             if( getString(R.string.locale_config).equals("en")) {
                 config.locale = new Locale("th");

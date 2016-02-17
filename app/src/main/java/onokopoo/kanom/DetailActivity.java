@@ -9,6 +9,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.util.Log;
@@ -17,6 +18,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -47,15 +49,12 @@ import java.util.List;
 
 @SuppressWarnings("deprecation")
 public class DetailActivity extends Activity {
-
+    MediaPlayer mp;
     @SuppressLint("NewApi")
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
-
-        //6ActionBar actionBar = getActionBar();
-        //actionBar.setHomeButtonEnabled(true);
 
         // Permission StrictMode
         if (android.os.Build.VERSION.SDK_INT > 9) {
@@ -65,20 +64,11 @@ public class DetailActivity extends Activity {
 
         showInfo();
 
-        // btnBack
-        final Button btnBack = (Button) findViewById(R.id.btnBack);
-        // Perform action on click
-        btnBack.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                Intent newActivity = new Intent(DetailActivity.this,MainActivity.class);
-                startActivity(newActivity);
-            }
-        });
     }
 
     public void showInfo()
     {
-        final ImageView iImage   = (ImageView)findViewById(R.id.image);
+        final ImageView iImage = (ImageView)findViewById(R.id.image);
         final TextView tNameTh  = (TextView)findViewById(R.id.name_th);
         final TextView tNameEn  = (TextView)findViewById(R.id.name_en);
         //final TextView tNameOther = (TextView)findViewById(R.id.name_other);
@@ -106,6 +96,7 @@ public class DetailActivity extends Activity {
         String strIngredient = "";
         String strRecipe = "";
         String strHistory = "";
+        String strVoice = "";
 
         //JSONObject c;
         try {
@@ -121,9 +112,9 @@ public class DetailActivity extends Activity {
             strNameEn       = c.getString("name_en");
             strNameOther    = c.getString("name_other");
             strType         = c.getString("type");
-            //strIngredient   = c.getString("voice");
-            strImage       = c.getString("image");
-            strHistory     = c.getString("history");
+            strVoice        = c.getString("voice");
+            strImage        = c.getString("image");
+            strHistory      = c.getString("history");
 
             if(!strNameTh.equals(""))
             {
@@ -173,13 +164,32 @@ public class DetailActivity extends Activity {
             }
             tRecipe.setText(textRecipe);
 
+            final Button btnBack = (Button) findViewById(R.id.sound);
+            // Perform action on click
+            final String finalStrVoice = strVoice;
+            btnBack.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    managerOfSound(finalStrVoice);
+                }
+            });
         } catch (JSONException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
 
     }
+    protected void managerOfSound(String id) {
+        mp = MediaPlayer.create(this, getResources().getIdentifier(id, "raw", "onokopoo.kanom"));
+        Toast.makeText(getApplicationContext(), id, Toast.LENGTH_LONG).show();
 
+        if(mp.isPlaying()){
+            mp.stop();
+            mp.reset();
+            mp.release();
+        }else{
+            mp.start();
+        }
+    }
     public String getHttpPost(String url,List<NameValuePair> params) {
         StringBuilder str = new StringBuilder();
         HttpClient client = new DefaultHttpClient();

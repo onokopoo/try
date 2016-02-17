@@ -19,7 +19,6 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -102,15 +101,7 @@ public class SearchResultsActivity extends Activity {
 
     public void ShowData(String query)
     {
-        // listView1
         final ListView lisView1 = (ListView)findViewById(R.id.listView1);
-
-        // keySearch
-        //EditText strKeySearch = (EditText)findViewById(R.id.txtKeySearch);
-        // Disbled Keyboard auto focus
-        //InputMethodManager imm = (InputMethodManager)getSystemService(
-        //       Context.INPUT_METHOD_SERVICE);
-        //imm.hideSoftInputFromWindow(strKeySearch.getWindowToken(), 0);
 
         String url = getString(R.string.url)+"/pop.php";
 
@@ -118,8 +109,6 @@ public class SearchResultsActivity extends Activity {
         List<NameValuePair> params = new ArrayList<NameValuePair>();
         params.add(new BasicNameValuePair("txtKeyword", query));
 
-        Toast.makeText(getApplicationContext(), "=) " + params,
-                Toast.LENGTH_LONG).show();
         try {
             JSONArray data = new JSONArray(getJSONUrl(url,params));
 

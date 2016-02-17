@@ -45,26 +45,20 @@ public class IntentActivity extends Activity {
             try {
                 imageView.setImageBitmap(decodeSampledBitmapFromFile(uri.getPath(), 300, 300));
                 Toast.makeText(getApplicationContext(), uri.getPath(), Toast.LENGTH_SHORT).show();
+                //Intent intent = new Intent(getApplicationContext(), Upload.class);
+                //intent.putExtra("url", uri.getPath());
+                //startActivity(intent);
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
-        /*if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
-            Bundle extras = data.getExtras();
-            Bitmap imageBitmap = (Bitmap) extras.get("data");
-            //imageView.setImageBitmap(imageBitmap);
-            imageView.setImageBitmap (decodeSampledBitmapFromFile(imageBitmap, 1000, 700));
-        }*/
     }
     public static Bitmap decodeSampledBitmapFromFile(String path, int reqWidth, int reqHeight)
-    { // BEST QUALITY MATCH
-
-        //First decode with inJustDecodeBounds=true to check dimensions
+    {
         final BitmapFactory.Options options = new BitmapFactory.Options();
         options.inJustDecodeBounds = true;
         BitmapFactory.decodeFile(path, options);
 
-        // Calculate inSampleSize, Raw height and width of image
         final int height = options.outHeight;
         final int width = options.outWidth;
         options.inPreferredConfig = Bitmap.Config.RGB_565;
@@ -76,13 +70,11 @@ public class IntentActivity extends Activity {
         int expectedWidth = width / inSampleSize;
 
         if (expectedWidth > reqWidth) {
-            //if(Math.round((float)width / (float)reqWidth) > inSampleSize) // If bigger SampSize..
             inSampleSize = Math.round((float)width / (float)reqWidth);
         }
 
         options.inSampleSize = inSampleSize;
 
-        // Decode bitmap with inSampleSize set
         options.inJustDecodeBounds = false;
         return BitmapFactory.decodeFile(path, options);
     }

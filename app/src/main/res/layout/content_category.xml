@@ -9,4 +9,54 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:showIn="@layout/activity_category" tools:context="onokopoo.kanom.CategoryActivity">
 
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:layout_marginBottom="15dp"
+        android:text="@string/c1"
+        android:background="@color/t1"
+        android:id="@+id/t1"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:layout_marginBottom="15dp"
+        android:text="@string/c2"
+        android:background="@color/t2"
+        android:id="@+id/t2"
+        android:layout_below="@+id/t1"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:layout_marginBottom="15dp"
+        android:text="@string/c3"
+        android:background="@color/t3"
+        android:id="@+id/t3"
+        android:layout_below="@+id/t2"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:layout_marginBottom="15dp"
+        android:text="@string/c4"
+        android:background="@color/t4"
+        android:id="@+id/t4"
+        android:layout_below="@+id/t3"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:layout_marginBottom="15dp"
+        android:text="@string/c5"
+        android:background="@color/t5"
+        android:id="@+id/t5"
+        android:layout_below="@+id/t4"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
 </RelativeLayout>

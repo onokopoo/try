@@ -9,4 +9,11 @@
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         android:layout_marginTop="30dp" />
+    <Button
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Click To Upload File"
+        android:id="@+id/uploadButton"
+        />
+
 </LinearLayout>

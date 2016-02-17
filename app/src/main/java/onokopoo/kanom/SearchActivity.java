@@ -28,6 +28,7 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -50,7 +51,7 @@ import java.util.List;
 public class SearchActivity extends Activity {
 
     ArrayList<HashMap<String, String>> MyArrList;
-
+    String type;
     @SuppressLint("NewApi")
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -62,8 +63,12 @@ public class SearchActivity extends Activity {
             StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
             StrictMode.setThreadPolicy(policy);
         }
-
-        ShowData();
+        if (getIntent().getExtras().getString("type")==""){
+            type = null;
+        }else{
+            type = getIntent().getExtras().getString("type");
+        }
+        ShowData(type);
 
         // btnSearch
         //final Button btnSearch = (Button) findViewById(R.id.btnSearch);
@@ -71,39 +76,28 @@ public class SearchActivity extends Activity {
         // Perform action on click
         //btnSearch.setOnClickListener(new View.OnClickListener() {
         //    public void onClick(View v) {
-        //        ShowData();
         //    }
         //});
     }
 
-    public void ShowData()
-    {
-        // listView1
-        final ListView lisView1 = (ListView)findViewById(R.id.listView1);
+    public void ShowData(String type) {
 
-        // keySearch
-        //EditText strKeySearch = (EditText)findViewById(R.id.txtKeySearch);
-        // Disbled Keyboard auto focus
-        //InputMethodManager imm = (InputMethodManager)getSystemService(
-         //       Context.INPUT_METHOD_SERVICE);
-        //imm.hideSoftInputFromWindow(strKeySearch.getWindowToken(), 0);
+        final ListView lisView1 = (ListView) findViewById(R.id.listView1);
 
-        //String url = "http://10.35.23.50/pop.php";
-        String url = getString(R.string.url)+"/pop.php";
+        String url = getString(R.string.url) + "/pop.php";
 
         // Paste Parameters
         List<NameValuePair> params = new ArrayList<NameValuePair>();
-        //params.add(new BasicNameValuePair("txtKeyword", strKeySearch.getText().toString()));
+        params.add(new BasicNameValuePair("type", type));
 
         try {
-            JSONArray data = new JSONArray(getJSONUrl(url,params));
+            JSONArray data = new JSONArray(getJSONUrl(url, params));
 
             MyArrList = new ArrayList<HashMap<String, String>>();
             HashMap<String, String> map;
 
-            for(int i = 0; i < data.length(); i++){
+            for (int i = 0; i < data.length(); i++) {
                 JSONObject c = data.getJSONObject(i);
-
                 map = new HashMap<String, String>();
                 map.put("image", c.getString("image"));
                 map.put("kanom_id", c.getString("kanom_id"));
@@ -114,7 +108,7 @@ public class SearchActivity extends Activity {
                 MyArrList.add(map);
             }
 
-            lisView1.setAdapter(new ImageAdapter(this,MyArrList));
+            lisView1.setAdapter(new ImageAdapter(this, MyArrList));
 
             // OnClick Item
             lisView1.setOnItemClickListener(new OnItemClickListener() {
@@ -128,10 +122,9 @@ public class SearchActivity extends Activity {
                     String sType = MyArrList.get(position).get("type").toString();
                     String sVoice = MyArrList.get(position).get("name_en").toString();
 
-                    Intent newActivity = new Intent(SearchActivity.this,DetailActivity.class);
+                    Intent newActivity = new Intent(SearchActivity.this, DetailActivity.class);
                     newActivity.putExtra("kanom_id", sKanom_id);
                     startActivity(newActivity);
-
                 }
             });
 
@@ -167,7 +160,7 @@ public class SearchActivity extends Activity {
             // TODO Auto-generated method stub
             return position;
         }
-        public View getView(int position, View convertView, ViewGroup parent) {
+        public View getView(final int position, View convertView, ViewGroup parent) {
             // TODO Auto-generated method stub
 
             LayoutInflater inflater = (LayoutInflater) context
@@ -190,7 +183,6 @@ public class SearchActivity extends Activity {
                 imageView.setImageResource(android.R.drawable.ic_menu_report_image);
 
             }
-
             // name th
             TextView txtNameTh = (TextView) convertView.findViewById(R.id.name_th);
             txtNameTh.setPadding(10, 0, 0, 0);
@@ -207,7 +199,6 @@ public class SearchActivity extends Activity {
             txtType.setText(MyArrList.get(position).get("type"));
 
             return convertView;
-
         }
     }
 
