@@ -2,23 +2,34 @@ package onokopoo.kanom;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import java.io.DataOutputStream;
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.mime.content.FileBody;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.util.EntityUtils;
+
 import java.io.File;
-import java.io.FileInputStream;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
+import java.io.IOException;
 
 public class Upload extends Activity {
 
+    private static final String TAG = MainActivity.class.getSimpleName();
+
+    private String filePath = null;
+    long totalSize = 0;
     TextView messageText;
     Button uploadButton;
     int serverResponseCode = 0;
@@ -38,14 +49,15 @@ public class Upload extends Activity {
         setContentView(R.layout.activity_upload);
 
         file = new File(getIntent().getExtras().getString("url"));
-        this.uploadFilePath = file.getParent();
-        this.uploadFileName = file.getName();
+        this.filePath = file.getAbsolutePath();
+        //this.uploadFilePath = file.getParent();
+        //this.uploadFileName = file.getName();
 
         uploadButton = (Button)findViewById(R.id.uploadButton);
         messageText  = (TextView)findViewById(R.id.messageText);
 
-        messageText.setText("Uploading file path :- " + uploadFilePath + '/' + uploadFileName);
-        upLoadServerUri = getString(R.string.url)+"/upload.php";
+        messageText.setText("Uploading file path :- " + this.filePath );
+        upLoadServerUri = Config.FILE_UPLOAD_URL;
 
         uploadButton.setOnClickListener(new OnClickListener() {
             @Override
@@ -53,167 +65,99 @@ public class Upload extends Activity {
 
                 dialog = ProgressDialog.show(Upload.this, "", "Uploading file...", true);
 
-                new Thread(new Runnable() {
-                    public String uploadFilePath = Upload.uploadFilePath;
-                    public String uploadFileName = Upload.uploadFileName;
-
-                    public void run() {
-                        runOnUiThread(new Runnable() {
-                            public void run() {
-                                messageText.setText("uploading started.....");
-                            }
-                        });
-
-                        uploadFile(this.uploadFilePath + "" + this.uploadFileName);
-
-                    }
-                }).start();
+                new UploadFileToServer().execute();
             }
         });
+
     }
 
-    public int uploadFile(String sourceFileUri) {
 
-        String fileName = sourceFileUri;
-        Toast.makeText(getApplicationContext(), this.uploadFilePath, Toast.LENGTH_LONG).show();
-        Toast.makeText(getApplicationContext(), this.uploadFileName, Toast.LENGTH_LONG).show();
+    /**
+     * Uploading the file to server
+     * */
+    private class UploadFileToServer extends AsyncTask<Void, Integer, String> {
+        @Override
+        protected void onPreExecute() {
+            // setting progress bar to zero
+            super.onPreExecute();
+        }
 
-        HttpURLConnection conn = null;
-        DataOutputStream dos = null;
-        String lineEnd = "\r\n";
-        String twoHyphens = "--";
-        String boundary = "*****";
-        int bytesRead, bytesAvailable, bufferSize;
-        byte[] buffer;
-        int maxBufferSize = 1 * 1024 * 1024;
-        File sourceFile = new File(sourceFileUri);
+        @Override
+        protected String doInBackground(Void... params) {
+            return uploadFile();
+        }
 
-        if (!sourceFile.isFile()) {
+        @SuppressWarnings("deprecation")
+        private String uploadFile() {
+            String responseString = null;
 
-            dialog.dismiss();
+            HttpClient httpclient = new DefaultHttpClient();
+            HttpPost httppost = new HttpPost(upLoadServerUri);
 
-            Log.e("uploadFile", "Source File not exist :"
-                    +this.uploadFilePath + "" + this.uploadFileName);
+            try {
+                AndroidMultiPartEntity entity = new AndroidMultiPartEntity();
 
-            runOnUiThread(new Runnable() {
-                public void run() {
-                    messageText.setText("Source File not exist :"
-                            +uploadFilePath + "" + uploadFileName);
+                File sourceFile = new File(filePath);
+
+                // Adding file data to http body
+                entity.addPart("image", new FileBody(sourceFile));
+
+                // Extra parameters if you want to pass to server
+                //entity.addPart("website",
+                //        new StringBody("www.androidhive.info"));
+                //entity.addPart("email", new StringBody("abc@gmail.com"));
+
+                totalSize = entity.getContentLength();
+                httppost.setEntity(entity);
+
+                // Making server call
+                HttpResponse response = httpclient.execute(httppost);
+                HttpEntity r_entity = response.getEntity();
+
+                int statusCode = response.getStatusLine().getStatusCode();
+                if (statusCode == 200) {
+                    // Server response
+                    responseString = EntityUtils.toString(r_entity);
+                } else {
+                    responseString = "Error occurred! Http Status Code: "
+                            + statusCode;
                 }
-            });
 
-            return 0;
+            } catch (ClientProtocolException e) {
+                responseString = e.toString();
+            } catch (IOException e) {
+                responseString = e.toString();
+            }
+
+            return responseString;
 
         }
-        else
-        {
-            try {
 
-                // open a URL connection to the Servlet
-                FileInputStream fileInputStream = new FileInputStream(sourceFile);
-                URL url = new URL(this.upLoadServerUri);
+        @Override
+        protected void onPostExecute(String result) {
+            Log.e( TAG, "Response from server: " + result);
 
-                // Open a HTTP  connection to  the URL
-                conn = (HttpURLConnection) url.openConnection();
-                conn.setDoInput(true); // Allow Inputs
-                conn.setDoOutput(true); // Allow Outputs
-                conn.setUseCaches(false); // Don't use a Cached Copy
-                conn.setRequestMethod("POST");
-                conn.setRequestProperty("Connection", "Keep-Alive");
-                conn.setRequestProperty("ENCTYPE", "multipart/form-data");
-                conn.setRequestProperty("Content-Type", "multipart/form-data;boundary=" + boundary);
-                conn.setRequestProperty("uploaded_file", fileName);
+            // showing the server response in an alert dialog
+            showAlert(result);
 
-                dos = new DataOutputStream(conn.getOutputStream());
+            super.onPostExecute(result);
+        }
 
-                dos.writeBytes(twoHyphens + boundary + lineEnd);
-                dos.writeBytes("Content-Disposition: form-data; name=\"uploaded_file\";filename=\""
-                                + fileName + "\"" + lineEnd);
+    }
 
-                        dos.writeBytes(lineEnd);
-
-                // create a buffer of  maximum size
-                bytesAvailable = fileInputStream.available();
-
-                bufferSize = Math.min(bytesAvailable, maxBufferSize);
-                buffer = new byte[bufferSize];
-
-                // read file and write it into form...
-                bytesRead = fileInputStream.read(buffer, 0, bufferSize);
-
-                while (bytesRead > 0) {
-
-                    dos.write(buffer, 0, bufferSize);
-                    bytesAvailable = fileInputStream.available();
-                    bufferSize = Math.min(bytesAvailable, maxBufferSize);
-                    bytesRead = fileInputStream.read(buffer, 0, bufferSize);
-
-                }
-
-                // send multipart form data necesssary after file data...
-                dos.writeBytes(lineEnd);
-                dos.writeBytes(twoHyphens + boundary + twoHyphens + lineEnd);
-
-                // Responses from the server (code and message)
-                serverResponseCode = conn.getResponseCode();
-                String serverResponseMessage = conn.getResponseMessage();
-
-                Log.i("uploadFile", "HTTP Response is : "
-                        + serverResponseMessage + ": " + serverResponseCode);
-
-                if(serverResponseCode == 200){
-
-                    runOnUiThread(new Runnable() {
-                        public void run() {
-
-                            String msg = "File Upload Completed.\n\n See uploaded file here : \n\n"
-                                    +" http://www.androidexample.com/media/uploads/"
-                                    +uploadFileName;
-
-                            messageText.setText(msg);
-                            Toast.makeText(Upload.this, "File Upload Complete.",
-                                    Toast.LENGTH_SHORT).show();
-                        }
-                    });
-                }
-
-                //close the streams //
-                fileInputStream.close();
-                dos.flush();
-                dos.close();
-
-            } catch (MalformedURLException ex) {
-
-                dialog.dismiss();
-                ex.printStackTrace();
-
-                runOnUiThread(new Runnable() {
-                    public void run() {
-                        messageText.setText("MalformedURLException Exception : check script url.");
-                        Toast.makeText(Upload.this, "MalformedURLException",
-                                Toast.LENGTH_SHORT).show();
+    /**
+     * Method to show alert dialog
+     * */
+    private void showAlert(String message) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage(message).setTitle("Response from Servers")
+                .setCancelable(false)
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // do nothing
                     }
                 });
-
-                Log.e("Upload file to server", "error: " + ex.getMessage(), ex);
-            } catch (Exception e) {
-
-                dialog.dismiss();
-                e.printStackTrace();
-
-                runOnUiThread(new Runnable() {
-                    public void run() {
-                        messageText.setText("Got Exception : see logcat ");
-                        Toast.makeText(Upload.this, "Got Exception : see logcat ",
-                                Toast.LENGTH_SHORT).show();
-                    }
-                });
-                Log.e("Upload file to server Exception", "Exception : "
-                        + e.getMessage(), e);
-            }
-            dialog.dismiss();
-            return serverResponseCode;
-
-        } // End else block
+        AlertDialog alert = builder.create();
+        alert.show();
     }
 }

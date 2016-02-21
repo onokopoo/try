@@ -47,8 +47,6 @@ public class IntentActivity extends Activity {
 //            Uri testUri = data.getData();
             try {
                 imageView.setImageBitmap(decodeSampledBitmapFromFile(uri.getPath(), 300, 300));
-                //Toast.makeText(getApplicationContext(), uri.getPath(), Toast.LENGTH_SHORT).show();
- //               Toast.makeText(getApplicationContext(), testUri.getPath(), Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(getApplicationContext(), Upload.class);
                 intent.putExtra("url", uri.getPath());
                 startActivity(intent);
