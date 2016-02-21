@@ -24,6 +24,11 @@
     <string name="c4">ขนมไทยประเภทต้ม</string>
     <string name="c5">ขนมไทยประเภททอด/ปิ้ง/ย่าง</string>
 
+    <string name="btnTakePicture">Capture Image</string>
+    <string name="btnRecordVideo">Record Video</string>
+    <string name="or">(or)</string>
+    <string name="btnUploadToServer">Upload to Server</string>
+
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 

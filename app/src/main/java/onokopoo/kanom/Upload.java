@@ -2,7 +2,6 @@ package onokopoo.kanom;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
-import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -13,7 +12,7 @@ import android.widget.Toast;
 
 import java.io.DataOutputStream;
 import java.io.File;
-import java.io.InputStream;
+import java.io.FileInputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -29,8 +28,8 @@ public class Upload extends Activity {
 
     /**********  File Path *************/
     File file;
-    String uploadFilePath;
-    String uploadFileName;
+    private static String uploadFilePath;
+    private static String uploadFileName;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -39,16 +38,14 @@ public class Upload extends Activity {
         setContentView(R.layout.activity_upload);
 
         file = new File(getIntent().getExtras().getString("url"));
-        uploadFilePath = file.getParent();
-        uploadFileName = file.getName();
+        this.uploadFilePath = file.getParent();
+        this.uploadFileName = file.getName();
 
         uploadButton = (Button)findViewById(R.id.uploadButton);
         messageText  = (TextView)findViewById(R.id.messageText);
 
-        messageText.setText("Uploading file path :- "+uploadFilePath+'/'+uploadFileName);
-
-        /************* Php script path ****************/
-        upLoadServerUri = getString(R.string.url)+"Upload.php";
+        messageText.setText("Uploading file path :- " + uploadFilePath + '/' + uploadFileName);
+        upLoadServerUri = getString(R.string.url)+"/upload.php";
 
         uploadButton.setOnClickListener(new OnClickListener() {
             @Override
@@ -57,6 +54,9 @@ public class Upload extends Activity {
                 dialog = ProgressDialog.show(Upload.this, "", "Uploading file...", true);
 
                 new Thread(new Runnable() {
+                    public String uploadFilePath = Upload.uploadFilePath;
+                    public String uploadFileName = Upload.uploadFileName;
+
                     public void run() {
                         runOnUiThread(new Runnable() {
                             public void run() {
@@ -64,7 +64,7 @@ public class Upload extends Activity {
                             }
                         });
 
-                        uploadFile(uploadFilePath + "" + uploadFileName);
+                        uploadFile(this.uploadFilePath + "" + this.uploadFileName);
 
                     }
                 }).start();
@@ -74,8 +74,9 @@ public class Upload extends Activity {
 
     public int uploadFile(String sourceFileUri) {
 
-
         String fileName = sourceFileUri;
+        Toast.makeText(getApplicationContext(), this.uploadFilePath, Toast.LENGTH_LONG).show();
+        Toast.makeText(getApplicationContext(), this.uploadFileName, Toast.LENGTH_LONG).show();
 
         HttpURLConnection conn = null;
         DataOutputStream dos = null;
@@ -84,7 +85,7 @@ public class Upload extends Activity {
         String boundary = "*****";
         int bytesRead, bytesAvailable, bufferSize;
         byte[] buffer;
-        int maxBufferSize = 1 * 1024 * 1024 * 1024;
+        int maxBufferSize = 1 * 1024 * 1024;
         File sourceFile = new File(sourceFileUri);
 
         if (!sourceFile.isFile()) {
@@ -92,12 +93,12 @@ public class Upload extends Activity {
             dialog.dismiss();
 
             Log.e("uploadFile", "Source File not exist :"
-                    +uploadFilePath + "/" + uploadFileName);
+                    +this.uploadFilePath + "" + this.uploadFileName);
 
             runOnUiThread(new Runnable() {
                 public void run() {
                     messageText.setText("Source File not exist :"
-                            +uploadFilePath + "/" + uploadFileName);
+                            +uploadFilePath + "" + uploadFileName);
                 }
             });
 
@@ -109,11 +110,8 @@ public class Upload extends Activity {
             try {
 
                 // open a URL connection to the Servlet
-                //FileInputStream fileInputStream = new FileInputStream(sourceFile);
-
-                InputStream fileInputStream = getContentResolver().openInputStream(Uri.parse(String.valueOf(sourceFile)));
-
-                URL url = new URL(upLoadServerUri);
+                FileInputStream fileInputStream = new FileInputStream(sourceFile);
+                URL url = new URL(this.upLoadServerUri);
 
                 // Open a HTTP  connection to  the URL
                 conn = (HttpURLConnection) url.openConnection();
@@ -129,7 +127,8 @@ public class Upload extends Activity {
                 dos = new DataOutputStream(conn.getOutputStream());
 
                 dos.writeBytes(twoHyphens + boundary + lineEnd);
-                dos.writeBytes("Content-Disposition: form-data; name=\"uploaded_file\";filename=\""+ fileName + "\"" + lineEnd);
+                dos.writeBytes("Content-Disposition: form-data; name=\"uploaded_file\";filename=\""
+                                + fileName + "\"" + lineEnd);
 
                         dos.writeBytes(lineEnd);
 
@@ -209,7 +208,8 @@ public class Upload extends Activity {
                                 Toast.LENGTH_SHORT).show();
                     }
                 });
-                Log.e("Upload file to server Exception", "Exception : " + e.getMessage(), e);
+                Log.e("Upload file to server Exception", "Exception : "
+                        + e.getMessage(), e);
             }
             dialog.dismiss();
             return serverResponseCode;

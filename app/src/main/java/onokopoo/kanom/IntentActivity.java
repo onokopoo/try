@@ -10,7 +10,6 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
@@ -20,6 +19,7 @@ public class IntentActivity extends Activity {
     public static final int REQUEST_CAMERA = 2;
     ImageView imageView;
     Uri uri;
+    String imgPath;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.intent_second);
@@ -31,10 +31,12 @@ public class IntentActivity extends Activity {
         String imageFileName = "IMG_" + timeStamp + ".jpg";
         File f = new File(Environment.getExternalStorageDirectory()
                 , "DCIM/Camera/kanom/" + imageFileName);
+        this.imgPath = f.getAbsolutePath();
         uri = Uri.fromFile(f);
         intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
         startActivityForResult(Intent.createChooser(intent
                 , "Take a picture with"), REQUEST_CAMERA);
+
 
     }
 
@@ -42,12 +44,14 @@ public class IntentActivity extends Activity {
         if (requestCode == REQUEST_CAMERA && resultCode == RESULT_OK) {
             getContentResolver().notifyChange(uri, null);
             ContentResolver cr = getContentResolver();
+//            Uri testUri = data.getData();
             try {
                 imageView.setImageBitmap(decodeSampledBitmapFromFile(uri.getPath(), 300, 300));
-                Toast.makeText(getApplicationContext(), uri.getPath(), Toast.LENGTH_SHORT).show();
-                //Intent intent = new Intent(getApplicationContext(), Upload.class);
-                //intent.putExtra("url", uri.getPath());
-                //startActivity(intent);
+                //Toast.makeText(getApplicationContext(), uri.getPath(), Toast.LENGTH_SHORT).show();
+ //               Toast.makeText(getApplicationContext(), testUri.getPath(), Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(getApplicationContext(), Upload.class);
+                intent.putExtra("url", uri.getPath());
+                startActivity(intent);
             } catch (Exception e) {
                 e.printStackTrace();
             }
