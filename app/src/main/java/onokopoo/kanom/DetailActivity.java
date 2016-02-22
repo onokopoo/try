@@ -18,7 +18,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -180,7 +179,6 @@ public class DetailActivity extends Activity {
     }
     protected void managerOfSound(String id) {
         mp = MediaPlayer.create(this, getResources().getIdentifier(id, "raw", "onokopoo.kanom"));
-        Toast.makeText(getApplicationContext(), id, Toast.LENGTH_LONG).show();
 
         if(mp.isPlaying()){
             mp.stop();

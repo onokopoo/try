@@ -2,15 +2,10 @@ package onokopoo.kanom;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
-import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v7.app.AlertDialog;
 import android.util.Log;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.Button;
-import android.widget.TextView;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -30,17 +25,12 @@ public class Upload extends Activity {
 
     private String filePath = null;
     long totalSize = 0;
-    TextView messageText;
-    Button uploadButton;
-    int serverResponseCode = 0;
     ProgressDialog dialog = null;
-
     String upLoadServerUri = null;
 
     /**********  File Path *************/
     File file;
-    private static String uploadFilePath;
-    private static String uploadFileName;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -50,27 +40,13 @@ public class Upload extends Activity {
 
         file = new File(getIntent().getExtras().getString("url"));
         this.filePath = file.getAbsolutePath();
-        //this.uploadFilePath = file.getParent();
-        //this.uploadFileName = file.getName();
 
-        uploadButton = (Button)findViewById(R.id.uploadButton);
-        messageText  = (TextView)findViewById(R.id.messageText);
-
-        messageText.setText("Uploading file path :- " + this.filePath );
         upLoadServerUri = Config.FILE_UPLOAD_URL;
 
-        uploadButton.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                dialog = ProgressDialog.show(Upload.this, "", "Uploading file...", true);
-
-                new UploadFileToServer().execute();
-            }
-        });
+        dialog = ProgressDialog.show(Upload.this, "", "Uploading file...", true);
+        new UploadFileToServer().execute();
 
     }
-
 
     /**
      * Uploading the file to server
@@ -149,15 +125,21 @@ public class Upload extends Activity {
      * Method to show alert dialog
      * */
     private void showAlert(String message) {
+
+        String sKanom_id = "3";
+        Intent newActivity = new Intent(Upload.this,DetailActivity.class);
+        newActivity.putExtra("kanom_id", sKanom_id);
+        startActivity(newActivity);
+        /*
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage(message).setTitle("Response from Servers")
                 .setCancelable(false)
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        // do nothing
+
                     }
                 });
         AlertDialog alert = builder.create();
-        alert.show();
+        alert.show();*/
     }
 }

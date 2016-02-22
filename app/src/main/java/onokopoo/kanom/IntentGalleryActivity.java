@@ -9,7 +9,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -50,7 +49,6 @@ public class IntentGalleryActivity extends Activity {
             String filePath = cursor.getString(columnIndex);
             cursor.close();
             try {
-                Toast.makeText(getApplicationContext(), filePath, Toast.LENGTH_SHORT).show();
                 bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), uri);
                 imageView.setImageBitmap(decodeSampledBitmapFromFile(filePath, 300, 300));
                 Intent intent = new Intent(getApplicationContext(), Upload.class);
