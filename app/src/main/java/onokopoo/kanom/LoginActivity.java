@@ -1,16 +1,21 @@
 package onokopoo.kanom;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-
-import android.content.Intent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -29,7 +34,8 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         ButterKnife.inject(this);
-
+        _emailText.setText("onokopo@gmail.com");
+        _passwordText.setText("qwer");
         _loginButton.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -69,20 +75,45 @@ public class LoginActivity extends AppCompatActivity {
         String password = _passwordText.getText().toString();
 
         // TODO: Implement your own authentication logic here.
+        String url = getString(R.string.url)+"/login/login.php";
 
+        // Paste Parameters
+        List<NameValuePair> params = new ArrayList<NameValuePair>();
+        params.add(new BasicNameValuePair("email", email));
+        params.add(new BasicNameValuePair("password", password));
+/*
+        ServiceHandler sh = new ServiceHandler();
+        // Making a request to url and getting response
+        String jsonStr = sh.makeServiceCall(url, ServiceHandler.GET, params);
+
+        Log.d("Response: ", "> " + jsonStr);
+        if (jsonStr != null) {
+            try {
+                JSONObject jsonObj = new JSONObject(jsonStr);
+                String name2 = jsonObj.getString("username");
+                String email2 = jsonObj.getString("email");
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        } else {
+            Log.e("ServiceHandler", "Couldn't get any data from the url");
+        }
+*/
         new android.os.Handler().postDelayed(
                 new Runnable() {
                     public void run() {
+
                         // On complete call either onLoginSuccess or onLoginFailed
                         onLoginSuccess();
                         // onLoginFailed();
                         progressDialog.dismiss();
                     }
                 }, 3000);
-    }
+        }
 
 
-    @Override
+        @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_SIGNUP) {
             if (resultCode == RESULT_OK) {
@@ -103,7 +134,8 @@ public class LoginActivity extends AppCompatActivity {
 
     public void onLoginSuccess() {
         _loginButton.setEnabled(true);
-        finish();
+        Intent i = new Intent(getApplicationContext(), SplashActivity.class);
+        startActivity(i);
     }
 
     public void onLoginFailed() {

@@ -189,7 +189,17 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_about) {
             Toast.makeText(getApplicationContext(), "รออีกนิด ระบบกำลังพัฒนาค่ะ =) ", Toast.LENGTH_LONG).show();
         } else if (id == R.id.nav_buy) {
-            Toast.makeText(getApplicationContext(), "รออีกนิด ระบบกำลังพัฒนาค่ะ =) ", Toast.LENGTH_LONG).show();
+            //Toast.makeText(getApplicationContext(), "รออีกนิด ระบบกำลังพัฒนาค่ะ =) ", Toast.LENGTH_LONG).show();
+            Intent i = new Intent(Intent.ACTION_SEND);
+            i.setType("message/rfc822");
+            i.putExtra(Intent.EXTRA_EMAIL  , new String[]{"onokopoo@gmail.com"});
+            i.putExtra(Intent.EXTRA_SUBJECT, "subject of email");
+            i.putExtra(Intent.EXTRA_TEXT   , "body of email");
+            try {
+                startActivity(Intent.createChooser(i, "Send mail..."));
+            } catch (android.content.ActivityNotFoundException ex) {
+                Toast.makeText(MainActivity.this, "There are no email clients installed.", Toast.LENGTH_SHORT).show();
+            }
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);

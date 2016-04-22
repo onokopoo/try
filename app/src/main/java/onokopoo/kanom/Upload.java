@@ -2,9 +2,10 @@ package onokopoo.kanom;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
-import android.content.Intent;
+import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 
 import org.apache.http.HttpEntity;
@@ -126,20 +127,16 @@ public class Upload extends Activity {
      * */
     private void showAlert(String message) {
 
-        String sKanom_id = "3";
-        Intent newActivity = new Intent(Upload.this,DetailActivity.class);
-        newActivity.putExtra("kanom_id", sKanom_id);
-        startActivity(newActivity);
-        /*
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage(message).setTitle("Response from Servers")
                 .setCancelable(false)
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
+                        //TODO: do nothing
 
                     }
                 });
         AlertDialog alert = builder.create();
-        alert.show();*/
+        alert.show();
     }
 }
