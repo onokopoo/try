@@ -26,7 +26,7 @@ public class LoginActivity extends AppCompatActivity {
     private static final String TAG = "LoginActivity";
     private static final int REQUEST_SIGNUP = 0;
     public static boolean error;
-    public static int user_id;
+    public static String user_id;
     public static String user;
 
     @InjectView(R.id.input_email) EditText _emailText;
@@ -40,16 +40,11 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         ButterKnife.inject(this);
 
-        _emailText.setText("onokopoo@gmail.com");
-        _passwordText.setText("qwer");
 
-        Bundle extras = getIntent().getExtras();
-        if (extras != null) {
-            String email = extras.getString("email");
-            String pass = extras.getString("password");
-            _emailText.setText(email);
-            _passwordText.setText(pass);
-        }
+
+            _emailText.setText("onokopoo@gmail.com");
+            _passwordText.setText("qwer");
+
         _loginButton.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -107,7 +102,7 @@ public class LoginActivity extends AppCompatActivity {
                     JSONObject jsonObj = new JSONObject(jsonStr);
                     error = jsonObj.getBoolean("error");
                     if(!error){
-                        user_id = jsonObj.getInt("user_id");
+                        user_id = jsonObj.getString("user_id");
                         user = jsonObj.getString("username");
                     }
                     Log.d(TAG, String.valueOf(error));
@@ -158,6 +153,7 @@ public class LoginActivity extends AppCompatActivity {
         i.putExtra("user", user);
         i.putExtra("email", _emailText.getText().toString());
         startActivity(i);
+        finish();
     }
 
     public void onLoginFailed() {

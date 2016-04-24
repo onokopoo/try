@@ -2,12 +2,15 @@ package onokopoo.kanom;
 
 import android.app.AlertDialog;
 import android.app.SearchManager;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.StrictMode;
@@ -33,6 +36,10 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.android.gms.appindexing.Action;
+import com.google.android.gms.appindexing.AppIndex;
+import com.google.android.gms.common.api.GoogleApiClient;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -68,6 +75,13 @@ public class MainActivity extends AppCompatActivity
 
     ArrayList<HashMap<String, String>> MyArrList;
     Configuration config = new Configuration();
+    public static String user_id;
+    /**
+     * ATTENTION: This was auto-generated to implement the App Indexing API.
+     * See https://g.co/AppIndexing/AndroidStudio for more information.
+     */
+    private GoogleApiClient client2;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,20 +89,7 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        Bundle extras = getIntent().getExtras();
-        if (extras != null) {
-            String email = extras.getString("email");
-            String user_id = extras.getString("user_id");
-            String user = extras.getString("user");
-
-            TextView nav_user = (TextView)findViewById(R.id.nav_user);
-            nav_user.setText(user);
-
-            TextView nav_email = (TextView)findViewById(R.id.nav_email);
-            nav_email.setText(email);
-        }
-
-        final String[] intents = {getString(R.string.intent1),getString(R.string.intent2)};
+        final String[] intents = {getString(R.string.intent1), getString(R.string.intent2)};
 
         FloatingActionButton myFab = (FloatingActionButton) findViewById(R.id.camera);
         myFab.setOnClickListener(new View.OnClickListener() {
@@ -108,7 +109,8 @@ public class MainActivity extends AppCompatActivity
                     }
                 }).setNegativeButton(getString(R.string.cancel), null);
                 builder.create();
-                builder.show();            }
+                builder.show();
+            }
         });
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -120,11 +122,14 @@ public class MainActivity extends AppCompatActivity
         navigationView.setItemIconTintList(null);
         navigationView.setNavigationItemSelectedListener(this);
 
-        if (android.os.Build.VERSION.SDK_INT > 9) {
+        if (Build.VERSION.SDK_INT > 9) {
             StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
             StrictMode.setThreadPolicy(policy);
         }
         ShowData();
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        client2 = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
     }
 
     boolean doubleBackToExitPressedOnce = false;
@@ -143,7 +148,7 @@ public class MainActivity extends AppCompatActivity
 
             @Override
             public void run() {
-                doubleBackToExitPressedOnce=false;
+                doubleBackToExitPressedOnce = false;
             }
         }, 2000);
     }
@@ -153,16 +158,20 @@ public class MainActivity extends AppCompatActivity
         finish();
         startActivity(intent);
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main, menu);
 
-            getMenuInflater().inflate(R.menu.main, menu);
+        MenuItem menuItem = menu.findItem(R.id.action_search);
+        SearchView searchView = (SearchView) MenuItemCompat.getActionView(menuItem);
+        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
 
-            MenuItem menuItem = menu.findItem(R.id.action_search);
-            SearchView searchView = (SearchView) MenuItemCompat.getActionView(menuItem);
-            SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.getMenu().getItem(0).setChecked(true);
+        onNavigationItemSelected(navigationView.getMenu().getItem(0));
 
-            searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
 
         return super.onCreateOptionsMenu(menu);
     }
@@ -174,13 +183,38 @@ public class MainActivity extends AppCompatActivity
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-
         return super.onOptionsItemSelected(item);
     }
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
+
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        View headerLayout = navigationView.getChildAt(0);
+
+        Bundle extras = getIntent().getExtras();
+        if (getIntent().getExtras().getString("email")!="") {
+
+            String email = extras.getString("email");
+            String user = extras.getString("user");
+
+            user_id = extras.getString("user_id");
+
+            //View header = LayoutInflater.from(this).inflate(R.layout.nav_header_main, null);
+            //navigationView.addHeaderView(header);
+
+            //View header = navigationView.inflateHeaderView(R.layout.nav_header_main);
+            //View header = navigationView.inflateHeaderView(R.layout.nav_header_main);
+            TextView navName = (TextView)headerLayout.findViewById(R.id.nav_user);
+            TextView navEmail = (TextView)headerLayout.findViewById(R.id.nav_email);
+
+            //TextView navName = (TextView)header.findViewById(R.id.nav_user);
+            //TextView navEmail = (TextView)header.findViewById(R.id.nav_email);
+
+            navName.setText(user);
+            navEmail.setText(email);
+        }
 
         int id = item.getItemId();
 
@@ -192,7 +226,7 @@ public class MainActivity extends AppCompatActivity
             Intent i = new Intent(getApplicationContext(), CategoryActivity.class);
             startActivity(i);
         } else if (id == R.id.nav_language) {
-            if( getString(R.string.locale_config).equals("en")) {
+            if (getString(R.string.locale_config).equals("en")) {
                 config.locale = new Locale("th");
             } else {
                 config.locale = Locale.ENGLISH;
@@ -204,12 +238,12 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_buy) {
             Intent i = new Intent(Intent.ACTION_SEND);
             i.setType("message/rfc822");
-            i.putExtra(Intent.EXTRA_EMAIL  , new String[]{"onokopoo@gmail.com"});
+            i.putExtra(Intent.EXTRA_EMAIL, new String[]{"onokopoo@gmail.com"});
             i.putExtra(Intent.EXTRA_SUBJECT, "subject of email");
-            i.putExtra(Intent.EXTRA_TEXT   , "body of email");
+            i.putExtra(Intent.EXTRA_TEXT, "body of email");
             try {
                 startActivity(Intent.createChooser(i, "Send mail..."));
-            } catch (android.content.ActivityNotFoundException ex) {
+            } catch (ActivityNotFoundException ex) {
                 Toast.makeText(MainActivity.this, "There are no email clients installed.", Toast.LENGTH_SHORT).show();
             }
         }
@@ -218,31 +252,30 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
-    public void ShowData()
-    {
+    public void ShowData() {
         // listView1
-        final ListView lisView1 = (ListView)findViewById(R.id.listView1);
+        final ListView lisView1 = (ListView) findViewById(R.id.listView1);
 
         // keySearch
         //EditText strKeySearch = (EditText)findViewById(R.id.txtKeySearch);
         // Disbled Keyboard auto focus
         //InputMethodManager imm = (InputMethodManager)getSystemService(
-         //       Context.INPUT_METHOD_SERVICE);
+        //       Context.INPUT_METHOD_SERVICE);
         //imm.hideSoftInputFromWindow(strKeySearch.getWindowToken(), 0);
 
-        String url = getString(R.string.url)+"/pop.php";
+        String url = getString(R.string.url) + "/pop.php";
 
         // Paste Parameters
         List<NameValuePair> params = new ArrayList<NameValuePair>();
         params.add(new BasicNameValuePair("locale", getString(R.string.locale_config)));
 
         try {
-            JSONArray data = new JSONArray(getJSONUrl(url,params));
+            JSONArray data = new JSONArray(getJSONUrl(url, params));
 
             MyArrList = new ArrayList<HashMap<String, String>>();
             HashMap<String, String> map;
 
-            for(int i = 0; i < data.length(); i++){
+            for (int i = 0; i < data.length(); i++) {
                 JSONObject c = data.getJSONObject(i);
 
                 map = new HashMap<String, String>();
@@ -255,9 +288,9 @@ public class MainActivity extends AppCompatActivity
                 MyArrList.add(map);
             }
 
-            lisView1.setAdapter(new ImageAdapter(this,MyArrList));
+            lisView1.setAdapter(new ImageAdapter(this, MyArrList));
             LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) lisView1.getLayoutParams();
-            lp.height = 450*data.length();
+            lp.height = 450 * data.length();
             lisView1.setLayoutParams(lp);
 
             // OnClick Item
@@ -272,7 +305,7 @@ public class MainActivity extends AppCompatActivity
                     String sType = MyArrList.get(position).get("type").toString();
                     String sVoice = MyArrList.get(position).get("name_en").toString();
 
-                    Intent newActivity = new Intent(MainActivity.this,DetailActivity.class);
+                    Intent newActivity = new Intent(MainActivity.this, DetailActivity.class);
                     newActivity.putExtra("kanom_id", sKanom_id);
                     startActivity(newActivity);
 
@@ -285,13 +318,51 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    public class ImageAdapter extends BaseAdapter
-    {
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        client2.connect();
+        Action viewAction = Action.newAction(
+                Action.TYPE_VIEW, // TODO: choose an action type.
+                "Main Page", // TODO: Define a title for the content shown.
+                // TODO: If you have web page content that matches this app activity's content,
+                // make sure this auto-generated web page URL is correct.
+                // Otherwise, set the URL to null.
+                Uri.parse("http://host/path"),
+                // TODO: Make sure this auto-generated app deep link URI is correct.
+                Uri.parse("android-app://onokopoo.kanom/http/host/path")
+        );
+        AppIndex.AppIndexApi.start(client2, viewAction);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        Action viewAction = Action.newAction(
+                Action.TYPE_VIEW, // TODO: choose an action type.
+                "Main Page", // TODO: Define a title for the content shown.
+                // TODO: If you have web page content that matches this app activity's content,
+                // make sure this auto-generated web page URL is correct.
+                // Otherwise, set the URL to null.
+                Uri.parse("http://host/path"),
+                // TODO: Make sure this auto-generated app deep link URI is correct.
+                Uri.parse("android-app://onokopoo.kanom/http/host/path")
+        );
+        AppIndex.AppIndexApi.end(client2, viewAction);
+        client2.disconnect();
+    }
+
+    public class ImageAdapter extends BaseAdapter {
         private Context context;
         private ArrayList<HashMap<String, String>> MyArr = new ArrayList<HashMap<String, String>>();
 
-        public ImageAdapter(Context c, ArrayList<HashMap<String, String>> list)
-        {
+        public ImageAdapter(Context c, ArrayList<HashMap<String, String>> list) {
             // TODO Auto-generated method stub
             context = c;
             MyArr = list;
@@ -311,6 +382,7 @@ public class MainActivity extends AppCompatActivity
             // TODO Auto-generated method stub
             return position;
         }
+
         public View getView(int position, View convertView, ViewGroup parent) {
             // TODO Auto-generated method stub
 
@@ -326,9 +398,8 @@ public class MainActivity extends AppCompatActivity
             imageView.getLayoutParams().height = 330;
             imageView.getLayoutParams().width = 800;
             imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-            try
-            {
-                imageView.setImageBitmap(loadBitmap(getString(R.string.url)+MyArr.get(position).get("image")));
+            try {
+                imageView.setImageBitmap(loadBitmap(getString(R.string.url) + MyArr.get(position).get("image")));
             } catch (Exception e) {
                 // When Error
                 imageView.setImageResource(android.R.drawable.ic_menu_report_image);
@@ -356,7 +427,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     @SuppressWarnings("deprecation")
-    public String getJSONUrl(String url,List<NameValuePair> params) {
+    public String getJSONUrl(String url, List<NameValuePair> params) {
         StringBuilder str = new StringBuilder();
         HttpClient client = new DefaultHttpClient();
         HttpPost httpPost = new HttpPost(url);
@@ -387,6 +458,7 @@ public class MainActivity extends AppCompatActivity
 
     private static final String TAG = "ERROR";
     private static final int IO_BUFFER_SIZE = 4 * 1024;
+
     public static Bitmap loadBitmap(String url) {
         Bitmap bitmap = null;
         InputStream in = null;
@@ -404,7 +476,7 @@ public class MainActivity extends AppCompatActivity
             BitmapFactory.Options options = new BitmapFactory.Options();
             //options.inSampleSize = 1;
 
-            bitmap = BitmapFactory.decodeByteArray(data, 0, data.length,options);
+            bitmap = BitmapFactory.decodeByteArray(data, 0, data.length, options);
         } catch (IOException e) {
             Log.e(TAG, "Could not load Bitmap from: " + url);
         } finally {
@@ -420,7 +492,7 @@ public class MainActivity extends AppCompatActivity
             try {
                 stream.close();
             } catch (IOException e) {
-                android.util.Log.e(TAG, "Could not close stream", e);
+                Log.e(TAG, "Could not close stream", e);
             }
         }
     }
