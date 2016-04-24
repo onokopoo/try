@@ -105,8 +105,6 @@ public class LoginActivity extends AppCompatActivity {
                         user_id = jsonObj.getString("user_id");
                         user = jsonObj.getString("username");
                     }
-                    Log.d(TAG, String.valueOf(error));
-
                 } catch (JSONException e) {
                      e.printStackTrace();
                 }

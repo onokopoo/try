@@ -75,7 +75,6 @@ public class MainActivity extends AppCompatActivity
 
     ArrayList<HashMap<String, String>> MyArrList;
     Configuration config = new Configuration();
-    public static String user_id;
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
      * See https://g.co/AppIndexing/AndroidStudio for more information.
@@ -189,31 +188,28 @@ public class MainActivity extends AppCompatActivity
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         View headerLayout = navigationView.getChildAt(0);
 
-        Bundle extras = getIntent().getExtras();
-        if (getIntent().getExtras().getString("email")!="") {
+        Intent intent = getIntent();
+        if(intent.hasExtra("email")){
+            Bundle extras = getIntent().getExtras();
+            if(!extras.getString("email").equals(null)){
+                String email = extras.getString("email");
+                String user = extras.getString("user");
+                String user_id = extras.getString("user_id");
 
-            String email = extras.getString("email");
-            String user = extras.getString("user");
+                Config globalVariable = ((Config)getApplicationContext());
 
-            user_id = extras.getString("user_id");
+                globalVariable.setUsername(user);
+                globalVariable.setEmail(email);
+                globalVariable.setUserId(user_id);
 
-            //View header = LayoutInflater.from(this).inflate(R.layout.nav_header_main, null);
-            //navigationView.addHeaderView(header);
-
-            //View header = navigationView.inflateHeaderView(R.layout.nav_header_main);
-            //View header = navigationView.inflateHeaderView(R.layout.nav_header_main);
-            TextView navName = (TextView)headerLayout.findViewById(R.id.nav_user);
-            TextView navEmail = (TextView)headerLayout.findViewById(R.id.nav_email);
-
-            //TextView navName = (TextView)header.findViewById(R.id.nav_user);
-            //TextView navEmail = (TextView)header.findViewById(R.id.nav_email);
-
-            navName.setText(user);
-            navEmail.setText(email);
+                TextView navName = (TextView)headerLayout.findViewById(R.id.nav_user);
+                TextView navEmail = (TextView)headerLayout.findViewById(R.id.nav_email);
+                navName.setText(user);
+                navEmail.setText(email);
+            }
         }
 
         int id = item.getItemId();

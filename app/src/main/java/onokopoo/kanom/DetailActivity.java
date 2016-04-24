@@ -57,13 +57,39 @@ public class DetailActivity extends Activity {
             StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
             StrictMode.setThreadPolicy(policy);
         }
-
-        showInfo();
-
+        addView();
+        //showInfo();
     }
 
-    public void showInfo()
-    {
+    public void addView(){
+        Intent intent= getIntent();
+        final String sKanom_id = intent.getStringExtra("kanom_id");
+
+        Config globalVariable = ((Config)getApplicationContext());
+        String userId = globalVariable.getUserId();
+
+        ArrayList<NameValuePair> params = new ArrayList<NameValuePair>();
+        params.add(new BasicNameValuePair("kanom_id", sKanom_id));
+        params.add(new BasicNameValuePair("user_id", userId));
+
+        try {
+            ServiceHandler sh = new ServiceHandler();
+            // Making a request to url and getting response
+            String jsonStr = sh.makeServiceCall(Config.URL_VIEW, ServiceHandler.POST, params);
+
+            JSONObject jsonObj = new JSONObject(jsonStr);
+            Boolean error = jsonObj.getBoolean("error");
+            if(!error){
+                showInfo();
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void showInfo() {
+        Intent intent= getIntent();
+        final String sKanom_id = intent.getStringExtra("kanom_id");
         final ImageView iImage = (ImageView)findViewById(R.id.image);
         final TextView tNameTh  = (TextView)findViewById(R.id.name_th);
         final TextView tNameEn  = (TextView)findViewById(R.id.name_en);
@@ -74,10 +100,6 @@ public class DetailActivity extends Activity {
         final TextView tRecipe = (TextView)findViewById(R.id.recipe);
 
         String url = getString(R.string.url)+"/selectKanom.php";
-        //String url = "http://10.35.23.50/selectKanom.php";
-
-        Intent intent= getIntent();
-        final String sKanom_id = intent.getStringExtra("kanom_id");
 
         ArrayList<NameValuePair> params = new ArrayList<NameValuePair>();
         params.add(new BasicNameValuePair("kanom_id", sKanom_id));
