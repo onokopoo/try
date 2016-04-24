@@ -75,6 +75,19 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            String email = extras.getString("email");
+            String user_id = extras.getString("user_id");
+            String user = extras.getString("user");
+
+            TextView nav_user = (TextView)findViewById(R.id.nav_user);
+            nav_user.setText(user);
+
+            TextView nav_email = (TextView)findViewById(R.id.nav_email);
+            nav_email.setText(email);
+        }
+
         final String[] intents = {getString(R.string.intent1),getString(R.string.intent2)};
 
         FloatingActionButton myFab = (FloatingActionButton) findViewById(R.id.camera);
@@ -189,7 +202,6 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_about) {
             Toast.makeText(getApplicationContext(), "รออีกนิด ระบบกำลังพัฒนาค่ะ =) ", Toast.LENGTH_LONG).show();
         } else if (id == R.id.nav_buy) {
-            //Toast.makeText(getApplicationContext(), "รออีกนิด ระบบกำลังพัฒนาค่ะ =) ", Toast.LENGTH_LONG).show();
             Intent i = new Intent(Intent.ACTION_SEND);
             i.setType("message/rfc822");
             i.putExtra(Intent.EXTRA_EMAIL  , new String[]{"onokopoo@gmail.com"});

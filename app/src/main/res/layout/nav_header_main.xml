@@ -11,9 +11,10 @@
 
 <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
     android:paddingTop="@dimen/nav_header_vertical_spacing" android:text="Kanom"
+    android:id="@+id/nav_user"
     android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
 <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-    android:text="An interactive book about Thai dessert" android:id="@+id/textView" />
+    android:text="An interactive book about Thai dessert" android:id="@+id/nav_email" />
 
 </LinearLayout>
