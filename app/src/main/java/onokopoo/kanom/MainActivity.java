@@ -1,5 +1,6 @@
 package onokopoo.kanom;
 
+import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.app.SearchManager;
 import android.content.ActivityNotFoundException;
@@ -96,6 +97,7 @@ public class MainActivity extends AppCompatActivity
                 AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
                 builder.setTitle(getString(R.string.intent_popup_title));
                 builder.setItems(intents, new DialogInterface.OnClickListener() {
+                    @TargetApi(Build.VERSION_CODES.M)
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         if (which == 0) {
@@ -217,7 +219,10 @@ public class MainActivity extends AppCompatActivity
         if (id == R.id.nav_main) {
 
         } else if (id == R.id.nav_heart) {
-            Toast.makeText(getApplicationContext(), "รออีกนิด ระบบกำลังพัฒนาค่ะ =) ", Toast.LENGTH_LONG).show();
+            //TODO:view
+            Intent i = new Intent(getApplicationContext(), historyActivity.class);
+            i.putExtra("type", "favorite");
+            startActivity(i);
         } else if (id == R.id.nav_stack) {
             Intent i = new Intent(getApplicationContext(), CategoryActivity.class);
             startActivity(i);

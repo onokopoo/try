@@ -13,21 +13,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
-import org.apache.http.StatusLine;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -35,20 +26,17 @@ import org.json.JSONObject;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
-import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.Closeable;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 @SuppressWarnings("deprecation")
-public class SearchActivity extends Activity {
+public class historyActivity extends Activity {
 
     ArrayList<HashMap<String, String>> MyArrList;
     String type;
@@ -63,27 +51,27 @@ public class SearchActivity extends Activity {
             StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
             StrictMode.setThreadPolicy(policy);
         }
-        if (getIntent().getExtras().getString("type")==""){
-            type = null;
-        }else{
-            type = getIntent().getExtras().getString("type");
-        }
-        ShowData(type);
 
+        type = getIntent().getExtras().getString("type");
+        ShowData(type);
     }
 
     public void ShowData(String type) {
 
         final ListView lisView1 = (ListView) findViewById(R.id.listView1);
 
-        String url = getString(R.string.url) + "/pop.php";
+        Config globalVariable = ((Config) getApplicationContext());
+        String userId = globalVariable.getUserId();
 
-        // Paste Parameters
-        List<NameValuePair> params = new ArrayList<NameValuePair>();
+        ArrayList<NameValuePair> params = new ArrayList<NameValuePair>();
         params.add(new BasicNameValuePair("type", type));
+        params.add(new BasicNameValuePair("user_id", userId));
 
         try {
-            JSONArray data = new JSONArray(getJSONUrl(url, params));
+            ServiceHandler sh = new ServiceHandler();
+            String jsonStr = sh.makeServiceCall(Config.URL_HISTORY, ServiceHandler.POST, params);
+
+            JSONArray data = new JSONArray(jsonStr);
 
             MyArrList = new ArrayList<HashMap<String, String>>();
             HashMap<String, String> map;
@@ -103,7 +91,7 @@ public class SearchActivity extends Activity {
             lisView1.setAdapter(new ImageAdapter(this, MyArrList));
 
             // OnClick Item
-            lisView1.setOnItemClickListener(new OnItemClickListener() {
+            lisView1.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 public void onItemClick(AdapterView<?> myAdapter, View myView,
                                         int position, long mylng) {
 
@@ -114,7 +102,7 @@ public class SearchActivity extends Activity {
                     String sType = MyArrList.get(position).get("type").toString();
                     String sVoice = MyArrList.get(position).get("name_en").toString();
 
-                    Intent newActivity = new Intent(SearchActivity.this, DetailActivity.class);
+                    Intent newActivity = new Intent(historyActivity.this, DetailActivity.class);
                     newActivity.putExtra("kanom_id", sKanom_id);
                     startActivity(newActivity);
                 }
@@ -192,35 +180,6 @@ public class SearchActivity extends Activity {
 
             return convertView;
         }
-    }
-
-    public String getJSONUrl(String url,List<NameValuePair> params) {
-        StringBuilder str = new StringBuilder();
-        HttpClient client = new DefaultHttpClient();
-        HttpPost httpPost = new HttpPost(url);
-
-        try {
-            httpPost.setEntity(new UrlEncodedFormEntity(params));
-            HttpResponse response = client.execute(httpPost);
-            StatusLine statusLine = response.getStatusLine();
-            int statusCode = statusLine.getStatusCode();
-            if (statusCode == 200) { // Download OK
-                HttpEntity entity = response.getEntity();
-                InputStream content = entity.getContent();
-                BufferedReader reader = new BufferedReader(new InputStreamReader(content));
-                String line;
-                while ((line = reader.readLine()) != null) {
-                    str.append(line);
-                }
-            } else {
-                Log.e("Log", "Failed to download result.............");
-            }
-        } catch (ClientProtocolException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return str.toString();
     }
 
     private static final String TAG = "ERROR";
