@@ -4,8 +4,10 @@ package onokopoo.kanom;
  * Created by onokopoo on 11/27/2015.
  */
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.Window;
@@ -17,10 +19,15 @@ public class SplashActivity extends Activity {
     public static String email;
     public static String user;
 
+    @TargetApi(Build.VERSION_CODES.M)
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.splashscreen);
+
+        String[] perms = {"android.permission.READ_EXTERNAL_STORAGE","android.permission.WRITE_EXTERNAL_STORAGE", "android.permission.CAMERA"};
+        int permsRequestCode = 200;
+        requestPermissions(perms, permsRequestCode);
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
