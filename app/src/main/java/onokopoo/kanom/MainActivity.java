@@ -237,11 +237,13 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_about) {
             Toast.makeText(getApplicationContext(), "รออีกนิด ระบบกำลังพัฒนาค่ะ =) ", Toast.LENGTH_LONG).show();
         } else if (id == R.id.nav_buy) {
+            Config globalVariable = ((Config)getApplicationContext());
+
             Intent i = new Intent(Intent.ACTION_SEND);
             i.setType("message/rfc822");
             i.putExtra(Intent.EXTRA_EMAIL, new String[]{"onokopoo@gmail.com"});
-            i.putExtra(Intent.EXTRA_SUBJECT, "subject of email");
-            i.putExtra(Intent.EXTRA_TEXT, "body of email");
+            i.putExtra(Intent.EXTRA_SUBJECT, "แจ้งรายละเอียดการซื้อแอปพลิเคชั่น Kanom");
+            i.putExtra(Intent.EXTRA_TEXT, "ถึง ผู้พัฒนาแอปพลิเคชั่น/n ผู้ใช้(User):"+globalVariable.getUsernme()+"ต้องการซื้อแอปพลิเคชั่นตัวเต็ม");
             try {
                 startActivity(Intent.createChooser(i, "Send mail..."));
             } catch (ActivityNotFoundException ex) {

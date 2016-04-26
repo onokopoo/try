@@ -1,19 +1,27 @@
 package onokopoo.kanom;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.MediaPlayer;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.StrictMode;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
-import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.google.android.gms.appindexing.Action;
+import com.google.android.gms.appindexing.AppIndex;
+import com.google.android.gms.common.api.GoogleApiClient;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -43,29 +51,110 @@ import java.util.ArrayList;
 import java.util.List;
 
 @SuppressWarnings("deprecation")
-public class DetailActivity extends Activity {
+public class DetailActivity extends AppCompatActivity {
     MediaPlayer mp;
+    public static String Type;
+    /**
+     * ATTENTION: This was auto-generated to implement the App Indexing API.
+     * See https://g.co/AppIndexing/AndroidStudio for more information.
+     */
+    private GoogleApiClient client2;
+
     @SuppressLint("NewApi")
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
-        setTitle("My new title");
+
+        /*FloatingActionButton myFab = (FloatingActionButton)findViewById(R.id.fav);
+        myFab.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Log.d(TAG, "llllllllllllllllllllll");
+            }
+        });
+        */
+        final CheckBox star = (CheckBox) findViewById(R.id.star);
+        star.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(star.isChecked()){
+                    Type = "1";
+                    Log.d(TAG, String.valueOf(Type));
+                    addOrRemoveFavorite(Type);
+
+                } else{
+                    Type = "0";
+                    Log.d(TAG, String.valueOf(Type));
+                    addOrRemoveFavorite(Type);
+                }
+            }
+        });
 
         // Permission StrictMode
-        if (android.os.Build.VERSION.SDK_INT > 9) {
+        if (Build.VERSION.SDK_INT > 9) {
             StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
             StrictMode.setThreadPolicy(policy);
         }
+        checkFavorite();
         addView();
-        //showInfo();
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        client2 = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
     }
 
-    public void addView(){
-        Intent intent= getIntent();
+    public void checkFavorite() {
+        Intent intent = getIntent();
         final String sKanom_id = intent.getStringExtra("kanom_id");
 
-        Config globalVariable = ((Config)getApplicationContext());
+        Config globalVariable = ((Config) getApplicationContext());
+        String userId = globalVariable.getUserId();
+
+        ArrayList<NameValuePair> params = new ArrayList<NameValuePair>();
+        params.add(new BasicNameValuePair("kanom_id", sKanom_id));
+        params.add(new BasicNameValuePair("user_id", userId));
+
+        try {
+            ServiceHandler sh = new ServiceHandler();
+            String jsonStr = sh.makeServiceCall(Config.URL_FAVORITE, ServiceHandler.POST, params);
+
+            JSONObject jsonObj = new JSONObject(jsonStr);
+            Boolean check = jsonObj.getBoolean("check");
+
+            CheckBox star = (CheckBox) findViewById(R.id.star);
+            star.setChecked(check);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void addOrRemoveFavorite(String type) {
+        Intent intent = getIntent();
+        final String sKanom_id = intent.getStringExtra("kanom_id");
+
+        Config globalVariable = ((Config) getApplicationContext());
+        String userId = globalVariable.getUserId();
+
+        ArrayList<NameValuePair> params = new ArrayList<NameValuePair>();
+        params.add(new BasicNameValuePair("kanom_id", sKanom_id));
+        params.add(new BasicNameValuePair("user_id", userId));
+        params.add(new BasicNameValuePair("type", type));
+
+        try {
+            ServiceHandler sh = new ServiceHandler();
+            String jsonStr = sh.makeServiceCall(Config.URL_FAVORITE, ServiceHandler.POST, params);
+
+            JSONObject jsonObj = new JSONObject(jsonStr);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void addView() {
+        Intent intent = getIntent();
+        final String sKanom_id = intent.getStringExtra("kanom_id");
+
+        Config globalVariable = ((Config) getApplicationContext());
         String userId = globalVariable.getUserId();
 
         ArrayList<NameValuePair> params = new ArrayList<NameValuePair>();
@@ -79,7 +168,7 @@ public class DetailActivity extends Activity {
 
             JSONObject jsonObj = new JSONObject(jsonStr);
             Boolean error = jsonObj.getBoolean("error");
-            if(!error){
+            if (!error) {
                 showInfo();
             }
         } catch (JSONException e) {
@@ -88,18 +177,16 @@ public class DetailActivity extends Activity {
     }
 
     public void showInfo() {
-        Intent intent= getIntent();
+        Intent intent = getIntent();
         final String sKanom_id = intent.getStringExtra("kanom_id");
-        final ImageView iImage = (ImageView)findViewById(R.id.image);
-        final TextView tNameTh  = (TextView)findViewById(R.id.name_th);
-        final TextView tNameEn  = (TextView)findViewById(R.id.name_en);
+        final ImageView iImage = (ImageView) findViewById(R.id.image);
         //final TextView tNameOther = (TextView)findViewById(R.id.name_other);
-        final TextView tType    = (TextView)findViewById(R.id.type);
-        final TextView tHistory = (TextView)findViewById(R.id.history);
-        final TextView tIngredient = (TextView)findViewById(R.id.ingredient);
-        final TextView tRecipe = (TextView)findViewById(R.id.recipe);
+        final TextView tType = (TextView) findViewById(R.id.type);
+        final TextView tHistory = (TextView) findViewById(R.id.history);
+        final TextView tIngredient = (TextView) findViewById(R.id.ingredient);
+        final TextView tRecipe = (TextView) findViewById(R.id.recipe);
 
-        String url = getString(R.string.url)+"/selectKanom.php";
+        String url = getString(R.string.url) + "/selectKanom.php";
 
         ArrayList<NameValuePair> params = new ArrayList<NameValuePair>();
         params.add(new BasicNameValuePair("kanom_id", sKanom_id));
@@ -121,23 +208,20 @@ public class DetailActivity extends Activity {
             System.out.println("---------------------------------");
             System.out.println(getJSONUrl(url, params));
             System.out.println("---------------------------------");
-            JSONObject data = new JSONObject(getJSONUrl(url,params));
+            JSONObject data = new JSONObject(getJSONUrl(url, params));
 
             //JSONArray data = new JSONArray(getJSONUrl(url,params));
             JSONArray info = data.getJSONArray("info");
             JSONObject c = info.getJSONObject(0);
-            strNameTh       = c.getString("name_th");
-            strNameEn       = c.getString("name_en");
-            strNameOther    = c.getString("name_other");
-            strType         = c.getString("type");
-            strVoice        = c.getString("voice");
-            strImage        = c.getString("image");
-            strHistory      = c.getString("history");
+            strNameTh = c.getString("name_th");
+            strNameEn = c.getString("name_en");
+            strNameOther = c.getString("name_other");
+            strType = c.getString("type");
+            strVoice = c.getString("voice");
+            strImage = c.getString("image");
+            strHistory = c.getString("history");
 
-            if(!strNameTh.equals(""))
-            {
-                tNameTh.setText(strNameTh);
-                tNameEn.setText(strNameEn);
+            if (!strNameTh.equals("")) {
                 //tNameOther.setText(strNameOther);
                 tType.setText(strType);
                 tHistory.setText(strHistory);
@@ -146,19 +230,14 @@ public class DetailActivity extends Activity {
                 iImage.getLayoutParams().height = 330;
                 iImage.getLayoutParams().width = 800;
                 iImage.setScaleType(ImageView.ScaleType.CENTER_CROP);
-                try
-                {
-                    iImage.setImageBitmap(loadBitmap(getString(R.string.url)+strImage));
+                try {
+                    iImage.setImageBitmap(loadBitmap(getString(R.string.url) + strImage));
                 } catch (Exception e) {
                     // When Error
                     iImage.setImageResource(android.R.drawable.ic_menu_report_image);
                 }
 
-            }
-            else
-            {
-                tNameTh.setText("-");
-                tNameEn.setText("-");
+            } else {
                 //tNameOther.setText("-");
                 tType.setText("-");
                 //tIngredient.setText("-");
@@ -166,23 +245,23 @@ public class DetailActivity extends Activity {
             }
             JSONArray ingredient = data.getJSONArray("ingredient");
             String textIngredient = "Ingredient : \n";
-            for( int i = 0; i < ingredient.length(); i++ ){
+            for (int i = 0; i < ingredient.length(); i++) {
                 String id = ingredient.getJSONObject(i).getString("ingredient_id");
                 String ingred = ingredient.getJSONObject(i).getString("ingredient");
-                textIngredient += "\t" + id + ". "+ ingred + "\n";
+                textIngredient += "\t" + id + ". " + ingred + "\n";
             }
             tIngredient.setText(textIngredient);
 
             JSONArray recipe = data.getJSONArray("recipe");
             String textRecipe = "Recipe : \n";
-            for( int i = 0; i < recipe.length(); i++ ){
+            for (int i = 0; i < recipe.length(); i++) {
                 String id = recipe.getJSONObject(i).getString("recipe_id");
                 String recip = recipe.getJSONObject(i).getString("recipe");
-                textRecipe += "\t" + id + ". "+ recip + "\n";
+                textRecipe += "\t" + id + ". " + recip + "\n";
             }
             tRecipe.setText(textRecipe);
 
-            final Button btnBack = (Button) findViewById(R.id.sound);
+            final ImageButton btnBack = (ImageButton) findViewById(R.id.sound);
             // Perform action on click
             final String finalStrVoice = strVoice;
             btnBack.setOnClickListener(new View.OnClickListener() {
@@ -190,24 +269,33 @@ public class DetailActivity extends Activity {
                     managerOfSound(finalStrVoice);
                 }
             });
+
+
+            Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+            toolbar.setTitle(strNameTh);
+            toolbar.setSubtitle(strNameEn);
+            setSupportActionBar(toolbar);
+
         } catch (JSONException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
 
     }
+
     protected void managerOfSound(String id) {
         mp = MediaPlayer.create(this, getResources().getIdentifier(id, "raw", "onokopoo.kanom"));
 
-        if(mp.isPlaying()){
+        if (mp.isPlaying()) {
             mp.stop();
             mp.reset();
             mp.release();
-        }else{
+        } else {
             mp.start();
         }
     }
-    public String getHttpPost(String url,List<NameValuePair> params) {
+
+    public String getHttpPost(String url, List<NameValuePair> params) {
         StringBuilder str = new StringBuilder();
         HttpClient client = new DefaultHttpClient();
         HttpPost httpPost = new HttpPost(url);
@@ -242,7 +330,7 @@ public class DetailActivity extends Activity {
         return true;
     }
 
-    public String getJSONUrl(String url,List<NameValuePair> params) {
+    public String getJSONUrl(String url, List<NameValuePair> params) {
         System.out.print("-------------------------------------------------------------------------------------------------------------");
         StringBuilder str = new StringBuilder();
         HttpClient client = new DefaultHttpClient();
@@ -271,6 +359,7 @@ public class DetailActivity extends Activity {
         }
         return str.toString();
     }
+
     private static final String TAG = "ERROR";
     private static final int IO_BUFFER_SIZE = 4 * 1024;
 
@@ -291,7 +380,7 @@ public class DetailActivity extends Activity {
             BitmapFactory.Options options = new BitmapFactory.Options();
             //options.inSampleSize = 1;
 
-            bitmap = BitmapFactory.decodeByteArray(data, 0, data.length,options);
+            bitmap = BitmapFactory.decodeByteArray(data, 0, data.length, options);
         } catch (IOException e) {
             Log.e(TAG, "Could not load Bitmap from: " + url);
         } finally {
@@ -307,7 +396,7 @@ public class DetailActivity extends Activity {
             try {
                 stream.close();
             } catch (IOException e) {
-                android.util.Log.e(TAG, "Could not close stream", e);
+                Log.e(TAG, "Could not close stream", e);
             }
         }
     }
@@ -324,5 +413,46 @@ public class DetailActivity extends Activity {
     public void onBackPressed() {
         super.onBackPressed();
         finish();
+    }
+
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        client2.connect();
+        Action viewAction = Action.newAction(
+                Action.TYPE_VIEW, // TODO: choose an action type.
+                "Detail Page", // TODO: Define a title for the content shown.
+                // TODO: If you have web page content that matches this app activity's content,
+                // make sure this auto-generated web page URL is correct.
+                // Otherwise, set the URL to null.
+                Uri.parse("http://host/path"),
+                // TODO: Make sure this auto-generated app deep link URI is correct.
+                Uri.parse("android-app://onokopoo.kanom/http/host/path")
+        );
+        AppIndex.AppIndexApi.start(client2, viewAction);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        Action viewAction = Action.newAction(
+                Action.TYPE_VIEW, // TODO: choose an action type.
+                "Detail Page", // TODO: Define a title for the content shown.
+                // TODO: If you have web page content that matches this app activity's content,
+                // make sure this auto-generated web page URL is correct.
+                // Otherwise, set the URL to null.
+                Uri.parse("http://host/path"),
+                // TODO: Make sure this auto-generated app deep link URI is correct.
+                Uri.parse("android-app://onokopoo.kanom/http/host/path")
+        );
+        AppIndex.AppIndexApi.end(client2, viewAction);
+        client2.disconnect();
     }
 }

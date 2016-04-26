@@ -70,7 +70,6 @@ public class Upload extends Activity {
 
             HttpClient httpclient = new DefaultHttpClient();
             HttpPost httppost = new HttpPost(upLoadServerUri);
-
             try {
                 AndroidMultiPartEntity entity = new AndroidMultiPartEntity();
 

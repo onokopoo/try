@@ -35,6 +35,17 @@
         <View
             android:layout_height="1dip"
             android:background="#CCCCCC" />
+
+        <Button
+            android:padding="20dp"
+            android:paddingTop="-100dp"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:text="@string/c5"
+            android:background="@color/t3"
+            android:id="@+id/history"
+            />
+
     </TableLayout>
 
 </android.support.v4.widget.NestedScrollView>

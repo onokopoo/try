@@ -12,6 +12,7 @@ public class Config extends Application {
     public static String URL_REGISTER = "http://10.35.23.78/login/register.php";
     public static String URL_VIEW = "http://10.35.23.78/login/view.php";
     public static String URL_FAVORITE = "http://10.35.23.78/login/favorite.php";
+    public static String URL_HISTORY = "http://10.35.23.78/login/history.php";
 
     // Directory name to store captured images and videos
     public static final String IMAGE_DIRECTORY_NAME = "Android File Upload";
