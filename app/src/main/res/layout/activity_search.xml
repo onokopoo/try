@@ -4,8 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:showIn="@layout/app_bar_main" android:layout_width="match_parent"
-    android:layout_height="fill_parent" tools:context=".MainActivity">
+    tools:showIn="@layout/app_bar_main"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    tools:context=".MainActivity">
 
     <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/tableLayout1"
@@ -24,7 +26,7 @@
             <ListView
                 android:id="@+id/listView1"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="fill_parent"
                 android:paddingRight="10dp"
                 android:paddingLeft="10dp"
                 android:paddingTop="10dp" >
@@ -35,16 +37,20 @@
         <View
             android:layout_height="1dip"
             android:background="#CCCCCC" />
-
-        <Button
-            android:padding="20dp"
-            android:paddingTop="-100dp"
-            android:layout_width="match_parent"
-            android:layout_height="80dp"
-            android:text="@string/c5"
-            android:background="@color/t3"
-            android:id="@+id/history"
-            />
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:layout_marginTop="-60dp" >
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:text="History"
+                android:background="@color/colorPrimary"
+                android:id="@+id/history"
+                />
+        </LinearLayout>
 
     </TableLayout>
 

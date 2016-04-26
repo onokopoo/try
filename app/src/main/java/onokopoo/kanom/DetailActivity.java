@@ -13,9 +13,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
-import android.view.View;
-import android.widget.CheckBox;
-import android.widget.ImageButton;
+import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -23,15 +21,7 @@ import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.common.api.GoogleApiClient;
 
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
-import org.apache.http.StatusLine;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -39,21 +29,20 @@ import org.json.JSONObject;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
-import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.Closeable;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.List;
 
 @SuppressWarnings("deprecation")
 public class DetailActivity extends AppCompatActivity {
     MediaPlayer mp;
     public static String Type;
+    public static Boolean Check = false;
+    public String finalStrVoice;
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
      * See https://g.co/AppIndexing/AndroidStudio for more information.
@@ -65,30 +54,6 @@ public class DetailActivity extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
-
-        /*FloatingActionButton myFab = (FloatingActionButton)findViewById(R.id.fav);
-        myFab.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                Log.d(TAG, "llllllllllllllllllllll");
-            }
-        });
-        */
-        final CheckBox star = (CheckBox) findViewById(R.id.star);
-        star.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(star.isChecked()){
-                    Type = "1";
-                    Log.d(TAG, String.valueOf(Type));
-                    addOrRemoveFavorite(Type);
-
-                } else{
-                    Type = "0";
-                    Log.d(TAG, String.valueOf(Type));
-                    addOrRemoveFavorite(Type);
-                }
-            }
-        });
 
         // Permission StrictMode
         if (Build.VERSION.SDK_INT > 9) {
@@ -118,10 +83,8 @@ public class DetailActivity extends AppCompatActivity {
             String jsonStr = sh.makeServiceCall(Config.URL_FAVORITE, ServiceHandler.POST, params);
 
             JSONObject jsonObj = new JSONObject(jsonStr);
-            Boolean check = jsonObj.getBoolean("check");
+            Check = jsonObj.getBoolean("check");
 
-            CheckBox star = (CheckBox) findViewById(R.id.star);
-            star.setChecked(check);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -163,7 +126,6 @@ public class DetailActivity extends AppCompatActivity {
 
         try {
             ServiceHandler sh = new ServiceHandler();
-            // Making a request to url and getting response
             String jsonStr = sh.makeServiceCall(Config.URL_VIEW, ServiceHandler.POST, params);
 
             JSONObject jsonObj = new JSONObject(jsonStr);
@@ -186,8 +148,6 @@ public class DetailActivity extends AppCompatActivity {
         final TextView tIngredient = (TextView) findViewById(R.id.ingredient);
         final TextView tRecipe = (TextView) findViewById(R.id.recipe);
 
-        String url = getString(R.string.url) + "/selectKanom.php";
-
         ArrayList<NameValuePair> params = new ArrayList<NameValuePair>();
         params.add(new BasicNameValuePair("kanom_id", sKanom_id));
         params.add(new BasicNameValuePair("locale", getString(R.string.locale_config)));
@@ -203,14 +163,12 @@ public class DetailActivity extends AppCompatActivity {
         String strHistory = "";
         String strVoice = "";
 
-        //JSONObject c;
         try {
-            System.out.println("---------------------------------");
-            System.out.println(getJSONUrl(url, params));
-            System.out.println("---------------------------------");
-            JSONObject data = new JSONObject(getJSONUrl(url, params));
+            ServiceHandler sh = new ServiceHandler();
+            String jsonStr = sh.makeServiceCall(Config.URL_SELECT_KANOM, ServiceHandler.POST, params);
 
-            //JSONArray data = new JSONArray(getJSONUrl(url,params));
+            JSONObject data = new JSONObject(jsonStr);
+
             JSONArray info = data.getJSONArray("info");
             JSONObject c = info.getJSONObject(0);
             strNameTh = c.getString("name_th");
@@ -260,27 +218,20 @@ public class DetailActivity extends AppCompatActivity {
                 textRecipe += "\t" + id + ". " + recip + "\n";
             }
             tRecipe.setText(textRecipe);
+            finalStrVoice = strVoice;
 
-            final ImageButton btnBack = (ImageButton) findViewById(R.id.sound);
-            // Perform action on click
-            final String finalStrVoice = strVoice;
-            btnBack.setOnClickListener(new View.OnClickListener() {
-                public void onClick(View v) {
-                    managerOfSound(finalStrVoice);
-                }
-            });
-
-
-            Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-            toolbar.setTitle(strNameTh);
-            toolbar.setSubtitle(strNameEn);
+            // TODO :subtitle
+            Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
+            if(getString(R.string.locale_config).equals("en")){
+                toolbar.setTitle(strNameEn);
+            } else if(getString(R.string.locale_config).equals("th")){
+                toolbar.setTitle(strNameTh);
+            }
             setSupportActionBar(toolbar);
-
         } catch (JSONException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-
     }
 
     protected void managerOfSound(String id) {
@@ -295,71 +246,44 @@ public class DetailActivity extends AppCompatActivity {
         }
     }
 
-    public String getHttpPost(String url, List<NameValuePair> params) {
-        StringBuilder str = new StringBuilder();
-        HttpClient client = new DefaultHttpClient();
-        HttpPost httpPost = new HttpPost(url);
-
-        try {
-            httpPost.setEntity(new UrlEncodedFormEntity(params));
-            HttpResponse response = client.execute(httpPost);
-            StatusLine statusLine = response.getStatusLine();
-            int statusCode = statusLine.getStatusCode();
-            if (statusCode == 200) { // Status OK
-                HttpEntity entity = response.getEntity();
-                InputStream content = entity.getContent();
-                BufferedReader reader = new BufferedReader(new InputStreamReader(content));
-                String line;
-                while ((line = reader.readLine()) != null) {
-                    str.append(line);
-                }
-            } else {
-                Log.e("Log", "Failed to download result..");
-            }
-        } catch (ClientProtocolException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return str.toString();
-    }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.main, menu);
+        getMenuInflater().inflate(R.menu.detail, menu);
+        MenuItem check_fav = menu.findItem(R.id.action_star);
+        check_fav.setChecked(Check);
+
+        if(check_fav.isChecked()){
+            check_fav.setIcon(R.drawable.ic_star2);
+        } else {
+            check_fav.setIcon(R.drawable.ic_star);
+        }
         return true;
     }
-
-    public String getJSONUrl(String url, List<NameValuePair> params) {
-        System.out.print("-------------------------------------------------------------------------------------------------------------");
-        StringBuilder str = new StringBuilder();
-        HttpClient client = new DefaultHttpClient();
-        HttpPost httpPost = new HttpPost(url);
-
-        try {
-            httpPost.setEntity(new UrlEncodedFormEntity(params));
-            HttpResponse response = client.execute(httpPost);
-            StatusLine statusLine = response.getStatusLine();
-            int statusCode = statusLine.getStatusCode();
-            if (statusCode == 200) { // Download OK
-                HttpEntity entity = response.getEntity();
-                InputStream content = entity.getContent();
-                BufferedReader reader = new BufferedReader(new InputStreamReader(content));
-                String line;
-                while ((line = reader.readLine()) != null) {
-                    str.append(line);
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_star:
+                if (item.isChecked()){
+                    item.setChecked(false);
+                    item.setIcon(R.drawable.ic_star);
+                    Type = "0";
+                } else {
+                    item.setChecked(true);
+                    item.setIcon(R.drawable.ic_star2);
+                    Type = "1";
                 }
-            } else {
-                Log.e("Log", "Failed to download result.............");
-            }
-        } catch (ClientProtocolException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return str.toString();
-    }
+                addOrRemoveFavorite(Type);
+                return true;
+            case R.id.action_mp:
+                managerOfSound(finalStrVoice);
+                return true;
 
+            default:
+                // If we got here, the user's action was not recognized.
+                // Invoke the superclass to handle it.
+                return super.onOptionsItemSelected(item);
+        }
+    }
     private static final String TAG = "ERROR";
     private static final int IO_BUFFER_SIZE = 4 * 1024;
 

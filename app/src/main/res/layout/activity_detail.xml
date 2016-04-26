@@ -38,10 +38,11 @@
                     android:layout_height="?attr/actionBarSize"
                     app:layout_collapseMode="pin"
                     app:popupTheme="@style/AppTheme.PopupOverlay"
-                    android:maxLines="2"
-                    app:titleTextAppearance="@style/Toolbar.TitleText" />
+                    app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+                    android:gravity="top"
+                    app:titleTextAppearance="@style/Toolbar.TitleText" >
 
-
+                </android.support.v7.widget.Toolbar>
             </android.support.design.widget.CollapsingToolbarLayout>
 
         </android.support.design.widget.AppBarLayout>
@@ -69,42 +70,8 @@
                 android:padding="10dp">
 
                 <TableLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" >
-                    <TableRow
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content" >
-
-                        <ImageView android:id="@+id/image"
-                            android:layout_height="wrap_content"
-                            android:layout_width="fill_parent" />
-                    </TableRow>
-                </TableLayout>
-                <TableLayout
                     android:layout_width="fill_parent"
-                    android:layout_height="wrap_content" >
-                    <TableRow
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content">
-
-                        <ImageButton
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:id="@+id/sound"
-                            android:src="@android:drawable/ic_lock_silent_mode_off"
-                            android:layout_column="0" />
-
-                        <CheckBox android:id="@+id/star"
-                            style="?android:attr/starStyle"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_column="1"
-                            android:gravity="center_vertical|right"
-                            android:checked="true" />
-
-                        <!--android:layout_alignParentRight="true"-->
-
-                    </TableRow>
+                    android:layout_height="fill_parent" >
 
                     <TableRow
                         android:layout_width="fill_parent"
@@ -139,9 +106,7 @@
                             android:gravity="left"
                             android:layout_height="fill_parent"
                             android:layout_width="wrap_content" />
-
                     </TableRow>
-
                     <TableRow>
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content">
@@ -150,7 +115,6 @@
                             android:gravity="left"
                             android:layout_height="fill_parent"
                             android:layout_width="wrap_content" />
-
                     </TableRow>
                     <TableRow>
                         android:layout_width="wrap_content"
@@ -160,14 +124,9 @@
                             android:gravity="left"
                             android:layout_height="fill_parent"
                             android:layout_width="wrap_content" />
-
                     </TableRow>
-
                 </TableLayout>
-
             </TableLayout>
-
         </android.support.v4.widget.NestedScrollView>
-
     </android.support.design.widget.CoordinatorLayout>
 </android.support.v4.widget.DrawerLayout>

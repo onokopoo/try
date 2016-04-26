@@ -32,6 +32,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -76,10 +77,6 @@ public class MainActivity extends AppCompatActivity
 
     ArrayList<HashMap<String, String>> MyArrList;
     Configuration config = new Configuration();
-    /**
-     * ATTENTION: This was auto-generated to implement the App Indexing API.
-     * See https://g.co/AppIndexing/AndroidStudio for more information.
-     */
     private GoogleApiClient client2;
 
     @Override
@@ -128,9 +125,18 @@ public class MainActivity extends AppCompatActivity
             StrictMode.setThreadPolicy(policy);
         }
         ShowData();
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
+
         client2 = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
+
+        Button history = (Button) findViewById(R.id.history);
+        history.setOnClickListener(new View.OnClickListener() {
+
+            public void onClick(View v) {
+                Intent i = new Intent(getApplicationContext(), historyActivity.class);
+                i.putExtra("type", "view");
+                startActivity(i);
+            }
+        });
     }
 
     boolean doubleBackToExitPressedOnce = false;
@@ -417,7 +423,7 @@ public class MainActivity extends AppCompatActivity
             // name en
             TextView txtNameEn = (TextView) convertView.findViewById(R.id.name_en);
             txtNameEn.setPadding(5, 0, 0, 0);
-            txtNameEn.setText(MyArrList.get(position).get("name_en"));
+            txtNameEn.setText(" "+MyArrList.get(position).get("name_en"));
 
             // type
             TextView txtType = (TextView) convertView.findViewById(R.id.type);
