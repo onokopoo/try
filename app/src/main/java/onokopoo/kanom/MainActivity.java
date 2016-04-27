@@ -7,6 +7,7 @@ import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -241,7 +242,10 @@ public class MainActivity extends AppCompatActivity
             getResources().updateConfiguration(config, null);
             restartActivity();
         } else if (id == R.id.nav_about) {
-            Toast.makeText(getApplicationContext(), "รออีกนิด ระบบกำลังพัฒนาค่ะ =) ", Toast.LENGTH_LONG).show();
+            SharedPreferences sharedpreferences = getSharedPreferences(SignupActivity.MyPREFERENCES, Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedpreferences.edit();
+            editor.clear();
+            editor.commit();
         } else if (id == R.id.nav_buy) {
             Config globalVariable = ((Config)getApplicationContext());
 
@@ -249,7 +253,11 @@ public class MainActivity extends AppCompatActivity
             i.setType("message/rfc822");
             i.putExtra(Intent.EXTRA_EMAIL, new String[]{"onokopoo@gmail.com"});
             i.putExtra(Intent.EXTRA_SUBJECT, "แจ้งรายละเอียดการซื้อแอปพลิเคชั่น Kanom");
-            i.putExtra(Intent.EXTRA_TEXT, "ถึง ผู้พัฒนาแอปพลิเคชั่น/n ผู้ใช้(User):"+globalVariable.getUsernme()+"ต้องการซื้อแอปพลิเคชั่นตัวเต็ม");
+            String body = "ถึง ผู้พัฒนาแอปพลิเคชั่น\n\n";
+            body += "\t\tUser\t\t: "+globalVariable.getUsernme()+"\n";
+            body += "\t\tEmail\t\t: "+globalVariable.getEmail()+"\n";
+            body += "\nต้องการซื้อแอปพลิเคชั่นตัวเต็ม";
+            i.putExtra(Intent.EXTRA_TEXT, body);
             try {
                 startActivity(Intent.createChooser(i, "Send mail..."));
             } catch (ActivityNotFoundException ex) {
@@ -423,7 +431,7 @@ public class MainActivity extends AppCompatActivity
             // name en
             TextView txtNameEn = (TextView) convertView.findViewById(R.id.name_en);
             txtNameEn.setPadding(5, 0, 0, 0);
-            txtNameEn.setText(" "+MyArrList.get(position).get("name_en"));
+            txtNameEn.setText(MyArrList.get(position).get("name_en"));
 
             // type
             TextView txtType = (TextView) convertView.findViewById(R.id.type);
@@ -431,7 +439,6 @@ public class MainActivity extends AppCompatActivity
             txtType.setText(MyArrList.get(position).get("type"));
 
             return convertView;
-
         }
     }
 

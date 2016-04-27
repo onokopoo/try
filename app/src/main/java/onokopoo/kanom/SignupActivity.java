@@ -1,10 +1,11 @@
 package onokopoo.kanom;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -26,6 +27,16 @@ import butterknife.InjectView;
 public class SignupActivity extends AppCompatActivity {
     private static final String TAG = "SignupActivity";
     public static boolean error;
+    public static String id;
+    public static final String MyPREFERENCES = "MyPrefs" ;
+    public static final String Name = "name";
+    public static final String Email = "email";
+    public static final String Password = "password";
+    public static final String Logged = "logged";
+    public static final String UserId = "id";
+
+    SharedPreferences sharedpreferences;
+
     ArrayList<HashMap<String, String>> MyArrList;
 
     @InjectView(R.id.input_name) EditText _nameText;
@@ -40,9 +51,7 @@ public class SignupActivity extends AppCompatActivity {
         setContentView(R.layout.activity_signup);
         ButterKnife.inject(this);
 
-        _emailText.setText("poo@gmail.com");
-        _passwordText.setText("qwer");
-        _nameText.setText("onoko");
+        sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
 
         _signupButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -61,8 +70,6 @@ public class SignupActivity extends AppCompatActivity {
     }
 
     public void signup() {
-        Log.d(TAG, "Signup");
-
         if (!validate()) {
             onSignupFailed();
             return;
@@ -86,18 +93,16 @@ public class SignupActivity extends AppCompatActivity {
         params.add(new BasicNameValuePair("password", password));
         params.add(new BasicNameValuePair("username", name));
 
-
         new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
                     ServiceHandler sh = new ServiceHandler();
-                    // Making a request to url and getting response
                     String jsonStr = sh.makeServiceCall(Config.URL_REGISTER, ServiceHandler.POST, params);
 
                     JSONObject jsonObj = new JSONObject(jsonStr);
                     error = jsonObj.getBoolean("error");
-                    Log.d(TAG, String.valueOf(error));
+                    id = jsonObj.getString("user_id");
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -110,6 +115,15 @@ public class SignupActivity extends AppCompatActivity {
                         if (error) {
                             onSignupFailed();
                         } else {
+                            SharedPreferences.Editor editor = sharedpreferences.edit();
+
+                            editor.putString(Name, _nameText.getText().toString());
+                            editor.putString(Email, _emailText.getText().toString());
+                            editor.putString(Password, _passwordText.getText().toString());
+                            editor.putString(Logged, "logged");
+                            editor.putString(UserId, id);
+                            editor.commit();
+
                             onSignupSuccess();
                         }
                         progressDialog.dismiss();
@@ -122,8 +136,6 @@ public class SignupActivity extends AppCompatActivity {
         setResult(RESULT_OK, null);
 
         Intent i = new Intent(getApplicationContext(), LoginActivity.class);
-        i.putExtra("email", _emailText.getText().toString());
-        i.putExtra("password", _passwordText.getText().toString());
         startActivity(i);
         //finish();
     }

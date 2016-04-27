@@ -16,6 +16,7 @@ tools:context=".ScrollingActivity">
         android:checkable="true"
         android:checked="true"
         android:orderInCategory="2"
+        android:gravity="center_vertical|right"
         app:showAsAction="ifRoom|collapseActionView"/>
 
 </menu>

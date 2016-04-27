@@ -1,7 +1,9 @@
 package onokopoo.kanom;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -26,9 +28,15 @@ public class LoginActivity extends AppCompatActivity {
     private static final String TAG = "LoginActivity";
     private static final int REQUEST_SIGNUP = 0;
     public static boolean error;
-    public static String user_id;
+    public static String id;
     public static String user;
-
+    SharedPreferences sharedpreferences;
+    public static final String MyPREFERENCES = "MyPrefs" ;
+    public static final String Name = "name";
+    public static final String Email = "email";
+    public static final String Password = "password";
+    public static final String Logged = "logged";
+    public static final String UserId = "id";
     @InjectView(R.id.input_email) EditText _emailText;
     @InjectView(R.id.input_password) EditText _passwordText;
     @InjectView(R.id.btn_login) Button _loginButton;
@@ -40,11 +48,14 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         ButterKnife.inject(this);
 
-
-
-            _emailText.setText("onokopoo@gmail.com");
-            _passwordText.setText("qwer");
-
+        sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+        if (sharedpreferences.getString("logged", "").toString().equals("logged")) {
+            Intent i = new Intent(LoginActivity.this, SplashActivity.class);
+            i.putExtra("user_id", sharedpreferences.getString("id", "").toString());
+            i.putExtra("user", sharedpreferences.getString("name","").toString());
+            i.putExtra("email", sharedpreferences.getString("email", "").toString());
+            startActivity(i);
+        }
         _loginButton.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -63,6 +74,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
     }
+
 
     public void login() {
         Log.d(TAG, "Login");
@@ -102,7 +114,7 @@ public class LoginActivity extends AppCompatActivity {
                     JSONObject jsonObj = new JSONObject(jsonStr);
                     error = jsonObj.getBoolean("error");
                     if(!error){
-                        user_id = jsonObj.getString("user_id");
+                        id = jsonObj.getString("user_id");
                         user = jsonObj.getString("username");
                     }
                 } catch (JSONException e) {
@@ -117,6 +129,15 @@ public class LoginActivity extends AppCompatActivity {
                         if(error){
                             onLoginFailed();
                         } else {
+                            SharedPreferences.Editor editor = sharedpreferences.edit();
+
+                            editor.putString(Name, user);
+                            editor.putString(Email, _emailText.getText().toString());
+                            editor.putString(Password, _passwordText.getText().toString());
+                            editor.putString(Logged, "logged");
+                            editor.putString(UserId, id);
+                            editor.commit();
+
                             onLoginSuccess();
                         }
                         // On complete call either onLoginSuccess or onLoginFailed
@@ -147,7 +168,7 @@ public class LoginActivity extends AppCompatActivity {
     public void onLoginSuccess() {
         _loginButton.setEnabled(true);
         Intent i = new Intent(getApplicationContext(), SplashActivity.class);
-        i.putExtra("user_id", user_id);
+        i.putExtra("user_id", id);
         i.putExtra("user", user);
         i.putExtra("email", _emailText.getText().toString());
         startActivity(i);

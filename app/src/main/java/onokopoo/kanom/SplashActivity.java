@@ -7,10 +7,14 @@ package onokopoo.kanom;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.Window;
+
+import java.util.ArrayList;
 
 public class SplashActivity extends Activity {
     Handler handler;
@@ -18,6 +22,8 @@ public class SplashActivity extends Activity {
     public static String user_id;
     public static String email;
     public static String user;
+    SharedPreferences sharedpreferences;
+    private ArrayList<String> permissionsToRequest;
 
     @TargetApi(Build.VERSION_CODES.M)
     public void onCreate(Bundle savedInstanceState) {
@@ -25,9 +31,18 @@ public class SplashActivity extends Activity {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.splashscreen);
 
-        String[] perms = {"android.permission.READ_EXTERNAL_STORAGE","android.permission.WRITE_EXTERNAL_STORAGE", "android.permission.CAMERA"};
-        int permsRequestCode = 200;
-        requestPermissions(perms, permsRequestCode);
+        ArrayList<String> perms = new ArrayList<>();
+        perms.add("android.permission.READ_EXTERNAL_STORAGE");
+        perms.add("android.permission.WRITE_EXTERNAL_STORAGE");
+        perms.add("android.permission.CAMERA");
+        permissionsToRequest = findUnAskedPermissions(perms);
+
+        if(permissionsToRequest.size()>0) {
+            requestPermissions(permissionsToRequest.toArray(new String[permissionsToRequest.size()]), 200);
+            for (String perm : permissionsToRequest) {
+                markAsAsked(perm);
+            }
+        }
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
@@ -58,5 +73,47 @@ public class SplashActivity extends Activity {
     public void onStop() {
         super.onStop();
         handler.removeCallbacks(runnable);
+    }
+
+    private ArrayList findUnAskedPermissions(ArrayList<String> wanted){
+        ArrayList result = new ArrayList<String>();
+        for(String perm : wanted){
+
+            if(!hasPermission(perm) && shouldWeAsk(perm)){
+                result.add(perm);
+            }
+        }
+        return result;
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int permsRequestCode, String[] permissions, int[] grantResults){
+        switch(permsRequestCode){
+            case 200:
+                boolean readAccepted = grantResults[0]==PackageManager.PERMISSION_GRANTED;
+                boolean writeAccepted = grantResults[1]==PackageManager.PERMISSION_GRANTED;
+                boolean cameraAccepted = grantResults[2]==PackageManager.PERMISSION_GRANTED;
+
+                break;
+        }
+    }
+    @TargetApi(Build.VERSION_CODES.M)
+    private boolean hasPermission(String permission){
+        if(canMakeSmores()){
+            return(checkSelfPermission(permission)== PackageManager.PERMISSION_GRANTED);
+        }
+        return true;
+    }
+
+    private boolean canMakeSmores(){
+        return(Build.VERSION.SDK_INT>Build.VERSION_CODES.LOLLIPOP_MR1);
+    }
+
+    private boolean shouldWeAsk(String permission){
+        return (sharedpreferences.getBoolean(permission, true));
+    }
+
+    private void markAsAsked(String permission){
+        sharedpreferences.edit().putBoolean(permission, false).apply();
     }
 }

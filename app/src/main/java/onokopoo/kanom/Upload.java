@@ -125,16 +125,20 @@ public class Upload extends Activity {
      * Method to show alert dialog
      * */
     private void showAlert(String message) {
-
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage(message).setTitle("Response from Servers")
                 .setCancelable(false)
-                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                .setPositiveButton("Continue", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         //TODO: do nothing
 
                     }
                 });
+
+        builder.setNegativeButton("Back", new DialogInterface.OnClickListener() {
+        public void onClick(DialogInterface dialog, int which) {
+            finish();
+        } });
         AlertDialog alert = builder.create();
         alert.show();
     }
