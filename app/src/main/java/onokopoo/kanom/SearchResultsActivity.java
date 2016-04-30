@@ -1,7 +1,6 @@
 package onokopoo.kanom;
 
 import android.annotation.SuppressLint;
-import android.app.ActionBar;
 import android.app.Activity;
 import android.app.SearchManager;
 import android.content.Context;
@@ -10,6 +9,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.StrictMode;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -52,21 +52,18 @@ import java.util.List;
 @SuppressWarnings("deprecation")
 public class SearchResultsActivity extends Activity {
     ArrayList<HashMap<String, String>> MyArrList;
-
+    String query;
     @SuppressLint("NewApi")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_results);
-
-        // get the action bar
-        ActionBar actionBar = getActionBar();
-
-        // Enabling Back navigation on Action Bar icon
-        //actionBar.setDisplayHomeAsUpEnabled(true);
-
-
         handleIntent(getIntent());
+
+        String text = getResources().getString(R.string.search)+": "+query;
+        CollapsingToolbarLayout collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.toolbar_layout);
+        collapsingToolbarLayout.setTitle(text);
+        collapsingToolbarLayout.setBackgroundResource(R.drawable.splashscereen);
     }
 
     @Override
@@ -75,12 +72,9 @@ public class SearchResultsActivity extends Activity {
         handleIntent(intent);
     }
 
-    /**
-     * Handling intent data
-     */
     private void handleIntent(Intent intent) {
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
-            String query = intent.getStringExtra(SearchManager.QUERY);
+            query = intent.getStringExtra(SearchManager.QUERY);
 
             if (android.os.Build.VERSION.SDK_INT > 9) {
                 StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();

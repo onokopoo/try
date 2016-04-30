@@ -8,6 +8,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.StrictMode;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -68,11 +69,25 @@ public class SearchActivity extends Activity {
             type = null;
         }else{
             type = getIntent().getExtras().getString("type");
+
+            String text = null;
+            switch (Integer.parseInt(type)){
+                case 1:  text = getResources().getString(R.string.c1);
+                        break;
+                case 2:  text = getResources().getString(R.string.c2);
+                    break;
+                case 3:  text = getResources().getString(R.string.c3);
+                    break;
+                case 4:  text = getResources().getString(R.string.c4);
+                    break;
+                case 5:  text = getResources().getString(R.string.c5);
+                    break;
+            }
+            CollapsingToolbarLayout collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.toolbar_layout);
+            collapsingToolbarLayout.setTitle(text);
+            collapsingToolbarLayout.setBackgroundResource(R.drawable.splashscereen);
         }
-
-
         ShowData(type);
-
     }
 
     public void ShowData(String type) {
@@ -109,7 +124,7 @@ public class SearchActivity extends Activity {
             }
             lisView1.setAdapter(new ImageAdapter(this, MyArrList));
             LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) lisView1.getLayoutParams();
-            lp.height = 380 * data.length();
+            lp.height = 370 * data.length();
             lisView1.setLayoutParams(lp);
 
             // OnClick Item

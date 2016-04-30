@@ -19,6 +19,11 @@
     <string name="recommended">Recommended list</string>
     <string name="btnBack">cancel</string>
     <string name="text_detail_error">Data not found</string>
+    <string name="search">Search</string>
+
+    <string name="detail">Detail</string>
+    <string name="detail_ingredient">Ingredient</string>
+    <string name="detail_recipe">Recipe</string>
 
     <string name="c1">Type of steam</string>
     <string name="c2">Type of stir</string>

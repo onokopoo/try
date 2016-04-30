@@ -12,13 +12,18 @@
     <string name="title_section6">การซื้อแอปพลิเคชัน</string>
     <string name="title_section_view">ประวัติการเข้าชม</string>
     <string name="recommended">รายการแนะนำ</string>
+    <string name="search">คำค้นหา</string>
+
+    <string name="detail">รายละเอียด</string>
+    <string name="detail_ingredient">ส่วนผสม</string>
+    <string name="detail_recipe">วิธีทำ</string>
+
 
     <string name="intent_popup_title">เลือกช่องทางในการค้นหา</string>
     <string name="intent1">กล้อง</string>
     <string name="intent2">แกลอรี่</string>
     <string name="cancel">ยกเลิก</string>
     <string name="text_detail_error">ไม่มีรายการ</string>
-
 
     <string name="btnBack">ยกเลิก</string>
 

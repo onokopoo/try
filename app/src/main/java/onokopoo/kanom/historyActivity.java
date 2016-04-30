@@ -8,6 +8,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.StrictMode;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -40,6 +42,7 @@ public class historyActivity extends Activity {
 
     ArrayList<HashMap<String, String>> MyArrList;
     String type;
+    String text;
     @SuppressLint("NewApi")
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -53,6 +56,15 @@ public class historyActivity extends Activity {
         }
 
         type = getIntent().getExtras().getString("type");
+
+        if(type.equals("view")){
+            text = getResources().getString(R.string.title_section_view);
+        } else {
+            text = getResources().getString(R.string.title_section2);
+        }
+        CollapsingToolbarLayout collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.toolbar_layout);
+        collapsingToolbarLayout.setTitle(text);
+        collapsingToolbarLayout.setBackgroundResource(R.drawable.splashscereen);
         ShowData(type);
     }
 
@@ -88,7 +100,14 @@ public class historyActivity extends Activity {
                 MyArrList.add(map);
             }
 
-            lisView1.setAdapter(new ImageAdapter(this, MyArrList));
+            if(data.length()==0){
+                TextView text = (TextView)findViewById(R.id.text_detail_error);
+                text.setText(getResources().getString(R.string.text_detail_error));
+            }
+            lisView1.setAdapter(new ImageAdapter(this,MyArrList));
+            LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) lisView1.getLayoutParams();
+            lp.height = 370 * data.length();
+            lisView1.setLayoutParams(lp);
 
             // OnClick Item
             lisView1.setOnItemClickListener(new AdapterView.OnItemClickListener() {
