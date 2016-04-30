@@ -10,12 +10,13 @@
     <string name="title_section4">Language</string>
     <string name="title_section5">About</string>
     <string name="title_section6">Activate</string>
+    <string name="title_section_view">History</string>
 
     <string name="intent_popup_title">Select search options</string>
     <string name="intent1">Camera</string>
     <string name="intent2">gallery</string>
     <string name="cancel">cancel</string>
-
+    <string name="recommended">Recommended list</string>
     <string name="btnBack">cancel</string>
 
     <string name="c1">Type of steam</string>

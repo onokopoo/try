@@ -10,6 +10,8 @@
     <string name="title_section4">ภาษา/language</string>
     <string name="title_section5">เกี่ยวกับ</string>
     <string name="title_section6">การซื้อแอปพลิเคชัน</string>
+    <string name="title_section_view">ประวัติการเข้าชม</string>
+    <string name="recommended">รายการแนะนำ</string>
 
     <string name="intent_popup_title">เลือกช่องทางในการค้นหา</string>
     <string name="intent1">กล้อง</string>

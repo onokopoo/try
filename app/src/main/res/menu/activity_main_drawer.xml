@@ -6,6 +6,8 @@
             android:title="@string/title_section1"/>
         <item android:id="@+id/nav_heart" android:icon="@drawable/ic_heart"
             android:title="@string/title_section2"/>
+        <item android:id="@+id/nav_view" android:icon="@drawable/ic_view"
+            android:title="@string/title_section_view"/>
         <item android:id="@+id/nav_stack" android:icon="@drawable/ic_stack"
             android:title="@string/title_section3"/>
     </group>
@@ -16,8 +18,8 @@
                 android:title="@string/title_section4"/>
             <item android:id="@+id/nav_about" android:icon="@drawable/ic_about"
                 android:title="@string/title_section5"/>
-            <item android:id="@+id/nav_buy" android:icon="@drawable/ic_buy"
-                android:title="@string/title_section6"/>
+            <!--<item android:id="@+id/nav_buy" android:icon="@drawable/ic_buy"
+                android:title="@string/title_section6"/>-->
         </menu>
     </item>
 

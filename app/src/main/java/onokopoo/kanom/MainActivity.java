@@ -3,7 +3,6 @@ package onokopoo.kanom;
 import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.app.SearchManager;
-import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -75,10 +74,11 @@ import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
-
+    SharedPreferences sharedpreferences;
     ArrayList<HashMap<String, String>> MyArrList;
     Configuration config = new Configuration();
     private GoogleApiClient client2;
+    public static final String MyPREFERENCES = "MyPrefs" ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -138,6 +138,7 @@ public class MainActivity extends AppCompatActivity
                 startActivity(i);
             }
         });
+
     }
 
     boolean doubleBackToExitPressedOnce = false;
@@ -199,13 +200,14 @@ public class MainActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         View headerLayout = navigationView.getChildAt(0);
+        sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
 
         Intent intent = getIntent();
         if(intent.hasExtra("email")){
             Bundle extras = getIntent().getExtras();
             if(!extras.getString("email").equals(null)){
-                String email = extras.getString("email");
-                String user = extras.getString("user");
+                String email = sharedpreferences.getString("email", "").toString();
+                String user = sharedpreferences.getString("name","").toString();
                 String user_id = extras.getString("user_id");
 
                 Config globalVariable = ((Config)getApplicationContext());
@@ -224,11 +226,14 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_main) {
-
         } else if (id == R.id.nav_heart) {
             //TODO:view
             Intent i = new Intent(getApplicationContext(), historyActivity.class);
             i.putExtra("type", "favorite");
+            startActivity(i);
+        } else if (id == R.id.nav_view) {
+            Intent i = new Intent(getApplicationContext(), historyActivity.class);
+            i.putExtra("type", "view");
             startActivity(i);
         } else if (id == R.id.nav_stack) {
             Intent i = new Intent(getApplicationContext(), CategoryActivity.class);
@@ -246,7 +251,7 @@ public class MainActivity extends AppCompatActivity
             SharedPreferences.Editor editor = sharedpreferences.edit();
             editor.clear();
             editor.commit();
-        } else if (id == R.id.nav_buy) {
+        } /* Buy else if (id == R.id.nav_buy) {
             Config globalVariable = ((Config)getApplicationContext());
 
             Intent i = new Intent(Intent.ACTION_SEND);
@@ -263,22 +268,14 @@ public class MainActivity extends AppCompatActivity
             } catch (ActivityNotFoundException ex) {
                 Toast.makeText(MainActivity.this, "There are no email clients installed.", Toast.LENGTH_SHORT).show();
             }
-        }
+        }*/
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
 
     public void ShowData() {
-        // listView1
         final ListView lisView1 = (ListView) findViewById(R.id.listView1);
-
-        // keySearch
-        //EditText strKeySearch = (EditText)findViewById(R.id.txtKeySearch);
-        // Disbled Keyboard auto focus
-        //InputMethodManager imm = (InputMethodManager)getSystemService(
-        //       Context.INPUT_METHOD_SERVICE);
-        //imm.hideSoftInputFromWindow(strKeySearch.getWindowToken(), 0);
 
         String url = getString(R.string.url) + "/pop.php";
 

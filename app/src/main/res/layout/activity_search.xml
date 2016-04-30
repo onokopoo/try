@@ -9,49 +9,62 @@
     android:layout_height="wrap_content"
     tools:context=".MainActivity">
 
-    <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <TableLayout
         android:id="@+id/tableLayout1"
-        android:layout_width="wrap_content"
-        android:layout_height="fill_parent" >
-
-        <View
-            android:layout_height="1dip"
-            android:background="#CCCCCC" />
-
-        <LinearLayout
-            android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        >
+        <TableRow
+            android:paddingTop="10dp"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content" >
-
-            <ListView
-                android:id="@+id/listView1"
+            android:layout_height="fill_parent"
+            android:gravity="start|top">
+            <ImageView
+                android:src="@drawable/ic_recommend"
+                android:layout_marginLeft="15dp" />
+            <TextView
+                android:id="@+id/textrec"
                 android:layout_width="match_parent"
-                android:layout_height="fill_parent"
-                android:paddingRight="10dp"
-                android:paddingLeft="10dp"
-                android:paddingTop="10dp" >
-            </ListView>
-
+                android:layout_height="wrap_content"
+                android:text="@string/recommended"
+                android:gravity="left"
+                android:paddingLeft="5dp"
+                android:paddingTop="1dp"
+                android:textSize="16dp"
+                android:textAppearance="?android:attr/textAppearanceSmall" />
+        </TableRow>
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent" >
+                <ListView
+                    android:id="@+id/listView1"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:paddingRight="10dp"
+                    android:paddingLeft="10dp"
+                    android:paddingTop="10dp" >
+                </ListView>
         </LinearLayout>
-
-        <View
-            android:layout_height="1dip"
-            android:background="#CCCCCC" />
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:padding="10dp"
             >
-            <Button
+
+            <android.support.v7.widget.AppCompatButton
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:text="History"
+                android:text="@string/title_section_view"
                 android:background="@color/colorPrimary"
                 android:id="@+id/history"
-                />
+                android:drawableTop="@drawable/ic_heart"
+                android:textColor="#FFFFFF"
+                android:paddingTop="0dp"
+                android:drawablePadding="-15dp"
+                >
+            </android.support.v7.widget.AppCompatButton>
         </LinearLayout>
-
     </TableLayout>
-
 </android.support.v4.widget.NestedScrollView>
