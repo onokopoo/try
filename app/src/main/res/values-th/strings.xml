@@ -17,6 +17,8 @@
     <string name="intent1">กล้อง</string>
     <string name="intent2">แกลอรี่</string>
     <string name="cancel">ยกเลิก</string>
+    <string name="text_detail_error">ไม่มีรายการ</string>
+
 
     <string name="btnBack">ยกเลิก</string>
 
@@ -24,7 +26,7 @@
     <string name="c2">ขนมไทยประเภทกวน</string>
     <string name="c3">ขนมไทยประเภทเชื่อม</string>
     <string name="c4">ขนมไทยประเภทต้ม</string>
-    <string name="c5">ขนมไทยประเภททอด/ปิ้ง/ย่าง</string>
+    <string name="c5">ขนมไทยประเภททอด/ปิ้ง</string>
 
     <string name="btnTakePicture">Capture Image</string>
     <string name="btnRecordVideo">Record Video</string>

@@ -54,17 +54,18 @@
             >
 
             <android.support.v7.widget.AppCompatButton
+                android:layout_marginTop="-10dp"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
+                android:textSize="20dp"
                 android:text="@string/title_section_view"
-                android:background="@color/colorPrimary"
+                android:background="@null"
                 android:id="@+id/history"
-                android:drawableTop="@drawable/ic_heart"
-                android:textColor="#FFFFFF"
-                android:paddingTop="0dp"
-                android:drawablePadding="-15dp"
-                >
-            </android.support.v7.widget.AppCompatButton>
+                android:drawableLeft="@drawable/ic_view"
+                android:textColor="@color/aluminum"
+                android:paddingLeft="10dp"
+                android:drawablePadding="10dp"
+                android:gravity="center_vertical" />
         </LinearLayout>
     </TableLayout>
 </android.support.v4.widget.NestedScrollView>

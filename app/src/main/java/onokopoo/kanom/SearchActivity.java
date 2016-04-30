@@ -16,6 +16,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -68,6 +69,8 @@ public class SearchActivity extends Activity {
         }else{
             type = getIntent().getExtras().getString("type");
         }
+
+
         ShowData(type);
 
     }
@@ -100,7 +103,14 @@ public class SearchActivity extends Activity {
                 MyArrList.add(map);
             }
 
+            if(data.length()==0){
+                TextView text = (TextView)findViewById(R.id.text_detail_error);
+                text.setText(getResources().getString(R.string.text_detail_error));
+            }
             lisView1.setAdapter(new ImageAdapter(this, MyArrList));
+            LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) lisView1.getLayoutParams();
+            lp.height = 380 * data.length();
+            lisView1.setLayoutParams(lp);
 
             // OnClick Item
             lisView1.setOnItemClickListener(new OnItemClickListener() {

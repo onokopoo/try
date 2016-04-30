@@ -18,6 +18,7 @@
     <string name="cancel">cancel</string>
     <string name="recommended">Recommended list</string>
     <string name="btnBack">cancel</string>
+    <string name="text_detail_error">Data not found</string>
 
     <string name="c1">Type of steam</string>
     <string name="c2">Type of stir</string>

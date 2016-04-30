@@ -19,7 +19,13 @@
         android:background="@color/colorPrimary"
         android:id="@+id/t1"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:drawableLeft="@drawable/ic_t1"
+        android:textColor="@color/accent"
+        android:paddingLeft="40dp"
+        android:drawablePadding="20dp"
+        android:gravity="center_vertical"
+        android:textSize="20dp"/>
 
     <android.support.v7.widget.AppCompatButton
         android:layout_width="match_parent"
@@ -30,7 +36,13 @@
         android:id="@+id/t2"
         android:layout_below="@+id/t1"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:drawableLeft="@drawable/ic_t2"
+        android:textColor="@color/accent"
+        android:paddingLeft="40dp"
+        android:drawablePadding="20dp"
+        android:gravity="center_vertical"
+        android:textSize="20dp" />
 
     <android.support.v7.widget.AppCompatButton
         android:layout_width="match_parent"
@@ -41,7 +53,13 @@
         android:id="@+id/t3"
         android:layout_below="@+id/t2"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:drawableLeft="@drawable/ic_t3"
+        android:textColor="@color/accent"
+        android:paddingLeft="40dp"
+        android:drawablePadding="20dp"
+        android:gravity="center_vertical"
+        android:textSize="20dp"/>
 
     <android.support.v7.widget.AppCompatButton
         android:layout_width="match_parent"
@@ -52,7 +70,13 @@
         android:id="@+id/t4"
         android:layout_below="@+id/t3"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:drawableLeft="@drawable/ic_t4"
+        android:textColor="@color/accent"
+        android:paddingLeft="40dp"
+        android:drawablePadding="20dp"
+        android:gravity="center_vertical"
+        android:textSize="20dp"/>
 
     <android.support.v7.widget.AppCompatButton
         android:layout_width="match_parent"
@@ -63,6 +87,12 @@
         android:id="@+id/t5"
         android:layout_below="@+id/t4"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:drawableLeft="@drawable/ic_t5"
+        android:textColor="@color/accent"
+        android:paddingLeft="40dp"
+        android:drawablePadding="20dp"
+        android:gravity="center_vertical"
+        android:textSize="20dp"/>
 
 </RelativeLayout>
