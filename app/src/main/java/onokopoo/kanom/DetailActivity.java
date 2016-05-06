@@ -59,9 +59,9 @@ public class DetailActivity extends AppCompatActivity {
     private ViewPager viewPager;
     private GoogleApiClient client2;
 
-    public String d_type = "type";
-    public String d_history = "history";
-    public String d_name_other = "other";
+    public String d_type;
+    public String d_history;
+    public String d_name_other;
     public ArrayList<String> d_ingredient;
     public ArrayList<String> d_recipe;
 
@@ -75,19 +75,6 @@ public class DetailActivity extends AppCompatActivity {
         d_ingredient= new ArrayList<String>();
         d_recipe= new ArrayList<String>();
 
-
-        d_ingredient.add("1");
-        d_ingredient.add("2");
-        d_ingredient.add("3");
-        d_ingredient.add("4");
-        d_ingredient.add("5");
-
-
-        d_recipe.add("11");
-        d_recipe.add("22");
-        d_recipe.add("33");
-        d_recipe.add("44");
-        d_recipe.add("55");
         if (Build.VERSION.SDK_INT > 9) {
             StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
             StrictMode.setThreadPolicy(policy);
@@ -104,8 +91,8 @@ public class DetailActivity extends AppCompatActivity {
         tabLayout.setupWithViewPager(viewPager);
         setupTabIcons();
 
-//        checkFavorite();
-//        addView();
+        checkFavorite();
+        addView();
         client2 = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
     }
     private void setupTabIcons() {
@@ -459,9 +446,10 @@ public class DetailActivity extends AppCompatActivity {
             content.setSpan(new UnderlineSpan(), 0, content.length(), 0);
             text_d_name_other.setText(content);
 
-            TextView text_v_name_other = (TextView) rootView.findViewById(R.id.v_name_other);
-            text_v_name_other.setText("\t"+d_name_other);
-
+            if(!(d_name_other.equals("null"))) {
+                TextView text_v_name_other = (TextView) rootView.findViewById(R.id.v_name_other);
+                text_v_name_other.setText("\t" + d_name_other);
+            }
             TextView text_d_type = (TextView) rootView.findViewById(R.id.d_type);
             content = new SpannableString(getResources().getString(R.string.d_type));
             content.setSpan(new UnderlineSpan(), 0, content.length(), 0);
@@ -474,7 +462,7 @@ public class DetailActivity extends AppCompatActivity {
             content = new SpannableString(getResources().getString(R.string.d_history));
             content.setSpan(new UnderlineSpan(), 0, content.length(), 0);
             text_d_history.setText(content);
-            
+
             TextView text_v_history = (TextView) rootView.findViewById(R.id.v_history);
             text_v_history.setText("\t\t"+d_history);
 

@@ -23,12 +23,12 @@
         <TableRow>
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-
             <TextView
+                android:paddingRight="20dp"
                 android:paddingLeft="10dp"
                 android:id="@+id/d_ir"
                 android:gravity="left"
-                android:textSize="18dp"
+                android:textSize="14dp"
                 android:layout_height="match_parent"
                 android:layout_width="wrap_content" />
         </TableRow>
