@@ -509,7 +509,7 @@ public class DetailActivity extends AppCompatActivity {
             text.setText("");
 
             for (int j = 0; j < d_recipe.size(); j++){
-                text.append("• \t\t" + d_recipe.get(j) + "\n");
+                text.append("• " + d_recipe.get(j) + "\n");
             }
 
             return rootView;
