@@ -16,9 +16,14 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.SpannableString;
+import android.text.style.UnderlineSpan;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -54,12 +59,35 @@ public class DetailActivity extends AppCompatActivity {
     private ViewPager viewPager;
     private GoogleApiClient client2;
 
+    public String d_type = "type";
+    public String d_history = "history";
+    public String d_name_other = "other";
+    public ArrayList<String> d_ingredient;
+    public ArrayList<String> d_recipe;
+
     @SuppressLint("NewApi")
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
 
+        //TODO
+        d_ingredient= new ArrayList<String>();
+        d_recipe= new ArrayList<String>();
+
+
+        d_ingredient.add("1");
+        d_ingredient.add("2");
+        d_ingredient.add("3");
+        d_ingredient.add("4");
+        d_ingredient.add("5");
+
+
+        d_recipe.add("11");
+        d_recipe.add("22");
+        d_recipe.add("33");
+        d_recipe.add("44");
+        d_recipe.add("55");
         if (Build.VERSION.SDK_INT > 9) {
             StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
             StrictMode.setThreadPolicy(policy);
@@ -74,10 +102,16 @@ public class DetailActivity extends AppCompatActivity {
 
         tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
+        setupTabIcons();
 
-        checkFavorite();
-        addView();
+//        checkFavorite();
+//        addView();
         client2 = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
+    }
+    private void setupTabIcons() {
+        tabLayout.getTabAt(0).setIcon(R.drawable.ic_detail);
+        tabLayout.getTabAt(1).setIcon(R.drawable.ic_ingredient);
+        tabLayout.getTabAt(2).setIcon(R.drawable.ic_recipe);
     }
 
     private void setupViewPager(ViewPager viewPager) {
@@ -192,11 +226,6 @@ public class DetailActivity extends AppCompatActivity {
         Intent intent = getIntent();
         final String sKanom_id = intent.getStringExtra("kanom_id");
         final ImageView iImage = (ImageView) findViewById(R.id.image);
-        //final TextView tNameOther = (TextView)findViewById(R.id.name_other);
-        final TextView tType = (TextView) findViewById(R.id.type);
-        final TextView tHistory = (TextView) findViewById(R.id.history);
-        final TextView tIngredient = (TextView) findViewById(R.id.ingredient);
-        final TextView tRecipe = (TextView) findViewById(R.id.recipe);
 
         ArrayList<NameValuePair> params = new ArrayList<NameValuePair>();
         params.add(new BasicNameValuePair("kanom_id", sKanom_id));
@@ -229,45 +258,36 @@ public class DetailActivity extends AppCompatActivity {
             strImage = c.getString("image");
             strHistory = c.getString("history");
 
+            d_name_other = strNameOther;
+            d_type = strType;
+            d_history = strHistory;
+
             if (!strNameTh.equals("")) {
-                //tNameOther.setText(strNameOther);
-                tType.setText(strType);
-                tHistory.setText(strHistory);
-                //tIngredient.setText(strIngredient);
-                //tRecipe.setText(strRecipe);
+
                 iImage.getLayoutParams().height = 330;
                 iImage.getLayoutParams().width = 800;
                 iImage.setScaleType(ImageView.ScaleType.CENTER_CROP);
                 try {
                     iImage.setImageBitmap(loadBitmap(getString(R.string.url) + strImage));
                 } catch (Exception e) {
-                    // When Error
                     iImage.setImageResource(android.R.drawable.ic_menu_report_image);
                 }
+            }
 
-            } else {
-                //tNameOther.setText("-");
-                tType.setText("-");
-                //tIngredient.setText("-");
-                //tRecipe.setText("-");
-            }
             JSONArray ingredient = data.getJSONArray("ingredient");
-            String textIngredient = "Ingredient : \n";
             for (int i = 0; i < ingredient.length(); i++) {
-                String id = ingredient.getJSONObject(i).getString("ingredient_id");
-                String ingred = ingredient.getJSONObject(i).getString("ingredient");
-                textIngredient += "\t" + id + ". " + ingred + "\n";
+                d_ingredient.add(i, ingredient.getJSONObject(i).getString("ingredient"));
+                //String id = ingredient.getJSONObject(i).getString("ingredient_id");
+                //String ingred = ingredient.getJSONObject(i).getString("ingredient");
             }
-            tIngredient.setText(textIngredient);
 
             JSONArray recipe = data.getJSONArray("recipe");
-            String textRecipe = "Recipe : \n";
             for (int i = 0; i < recipe.length(); i++) {
-                String id = recipe.getJSONObject(i).getString("recipe_id");
-                String recip = recipe.getJSONObject(i).getString("recipe");
-                textRecipe += "\t" + id + ". " + recip + "\n";
+                d_recipe.add(i, recipe.getJSONObject(i).getString("recipe"));
+                //String id = recipe.getJSONObject(i).getString("recipe_id");
+                //String recip = recipe.getJSONObject(i).getString("recipe");
             }
-            tRecipe.setText(textRecipe);
+
             finalStrVoice = strVoice;
 
             // TODO :subtitle
@@ -279,7 +299,6 @@ public class DetailActivity extends AppCompatActivity {
             }
             setSupportActionBar(toolbar);
         } catch (JSONException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
     }
@@ -429,13 +448,83 @@ public class DetailActivity extends AppCompatActivity {
         AppIndex.AppIndexApi.end(client2, viewAction);
         client2.disconnect();
     }
-
+    @SuppressLint("ValidFragment")
     private class OneFragment extends Fragment {
-    }
+        @Override
+        public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+            View rootView = inflater.inflate(R.layout.tab_detail, container, false);
 
+            TextView text_d_name_other = (TextView) rootView.findViewById(R.id.d_name_other);
+            SpannableString content = new SpannableString(getResources().getString(R.string.d_name_other));
+            content.setSpan(new UnderlineSpan(), 0, content.length(), 0);
+            text_d_name_other.setText(content);
+
+            TextView text_v_name_other = (TextView) rootView.findViewById(R.id.v_name_other);
+            text_v_name_other.setText("\t"+d_name_other);
+
+            TextView text_d_type = (TextView) rootView.findViewById(R.id.d_type);
+            content = new SpannableString(getResources().getString(R.string.d_type));
+            content.setSpan(new UnderlineSpan(), 0, content.length(), 0);
+            text_d_type.setText(content);
+
+            TextView text_v_type = (TextView) rootView.findViewById(R.id.v_type);
+            text_v_type.setText("\t"+d_type);
+
+            TextView text_d_history = (TextView) rootView.findViewById(R.id.d_history);
+            content = new SpannableString(getResources().getString(R.string.d_history));
+            content.setSpan(new UnderlineSpan(), 0, content.length(), 0);
+            text_d_history.setText(content);
+            
+            TextView text_v_history = (TextView) rootView.findViewById(R.id.v_history);
+            text_v_history.setText("\t\t"+d_history);
+
+
+            return rootView;
+        }
+    }
+    @SuppressLint("ValidFragment")
     private class TwoFragment extends Fragment {
-    }
 
+        @Override
+        public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+            LayoutInflater lf = getActivity().getLayoutInflater();
+            View rootView = inflater.inflate(R.layout.tab_view, container, false);
+
+            TextView text_name = (TextView) rootView.findViewById(R.id.d_name);
+            SpannableString content = new SpannableString(getResources().getString(R.string.detail_ingredient));
+            content.setSpan(new UnderlineSpan(), 0, content.length(), 0);
+            text_name.setText(content);
+
+            TextView text = (TextView) rootView.findViewById(R.id.d_ir);
+            text.setText("");
+            for (int j = 0; j < d_ingredient.size(); j++){
+                text.append("\u2022 \t\t\t" + d_ingredient.get(j) + "\n");
+            }
+
+            return rootView;
+        }
+    }
+    @SuppressLint("ValidFragment")
     private class ThreeFragment extends Fragment {
+
+        @Override
+        public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+            LayoutInflater lf = getActivity().getLayoutInflater();
+            View rootView = inflater.inflate(R.layout.tab_view, container, false);
+
+            TextView text_name = (TextView) rootView.findViewById(R.id.d_name);
+            SpannableString content = new SpannableString(getResources().getString(R.string.detail_recipe));
+            content.setSpan(new UnderlineSpan(), 0, content.length(), 0);
+            text_name.setText(content);
+
+            TextView text = (TextView) rootView.findViewById(R.id.d_ir);
+            text.setText("");
+
+            for (int j = 0; j < d_recipe.size(); j++){
+                text.append("• \t\t" + d_recipe.get(j) + "\n");
+            }
+
+            return rootView;
+        }
     }
 }

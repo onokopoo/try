@@ -31,6 +31,10 @@
     <string name="c4">Type of boiled</string>
     <string name="c5">Type of fried</string>
 
+    <string name="d_name_other">Name other: </string>
+    <string name="d_type">Type: </string>
+    <string name="d_history">History</string>
+
     <string name="btnTakePicture">Capture Image</string>
     <string name="btnRecordVideo">Record Video</string>
     <string name="or">(or)</string>
@@ -60,15 +64,15 @@
 
 
     <!-- -->
-    <string name="hint_email">Email</string>
+    <string name="hint_email">E-mail</string>
     <string name="hint_password">Password</string>
     <string name="hint_name">Username</string>
-    <string name="btn_login">LOGIN</string>
+    <string name="btn_login">LOG IN</string>
     <string name="btn_register">REGISTER</string>
     <string name="btn_link_to_register">Not a member? Sign up now.</string>
     <string name="btn_link_to_login">Already registred! Login Me.</string>
     <string name="welcome">Welcome</string>
-    <string name="btn_logout">LOGOUT</string>
+    <string name="btn_logout">LOG OUT</string>
     <string name="name">Username</string>
     <string name="title_activity_scrolling">ScrollingActivity</string>
 
