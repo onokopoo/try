@@ -54,6 +54,7 @@ public class IntentGalleryActivity extends Activity {
                 Intent intent = new Intent(getApplicationContext(), Upload.class);
                 intent.putExtra("url", filePath);
                 startActivity(intent);
+                finish();
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             } catch (IOException e) {

@@ -50,6 +50,7 @@ public class IntentActivity extends Activity {
                 Intent intent = new Intent(getApplicationContext(), Upload.class);
                 intent.putExtra("url", uri.getPath());
                 startActivity(intent);
+                finish();
             } catch (Exception e) {
                 e.printStackTrace();
             }
