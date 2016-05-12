@@ -34,6 +34,8 @@
     <string name="d_name_other">Name other: </string>
     <string name="d_type">Type: </string>
     <string name="d_history">History</string>
+    <string name="upload">Uploading Image...</string>
+    <string name="exit">Please click BACK again to exit</string>
 
     <string name="btnTakePicture">Capture Image</string>
     <string name="btnRecordVideo">Record Video</string>

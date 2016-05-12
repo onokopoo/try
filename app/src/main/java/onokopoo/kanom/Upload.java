@@ -44,7 +44,7 @@ public class Upload extends Activity {
 
         upLoadServerUri = Config.FILE_UPLOAD_URL;
 
-        dialog = ProgressDialog.show(Upload.this, "", "Uploading file...", true);
+        dialog = ProgressDialog.show(Upload.this, "", getResources().getString(R.string.upload), true);
         new UploadFileToServer().execute();
 
     }
@@ -104,11 +104,8 @@ public class Upload extends Activity {
             } catch (IOException e) {
                 responseString = e.toString();
             }
-
             return responseString;
-
         }
-
         @Override
         protected void onPostExecute(String result) {
             Log.e( TAG, "Response from server: " + result);
@@ -118,7 +115,6 @@ public class Upload extends Activity {
 
             super.onPostExecute(result);
         }
-
     }
 
     /**
