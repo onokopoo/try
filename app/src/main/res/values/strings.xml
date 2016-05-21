@@ -8,7 +8,7 @@
     <string name="title_section2">Favorites</string>
     <string name="title_section3">Category</string>
     <string name="title_section4">Language</string>
-    <string name="title_section5">About</string>
+    <string name="title_section5">Setting</string>
     <string name="title_section6">Activate</string>
     <string name="title_section_view">History</string>
 
@@ -87,6 +87,8 @@
 
     <!-- Example General settings -->
     <string name="pref_header_general">General</string>
+    <string name="logout">log out</string>
+    <string name="logout_sum">click here for log out</string>
 
     <string name="pref_title_social_recommendations">Enable social recommendations</string>
     <string name="pref_description_social_recommendations">Recommendations for people to contact

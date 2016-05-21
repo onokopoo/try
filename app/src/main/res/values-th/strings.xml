@@ -117,6 +117,8 @@
     <!-- Example settings for Notifications -->
     <string name="pref_header_notifications">การแจ้งเตือน</string>
     <string name="pref_header_general">ทั่วไป</string>
+    <string name="logout">ออกจากระบบ</string>
+    <string name="logout_sum">กดปุ่มนี้เพื่อออกจากระบบ</string>
 
     <string name="pref_title_new_message_notifications">แจ้งเตือนเมื่อมีรายการใหม่</string>
 
