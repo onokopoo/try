@@ -147,17 +147,17 @@ public class Upload extends Activity {
                 JSONObject json0 = resultArr.getJSONObject(0);
                 id[0] = json0.getString("id");
                 acc[0] = json0.getString("accuracy");
-                name[0] = String.format("%1$-10s %2$s", acc[0], getJsonId(id[0]));
+                name[0] = String.format("\t\t %10s \t : \t %s", acc[0], getJsonId(id[0]));
 
                 JSONObject json1 = resultArr.getJSONObject(1);
                 id[1] = json1.getString("id");
                 acc[1] = json1.getString("accuracy");
-                name[1] = String.format("%1$-10s %2$s", acc[1], getJsonId(id[1]));
+                name[1] = String.format("\t\t %10s \t : \t %s", acc[1], getJsonId(id[1]));
 
                 JSONObject json2 = resultArr.getJSONObject(2);
                 id[2] = json2.getString("id");
                 acc[2] = json2.getString("accuracy");
-                name[2] = String.format("%1$-10s %2$s", getJsonId(id[2]), acc[2]);
+                name[2] = String.format("\t\t %10s \t : \t %s", acc[2], getJsonId(id[2]));
             } catch (JSONException e) {
                 e.printStackTrace();
             }
