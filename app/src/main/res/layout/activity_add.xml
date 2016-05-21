@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="onokopoo.kanom.AddActivity">
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:fitsSystemWindows="true">
+        <TableLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp">
+            <TableRow
+                android:id="@+id/tableRow1"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent">
+                <TextView
+                    android:paddingTop="20dp"
+                    android:layout_weight="1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="ชื่อ(ไทย)*"
+                    android:id="@+id/textView" />
+                <android.support.design.widget.TextInputLayout
+                    android:layout_weight="3"
+                    android:layout_height="wrap_content">
+                    <EditText
+                        android:textSize="14dp"
+                        android:id="@+id/tNameTh"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="ชื่อขนมภาษาไทย"
+                        android:inputType="text" />
+                </android.support.design.widget.TextInputLayout>
+            </TableRow>
+            <TableRow
+                android:id="@+id/tableRow1"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent">
+                <TextView
+                    android:paddingTop="25dp"
+                    android:layout_weight="1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="ชื่อ(อังกฤษ)*"
+                    android:id="@+id/textView" />
+                <android.support.design.widget.TextInputLayout
+                    android:layout_weight="3"
+                    android:layout_height="wrap_content">
+                    <EditText
+                        android:textSize="14dp"
+                        android:id="@+id/tNameEn"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="ชื่อขนมภาษาอังกฤษ"
+                        android:inputType="text" />
+                </android.support.design.widget.TextInputLayout>
+            </TableRow>
+            <TableRow
+                android:id="@+id/tableRow1"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent">
+                <TextView
+                    android:paddingTop="25dp"
+                    android:layout_weight="1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="ชื่ออื่นๆ"
+                    android:id="@+id/textView" />
+                <android.support.design.widget.TextInputLayout
+                    android:layout_weight="3"
+                    android:layout_height="wrap_content">
+                    <EditText
+                        android:textSize="14dp"
+                        android:id="@+id/tNameOther"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="ชื่อขนมในภาษาถิ่น"
+                        android:inputType="text" />
+                </android.support.design.widget.TextInputLayout>
+            </TableRow>
+            <TableRow
+                android:id="@+id/tableRow1"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent">
+                <TextView
+                    android:paddingTop="20dp"
+                    android:layout_weight="1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="ประเภทของขนม"
+                    android:id="@+id/textView" />
+                <Spinner
+                    android:id="@+id/type"
+                    android:layout_width="wrap_content"
+                    android:layout_weight="3"
+                    android:layout_height="wrap_content" />
+            </TableRow>
+            <TextView
+                android:paddingTop="25dp"
+                android:layout_weight="1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="ประวัติความเป็นมา"
+                android:id="@+id/history" />
+            <android.support.design.widget.TextInputLayout
+                android:layout_height="wrap_content"
+                android:paddingBottom="10dp">
+                <EditText
+                    android:textSize="14dp"
+                    android:id="@+id/tHistory"
+                    android:ems="10"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="กรอกประวัติของขนมเท่าที่ทราบ"
+                    android:inputType="textMultiLine" />
+            </android.support.design.widget.TextInputLayout>
+            <TextView
+                android:paddingTop="20dp"
+                android:layout_weight="1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="ส่วนประกอบ"
+                android:id="@+id/history" />
+            <android.support.design.widget.TextInputLayout
+                android:layout_height="wrap_content"
+                >
+                <EditText
+                    android:textSize="14dp"
+                    android:id="@+id/tIndi"
+                    android:ems="10"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="กรอกส่วนประกอบของขนมเท่าที่ทราบ"
+                    android:inputType="textMultiLine" />
+            </android.support.design.widget.TextInputLayout>
+            <android.support.v7.widget.AppCompatButton
+                android:id="@+id/btn_login"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:background="@color/colorPrimary"
+                android:text="เพิ่มรายการขนม"/>
+        </TableLayout>
+    </ScrollView>
+</RelativeLayout>

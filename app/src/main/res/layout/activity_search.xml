@@ -61,7 +61,34 @@
                 android:text="@string/title_section_view"
                 android:background="@null"
                 android:id="@+id/history"
-                android:drawableLeft="@drawable/ic_view"
+                android:drawableLeft="@drawable/ic_history"
+                android:textColor="@color/aluminum"
+                android:paddingLeft="10dp"
+                android:drawablePadding="10dp"
+                android:gravity="center_vertical" />
+        </LinearLayout>
+        <View
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/iron"/>
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            >
+
+            <android.support.v7.widget.AppCompatButton
+                android:layout_marginTop="-10dp"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:textSize="20dp"
+                android:text="@string/add"
+                android:background="@null"
+                android:id="@+id/add_kanom"
+                android:drawableLeft="@drawable/ic_add"
                 android:textColor="@color/aluminum"
                 android:paddingLeft="10dp"
                 android:drawablePadding="10dp"

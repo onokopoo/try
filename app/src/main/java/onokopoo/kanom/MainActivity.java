@@ -138,7 +138,14 @@ public class MainActivity extends AppCompatActivity
                 startActivity(i);
             }
         });
+        Button add = (Button) findViewById(R.id.add_kanom);
+        add.setOnClickListener(new View.OnClickListener() {
 
+            public void onClick(View v) {
+                Intent i = new Intent(getApplicationContext(), AddActivity.class);
+                startActivity(i);
+            }
+        });
     }
 
     boolean doubleBackToExitPressedOnce = false;

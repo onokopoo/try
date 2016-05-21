@@ -37,6 +37,7 @@
     <string name="upload">Uploading Image...</string>
     <string name="exit">Please click BACK again to exit</string>
     <string name="response">Result</string>
+    <string name="add">add kanom</string>
 
 
     <string name="btnTakePicture">Capture Image</string>
