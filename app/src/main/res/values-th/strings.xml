@@ -37,7 +37,8 @@
     <string name="d_type">ประเภท: </string>
     <string name="d_history">ประวัติความเป็นมา</string>
     <string name="upload">กำลังประมวลผล...</string>
-    <string name="exit">กด 'กลับ' อีกครั้งเพื่อออก</string>
+    <string name="exit">กด กลับ อีกครั้งเพื่อออก</string>
+    <string name="response">ผลการวิเคราะห์</string>
 
     <string name="btnTakePicture">Capture Image</string>
     <string name="btnRecordVideo">Record Video</string>

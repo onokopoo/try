@@ -247,10 +247,12 @@ public class MainActivity extends AppCompatActivity
             getResources().updateConfiguration(config, null);
             restartActivity();
         } else if (id == R.id.nav_about) {
-            SharedPreferences sharedpreferences = getSharedPreferences(SignupActivity.MyPREFERENCES, Context.MODE_PRIVATE);
+            /*SharedPreferences sharedpreferences = getSharedPreferences(SignupActivity.MyPREFERENCES, Context.MODE_PRIVATE);
             SharedPreferences.Editor editor = sharedpreferences.edit();
             editor.clear();
-            editor.commit();
+            editor.commit();*/
+            Intent i = new Intent(getApplicationContext(), SettingsActivity.class);
+            startActivity(i);
         } /* Buy else if (id == R.id.nav_buy) {
             Config globalVariable = ((Config)getApplicationContext());
 
