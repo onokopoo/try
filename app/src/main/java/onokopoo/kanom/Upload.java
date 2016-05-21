@@ -1,10 +1,12 @@
 package onokopoo.kanom;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
@@ -72,7 +74,9 @@ public class Upload extends Activity {
 
         @Override
         protected String doInBackground(Void... params) {
-            return uploadFile();
+            String result = uploadFile();
+            getResult(result);
+            return result;
         }
 
         @SuppressWarnings("deprecation")
@@ -129,9 +133,7 @@ public class Upload extends Activity {
             }
             return strNameTh;
         }
-
-        @Override
-        protected void onPostExecute(String result) {
+        public void getResult(String result){
             Log.i(TAG, "Response from server: " + result);
 
             String jsonStr = POST("http://10.35.23.78:8080", result);
@@ -145,26 +147,24 @@ public class Upload extends Activity {
                 JSONObject json0 = resultArr.getJSONObject(0);
                 id[0] = json0.getString("id");
                 acc[0] = json0.getString("accuracy");
-                //name[0]= "\t\t\t\t"+acc[0]+" : "+getJsonId(id[0]);
-                name[0].format("%-8s %s", getJsonId(id[0]), acc[0]);
+                name[0] = String.format("%1$-10s %2$s", acc[0], getJsonId(id[0]));
 
                 JSONObject json1 = resultArr.getJSONObject(1);
                 id[1] = json1.getString("id");
                 acc[1] = json1.getString("accuracy");
-                name[1]= acc[1]+"\t\t\t\t :"+getJsonId(id[1]);
+                name[1] = String.format("%1$-10s %2$s", acc[1], getJsonId(id[1]));
 
                 JSONObject json2 = resultArr.getJSONObject(2);
                 id[2] = json2.getString("id");
                 acc[2] = json2.getString("accuracy");
-                name[2]= acc[2]+"\t\t\t\t :"+getJsonId(id[2]);
-
-                Log.i(TAG, String.valueOf(resultArr));
-                showAlert();
+                name[2] = String.format("%1$-10s %2$s", getJsonId(id[2]), acc[2]);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-            //showAlert(jsonStr);
-            //Log.i(TAG,jsonStr);
+        }
+        @Override
+        protected void onPostExecute(String result) {
+            showAlert();
             super.onPostExecute(result);
         }
     }
@@ -196,8 +196,9 @@ public class Upload extends Activity {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(R.string.response)
                 .setItems(name, new DialogInterface.OnClickListener() {
+                    @TargetApi(Build.VERSION_CODES.M)
+                    @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        Log.i(TAG, String.valueOf(which));
                         finish();
 
                         Intent newActivity = new Intent(Upload.this, DetailActivity.class);
@@ -205,7 +206,7 @@ public class Upload extends Activity {
                         startActivity(newActivity);
                     }
                 });
-        builder.setNegativeButton("Back", new DialogInterface.OnClickListener() {
+        builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 finish();
             }
