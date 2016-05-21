@@ -77,4 +77,53 @@
     <string name="welcome">Welcome</string>
     <string name="btn_logout">LOG OUT</string>
     <string name="name">Username</string>
+
+
+    <string-array name="pref_example_list_titles">
+        <item>ตลอดเวลา</item>
+        <item>เมื่อสามารถแจ้งเตือนได้</item>
+        <item>ไม่แจ้งเตือน</item>
+    </string-array>
+    <string-array name="pref_example_list_values">
+        <item>1</item>
+        <item>0</item>
+        <item>-1</item>
+    </string-array>
+
+
+    <!-- Example settings for Data & Sync -->
+    <string name="pref_header_data_sync">ข้อมูล &amp; ซิงค์</string>
+
+    <string name="pref_title_sync_frequency">ความถี่ในการซิงค์ข้อมูล</string>
+    <string-array name="pref_sync_frequency_titles">
+        <item>15 นาที</item>
+        <item>30 นาที</item>
+        <item>1 ชั่วโมง</item>
+        <item>3 ชั่วโมง</item>
+        <item>6 ชั่วโมง</item>
+        <item>ไม่เลย</item>
+    </string-array>
+    <string-array name="pref_sync_frequency_values">
+        <item>15</item>
+        <item>30</item>
+        <item>60</item>
+        <item>180</item>
+        <item>360</item>
+        <item>-1</item>
+    </string-array>
+
+    <string name="pref_title_system_sync_settings">การตั้งค่าการซิงค์ข้อมูล</string>
+
+    <!-- Example settings for Notifications -->
+    <string name="pref_header_notifications">การแจ้งเตือน</string>
+    <string name="pref_header_general">ทั่วไป</string>
+
+    <string name="pref_title_new_message_notifications">แจ้งเตือนเมื่อมีรายการใหม่</string>
+
+    <string name="pref_title_ringtone">ริงโทน</string>
+    <string name="pref_ringtone_silent">เงียบ</string>
+
+    <string name="pref_title_vibrate">สั่น</string>
+    <string name="title_activity_setting">การตั้งค่า</string>
+
 </resources>
